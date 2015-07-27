@@ -1,0 +1,356 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="소스 파일">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="헤더 파일">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="리소스 파일">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Game2DFramework">
+      <UniqueIdentifier>{a8ee482c-ef4e-4f66-90ce-51116db1e875}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game2DFramework\manager">
+      <UniqueIdentifier>{e9c9dcf6-8266-471b-ba61-6de485994997}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameStudy">
+      <UniqueIdentifier>{eebdd4b8-9453-4bf5-bc67-f61c83e0a6a2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game2DFramework\image">
+      <UniqueIdentifier>{aa195cc9-ae78-4163-8851-a880de85b232}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game2DFramework\util">
+      <UniqueIdentifier>{6e898b9f-4061-4591-bbc4-4aab491863bb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="숙제">
+      <UniqueIdentifier>{74e12559-094d-484e-a2ff-1a7491be217d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameStudy\GameClass">
+      <UniqueIdentifier>{3bd5f6cb-a06b-47a8-acbd-a02385cda5bf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameStudy\Object">
+      <UniqueIdentifier>{e0deb07d-80cc-4689-a723-fcd2ecdef61d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game2DFramework\time">
+      <UniqueIdentifier>{578b6029-1daf-40f9-be9d-e1208c08fd96}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game2DFramework\progressBar">
+      <UniqueIdentifier>{8a5e9e63-1cbf-4a7d-8487-eb41220e059d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game2DFramework\button">
+      <UniqueIdentifier>{500ef528-7875-4347-a1d3-99001ddfc74d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game2DFramework\database">
+      <UniqueIdentifier>{9917f7ac-fd7f-4f5f-bdf6-cc6824611efd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameStudy\GameClass\logo">
+      <UniqueIdentifier>{67ee9644-3ee5-4d00-87c5-7da15fb3d576}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameStudy\GameClass\main">
+      <UniqueIdentifier>{32bb2afb-b588-4b92-b02f-3f040a92c52e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameStudy\GameClass\gameInfo">
+      <UniqueIdentifier>{51cb1129-3f20-4120-894e-c8dcb03f6494}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameStudy\GameClass\test">
+      <UniqueIdentifier>{79c5f9ec-5206-45d0-b406-35c88633d083}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameStudy\GameClass\object">
+      <UniqueIdentifier>{0fa3454d-15c9-4d77-bfb4-f758100f884a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameStudy\GameClass\object\unit">
+      <UniqueIdentifier>{b19efd47-f4ad-41b7-8668-23ed235565b0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game2DFramework\action">
+      <UniqueIdentifier>{b91196d8-838c-48e9-a73b-206920112846}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameStudy\GameClass\object\unit\player">
+      <UniqueIdentifier>{7ad9b9b4-2a00-47a5-8f66-109d041a1888}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameStudy\GameClass\object\item">
+      <UniqueIdentifier>{a18d4815-b0de-469e-afb7-e0b198597013}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameStudy\GameClass\object\map">
+      <UniqueIdentifier>{a2158db4-6d74-4d79-8847-923286cab590}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameStudy\GameClass\object\camera">
+      <UniqueIdentifier>{b5272fe4-379e-4f72-b513-f50007dfe11f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameStudy\GameClass\background">
+      <UniqueIdentifier>{04cfb21a-f41f-43c0-8174-f2ee406f410c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameStudy\GameClass\ui">
+      <UniqueIdentifier>{8716cfc7-8fbb-40d5-ade2-744171f6ebd2}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="stdafx.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="SingletonBase.h">
+      <Filter>Game2DFramework\manager</Filter>
+    </ClInclude>
+    <ClInclude Include="KeyManager.h">
+      <Filter>Game2DFramework\manager</Filter>
+    </ClInclude>
+    <ClInclude Include="Image.h">
+      <Filter>Game2DFramework\image</Filter>
+    </ClInclude>
+    <ClInclude Include="GameNode.h">
+      <Filter>Game2DFramework</Filter>
+    </ClInclude>
+    <ClInclude Include="SpriteImage.h">
+      <Filter>Game2DFramework\image</Filter>
+    </ClInclude>
+    <ClInclude Include="ImageManager.h">
+      <Filter>Game2DFramework\manager</Filter>
+    </ClInclude>
+    <ClInclude Include="util.h">
+      <Filter>Game2DFramework\util</Filter>
+    </ClInclude>
+    <ClInclude Include="commonMacroFunction.h">
+      <Filter>Game2DFramework\util</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject.h">
+      <Filter>GameStudy\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="DataManager.h">
+      <Filter>Game2DFramework\manager</Filter>
+    </ClInclude>
+    <ClInclude Include="Timer.h">
+      <Filter>Game2DFramework\time</Filter>
+    </ClInclude>
+    <ClInclude Include="TimeManager.h">
+      <Filter>Game2DFramework\manager</Filter>
+    </ClInclude>
+    <ClInclude Include="GameStudy.h">
+      <Filter>GameStudy</Filter>
+    </ClInclude>
+    <ClInclude Include="RandomFunction.h">
+      <Filter>Game2DFramework\manager</Filter>
+    </ClInclude>
+    <ClInclude Include="AnimationImage.h">
+      <Filter>Game2DFramework\image</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneManager.h">
+      <Filter>Game2DFramework\manager</Filter>
+    </ClInclude>
+    <ClInclude Include="EffectManager.h">
+      <Filter>Game2DFramework\manager</Filter>
+    </ClInclude>
+    <ClInclude Include="ProgressBar.h">
+      <Filter>Game2DFramework\progressBar</Filter>
+    </ClInclude>
+    <ClInclude Include="Button.h">
+      <Filter>Game2DFramework\button</Filter>
+    </ClInclude>
+    <ClInclude Include="Database.h">
+      <Filter>Game2DFramework\database</Filter>
+    </ClInclude>
+    <ClInclude Include="txtDataManager.h">
+      <Filter>Game2DFramework\manager</Filter>
+    </ClInclude>
+    <ClInclude Include="LogoScene.h">
+      <Filter>GameStudy\GameClass\logo</Filter>
+    </ClInclude>
+    <ClInclude Include="MainScene.h">
+      <Filter>GameStudy\GameClass\main</Filter>
+    </ClInclude>
+    <ClInclude Include="GameInfo.h">
+      <Filter>GameStudy\GameClass\gameInfo</Filter>
+    </ClInclude>
+    <ClInclude Include="TestScene.h">
+      <Filter>GameStudy\GameClass\test</Filter>
+    </ClInclude>
+    <ClInclude Include="TerrariaObject.h">
+      <Filter>GameStudy\GameClass\object</Filter>
+    </ClInclude>
+    <ClInclude Include="TerrariaUnit.h">
+      <Filter>GameStudy\GameClass\object\unit</Filter>
+    </ClInclude>
+    <ClInclude Include="Action.h">
+      <Filter>Game2DFramework\action</Filter>
+    </ClInclude>
+    <ClInclude Include="Physical.h">
+      <Filter>GameStudy\GameClass\object</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>GameStudy\GameClass\object\unit\player</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerManager.h">
+      <Filter>GameStudy\GameClass\object\unit\player</Filter>
+    </ClInclude>
+    <ClInclude Include="Equipment.h">
+      <Filter>GameStudy\GameClass\object\unit\player</Filter>
+    </ClInclude>
+    <ClInclude Include="Item.h">
+      <Filter>GameStudy\GameClass\object\item</Filter>
+    </ClInclude>
+    <ClInclude Include="Equip.h">
+      <Filter>GameStudy\GameClass\object\unit\player</Filter>
+    </ClInclude>
+    <ClInclude Include="Inventory.h">
+      <Filter>GameStudy\GameClass\object\unit\player</Filter>
+    </ClInclude>
+    <ClInclude Include="common.h">
+      <Filter>GameStudy\GameClass\object</Filter>
+    </ClInclude>
+    <ClInclude Include="Tile.h">
+      <Filter>GameStudy\GameClass\object\map</Filter>
+    </ClInclude>
+    <ClInclude Include="TileMap.h">
+      <Filter>GameStudy\GameClass\object\map</Filter>
+    </ClInclude>
+    <ClInclude Include="TerrariaNode.h">
+      <Filter>GameStudy\GameClass\object</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>GameStudy\GameClass\object\camera</Filter>
+    </ClInclude>
+    <ClInclude Include="Background.h">
+      <Filter>GameStudy\GameClass\background</Filter>
+    </ClInclude>
+    <ClInclude Include="MainGameScene.h">
+      <Filter>GameStudy\GameClass\main</Filter>
+    </ClInclude>
+    <ClInclude Include="UI.h">
+      <Filter>GameStudy\GameClass\ui</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="GameNode.cpp">
+      <Filter>Game2DFramework</Filter>
+    </ClCompile>
+    <ClCompile Include="KeyManager.cpp">
+      <Filter>Game2DFramework\manager</Filter>
+    </ClCompile>
+    <ClCompile Include="WinAPI basic.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Image.cpp">
+      <Filter>Game2DFramework\image</Filter>
+    </ClCompile>
+    <ClCompile Include="SpriteImage.cpp">
+      <Filter>Game2DFramework\image</Filter>
+    </ClCompile>
+    <ClCompile Include="ImageManager.cpp">
+      <Filter>Game2DFramework\manager</Filter>
+    </ClCompile>
+    <ClCompile Include="util.cpp">
+      <Filter>Game2DFramework\util</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject.cpp">
+      <Filter>GameStudy\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="DataManager.cpp">
+      <Filter>Game2DFramework\manager</Filter>
+    </ClCompile>
+    <ClCompile Include="Timer.cpp">
+      <Filter>Game2DFramework\time</Filter>
+    </ClCompile>
+    <ClCompile Include="TimeManager.cpp">
+      <Filter>Game2DFramework\manager</Filter>
+    </ClCompile>
+    <ClCompile Include="GameStudy.cpp">
+      <Filter>GameStudy</Filter>
+    </ClCompile>
+    <ClCompile Include="AnimationImage.cpp">
+      <Filter>Game2DFramework\image</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneManager.cpp">
+      <Filter>Game2DFramework\manager</Filter>
+    </ClCompile>
+    <ClCompile Include="EffectManager.cpp">
+      <Filter>Game2DFramework\manager</Filter>
+    </ClCompile>
+    <ClCompile Include="ProgressBar.cpp">
+      <Filter>Game2DFramework\progressBar</Filter>
+    </ClCompile>
+    <ClCompile Include="Button.cpp">
+      <Filter>Game2DFramework\button</Filter>
+    </ClCompile>
+    <ClCompile Include="Database.cpp">
+      <Filter>Game2DFramework\database</Filter>
+    </ClCompile>
+    <ClCompile Include="txtDataManager.cpp">
+      <Filter>Game2DFramework\manager</Filter>
+    </ClCompile>
+    <ClCompile Include="LogoScene.cpp">
+      <Filter>GameStudy\GameClass\logo</Filter>
+    </ClCompile>
+    <ClCompile Include="MainScene.cpp">
+      <Filter>GameStudy\GameClass\main</Filter>
+    </ClCompile>
+    <ClCompile Include="GameInfo.cpp">
+      <Filter>GameStudy\GameClass\gameInfo</Filter>
+    </ClCompile>
+    <ClCompile Include="TestScene.cpp">
+      <Filter>GameStudy\GameClass\test</Filter>
+    </ClCompile>
+    <ClCompile Include="TerrariaObject.cpp">
+      <Filter>GameStudy\GameClass\object</Filter>
+    </ClCompile>
+    <ClCompile Include="TerrariaUnit.cpp">
+      <Filter>GameStudy\GameClass\object\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="Action.cpp">
+      <Filter>Game2DFramework\action</Filter>
+    </ClCompile>
+    <ClCompile Include="Physical.cpp">
+      <Filter>GameStudy\GameClass\object</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>GameStudy\GameClass\object\unit\player</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerManager.cpp">
+      <Filter>GameStudy\GameClass\object\unit\player</Filter>
+    </ClCompile>
+    <ClCompile Include="Equipment.cpp">
+      <Filter>GameStudy\GameClass\object\unit\player</Filter>
+    </ClCompile>
+    <ClCompile Include="Item.cpp">
+      <Filter>GameStudy\GameClass\object\item</Filter>
+    </ClCompile>
+    <ClCompile Include="Equip.cpp">
+      <Filter>GameStudy\GameClass\object\unit\player</Filter>
+    </ClCompile>
+    <ClCompile Include="Inventory.cpp">
+      <Filter>GameStudy\GameClass\object\unit\player</Filter>
+    </ClCompile>
+    <ClCompile Include="Tile.cpp">
+      <Filter>GameStudy\GameClass\object\map</Filter>
+    </ClCompile>
+    <ClCompile Include="TileMap.cpp">
+      <Filter>GameStudy\GameClass\object\map</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>GameStudy\GameClass\object\camera</Filter>
+    </ClCompile>
+    <ClCompile Include="Background.cpp">
+      <Filter>GameStudy\GameClass\background</Filter>
+    </ClCompile>
+    <ClCompile Include="MainGameScene.cpp">
+      <Filter>GameStudy\GameClass\main</Filter>
+    </ClCompile>
+    <ClCompile Include="UI.cpp">
+      <Filter>GameStudy\GameClass\ui</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Text.txt">
+      <Filter>숙제</Filter>
+    </Text>
+  </ItemGroup>
+</Project>
