@@ -6,6 +6,7 @@
 #pragma once
 #include "SpriteImage.h"
 #include "AnimationImage.h"
+#include "Animate.h"
 
 class SpriteImage;
 class AnimationImage;
@@ -139,6 +140,9 @@ public:
 	//루프 렌더링
 	void loopRender(HDC hdc, const LPRECT drawArea, int offsetX, int offsetY);
 	void loopXRender(HDC hdc, const LPRECT drawArea, int offsetX, int offsetY);
+
+	//애니 렌더링
+	void aniRender(HDC hdc, int destX, int destY, Animate* animate, BYTE alpha = 255);
 
 	/// DC얻기
 	inline HDC getMemDC(){ return _imageInfo->hMemDC; }

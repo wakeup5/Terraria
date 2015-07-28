@@ -516,3 +516,8 @@ void Image::loopXRender(HDC hdc, const LPRECT drawArea, int offsetX, int offsetY
 	
 
 }
+
+void Image::aniRender(HDC hdc, int destX, int destY, Animate* animate, BYTE alpha)
+{
+	render(hdc, destX, destY, animate->getFramePos().x, animate->getFramePos().y, animate->getFrameWidth(), animate->getFrameHeight(), alpha);
+}

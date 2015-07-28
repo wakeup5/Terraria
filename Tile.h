@@ -16,6 +16,8 @@ namespace Terraria
 		SpriteImage* _tileImage;
 
 		int _exist;
+
+		int _hp;
 	public:
 		HRESULT initialize(int x, int y);
 		void render(HDC hdc);
@@ -43,6 +45,8 @@ namespace Terraria
 			if (myUtil::existBit(_exist, tile)) _exist -= tile; 
 			if (_tileImage != NULL) _tileImage->setFrame(_exist, RANDOM->getInt(3));
 		}
+
+		bool pickaxe();
 	private:
 		void updateRect(){ _rc = makeRect(_idX * METER_TO_PIXEL, _idY * METER_TO_PIXEL, METER_TO_PIXEL, METER_TO_PIXEL); }
 

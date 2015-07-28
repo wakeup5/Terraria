@@ -20,7 +20,7 @@ HRESULT GameStudy::initialize(void)
 	SCENEMANAGER->addScene("logo", new LogoScene());
 	SCENEMANAGER->addScene("main", new MainScene());
 	SCENEMANAGER->addScene("mainGame", new MainGameScene());
-	SCENEMANAGER->changeScene("main");
+	SCENEMANAGER->changeScene("mainGame");
 
 	return S_OK;
 }

@@ -32,10 +32,28 @@ namespace Terraria
 		{
 		case TILE_GRASS:
 			_tileImage = IMAGEMANAGER->findImage("tile grass")->createSprite(16, 3);
+			_hp = 2;
+			break;
+		case TILE_STONE:
+			_tileImage = IMAGEMANAGER->findImage("tile grass")->createSprite(16, 3);
+			_hp = 3;
 			break;
 		}
 
 		if (_tileImage != NULL) _tileImage->setFrame(_exist, RANDOM->getInt(3));
+	}
+
+	bool Tile::pickaxe()
+	{
+		_hp--;
+
+		if (_hp <= 0)
+		{
+			setType(TILE_NONE);
+			return true;
+		}
+
+		return false;
 	}
 
 	Tile::Tile()

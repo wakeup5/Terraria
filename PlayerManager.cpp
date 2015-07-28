@@ -30,46 +30,46 @@ namespace Terraria
 	}
 	void PlayerManager::update()
 	{
-		if (KEYMANAGER->isStayKeyDown('A'))
+		if (KEYMANAGER->isOnceKeyDown('A') || 
+			(KEYMANAGER->isStayKeyDown('A') && KEYMANAGER->isOnceKeyUp('D')))
 		{
-			_player->order(ORDER_MOVE_LEFT);
+			_player->move(LEFT);
 		}
-		else if (KEYMANAGER->isStayKeyDown('D'))
+		else if (KEYMANAGER->isOnceKeyDown('D') || 
+			(KEYMANAGER->isStayKeyDown('D') && KEYMANAGER->isOnceKeyUp('A')))
 		{
-			_player->order(ORDER_MOVE_RIGHT);
+			_player->move(RIGHT);
 		}
-		else
+		else if (KEYMANAGER->isOnceKeyUp('D') ||
+			KEYMANAGER->isOnceKeyUp('A'))
 		{
-			_player->order(ORDER_NONE);
+			_player->stay();
 		}
 
 		if (KEYMANAGER->isStayKeyDown(VK_LBUTTON))
 		{
-			if (_player->getSelectItem() != NULL && _player->getSelectItem()->getItemType() == ITEM_TOOL_PICKAXE)
+			if (_player->getUnitState().action == 0)
 			{
-				_player->addOrder(ORDER_ATTACK);
+				_player->action();
 
-				if (_map->collision(_option.inMousePt()))
+				if (_player->getSelectItem() != NULL)
 				{
-					POINT p = { _option.inMouseX() / METER_TO_PIXEL, _option.inMouseY() / METER_TO_PIXEL };
-					_map->setTileType(p, TILE_NONE);
+					if (_player->getSelectItem()->getItemType() == ITEM_TOOL_PICKAXE)
+					{
+						_map->pickaxe(_option.inMouseX() / METER_TO_PIXEL, _option.inMouseY() / METER_TO_PIXEL);
+					}
 				}
-			}
-			else
-			{
-				_player->addOrder(ORDER_ATTACK);
 			}
 		}
 
 		if (KEYMANAGER->isOnceKeyDown(VK_SPACE))
 		{
-			_player->order(ORDER_JUMP);
+			_player->jump();
 		}
 		
 		//_player->setFloor(_option.height());
 
 		_player->update();
-		_inven->isExist(1);
 	}
 	void PlayerManager::render(HDC hdc)
 	{

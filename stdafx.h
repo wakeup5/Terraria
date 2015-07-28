@@ -42,6 +42,8 @@
 #include "Database.h"
 
 #include "EffectManager.h"
+#include "SoundManager.h"
+#include "AnimateManager.h"
 
 #include "Background.h"
 
@@ -100,6 +102,10 @@
 #define TXTMANAGER txtDataManager::getSingleton()
 //class Database
 #define DATABASE Database::getSingleton()
+//class SoundManager
+#define SOUNDMANAGER SoundManager::getSingleton()
+//class AnimateManager
+#define ANIMATEMANAGER AnimateManager::getSingleton()
 
 //game info
 #define MAX_GAME_FPS	60.0f

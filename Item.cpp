@@ -15,11 +15,11 @@ namespace Terraria
 	HRESULT Item::initialize(string imageName, string spriteImageName, EQUIPMENT_TYPE equipType)
 	{
 		_image = IMAGEMANAGER->findImage(imageName);
-		Image* image = IMAGEMANAGER->findImage(spriteImageName);
+		_equipImage = IMAGEMANAGER->findImage(spriteImageName);
 
-		if (_image == NULL || image == NULL) return E_FAIL;
+		if (_image == NULL || _equipImage == NULL) return E_FAIL;
 
-		_spriteImage = image->createSprite(2, 20);
+		//_spriteImage = _equipImage->createSprite(2, 20);
 
 		_equipType = equipType;
 		_itemType = ITEM_EQUIP;
@@ -49,7 +49,6 @@ namespace Terraria
 
 	void Item::imageRender(HDC hdc, float centerX, float centerY)
 	{
-		if (_image != NULL)
-			_image->render(hdc, centerX - _image->getWidth() / 2, centerY - _image->getHeight() / 2);
+		if (_image != NULL) _image->render(hdc, centerX - _image->getWidth() / 2, centerY - _image->getHeight() / 2);
 	}
 }

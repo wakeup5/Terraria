@@ -134,6 +134,8 @@ namespace Terraria
 
 		setX(getX() + _speedX * elapsedTime);
 		setY(getY() + _speedY * elapsedTime);
+
+		updateRect();
 	}
 
 	float Physical::radianToDegree(float radian)

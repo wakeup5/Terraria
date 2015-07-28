@@ -6,6 +6,7 @@
 #include "Item.h"
 #include "TileMap.h"
 #include "UI.h"
+#include "Collision.h"
 
 class MainGameScene : public Scene
 {

@@ -1,5 +1,4 @@
 #pragma once
-#include "common.h"
 
 namespace Terraria
 {
@@ -10,6 +9,7 @@ namespace Terraria
 		ItemType _itemType;
 
 		Image* _image;
+		Image* _equipImage;
 		SpriteImage* _spriteImage;
 
 		ItemAbillity _abillity;
@@ -26,7 +26,7 @@ namespace Terraria
 		ItemType getItemType(){ return _itemType; }
 
 		Image* getImage(){ return _image; }
-		SpriteImage* getSpriteImate(){ return _spriteImage; }
+		Image* getEquipImage(){ return _equipImage; }
 
 		void setAbillity(float hp, float mp, float attack, float defense)
 		{
@@ -36,7 +36,7 @@ namespace Terraria
 			_abillity.defense = defense;
 		}
 
-		const ItemAbillity getAbillity() { return _abillity; }
+		ItemAbillity getAbillity() { return _abillity; }
 
 		Item();
 		virtual ~Item();

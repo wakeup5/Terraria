@@ -1,33 +1,42 @@
 #pragma once
 #include "TerrariaUnit.h"
 #include "Equip.h"
+#include "Animate.h"
 
 namespace Terraria
 {
 	class Player : public Unit
 	{
 	private:
-		SpriteImage* _head;
-		SpriteImage* _body;
-		SpriteImage* _leg;
-		SpriteImage* _arm;
-		SpriteImage* _hair;
+		Image* _head;
+		Image* _body;
+		Image* _leg;
+		Image* _arm;
+		Image* _hair;
 
 		Equip* _equip;
 		Item* _selectItem;
+
+		Animate* _animate;
+		Animate* _legAnimate;
 	public:
 		HRESULT initialize();
 		void release();
 		//void update();
 		void render(HDC hdc);
 
-		void action();
+		void renew();
 
-		void stateMoveLeft();
-		void stateMoveRight();
-		void stateFreeFall();
-		void stateAttack();
-		void stateStay();
+		void animate();
+
+		void action();
+		void move(UNIT_DIRECT direct);
+		void stay();
+		void jump();
+		void freeFall();
+		void floor();
+
+		void setFloor(float floorY);
 
 		inline Equip* getEquip(){ return _equip; }
 

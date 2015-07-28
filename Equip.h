@@ -23,12 +23,16 @@ namespace Terraria
 
 		bool isEquipped(EQUIPMENT_TYPE type);
 
+		Image* getEquipImage(EQUIPMENT_TYPE type);
+
+		/*
 		void setImageFrame(EQUIPMENT_TYPE type, int frameX, int frameY);
 		void setImageFrameX(EQUIPMENT_TYPE type, int frameX);
 		void setImageFrameY(EQUIPMENT_TYPE type, int frameY);
 		SpriteImage* const getSpriteImage(EQUIPMENT_TYPE type);
 
 		void setCenter(float x, float y);
+		*/
 
 		Item* const getItem(EQUIPMENT_TYPE type);
 

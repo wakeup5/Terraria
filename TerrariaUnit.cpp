@@ -41,78 +41,38 @@ namespace Terraria
 
 	void Unit::update()
 	{
-
-		if (existBit(_order, ORDER_MOVE_LEFT))
-		{
-			setAccelX(-getMoveAccel());
-		}
-		else if (existBit(_order, ORDER_MOVE_RIGHT))
-		{
-			setAccelX(getMoveAccel());
-		}
-		else 
-		{
-			if (abs(getSpeedX()) < 10)
-			{
-				setAccelX(0);
-				setSpeedX(0);
-			}
-			else
-			{
-				setAccelX(getMoveAccel() * -sign(getSpeedX()));
-			}
-		}
-
-		if (existBit(_order, ORDER_JUMP) && getState() != UNIT_STATE_FREEFALL)
-		{
-			setSpeedY(getJumpSpeed());
-			setState(UNIT_STATE_FREEFALL);
-		}
-		else if (existBit(_order, ORDER_ATTACK) && !_isAttack)
-		{
-			_isAttack = true;
-			_attackFrameTime = 0;
-		}
-
-		if (_isAttack)
-		{
-			_attackFrameTime += TIMEMANAGER->getElapsedTime();
-			if (_attackFrameTime > 0.5) _isAttack = false;
-			stateAttack();
-		}
-
-		//이동속도가 최고속도를 넘었을때
-		if (abs(getSpeedX()) > getMoveSpeed())
-		{
-			setSpeedX(getMoveSpeed() * sign(getSpeedX()));
-		}
-
-		if (_isAttack)
-		{
-			stateAttack();
-		}
-		else if (_state == UNIT_STATE_FREEFALL)
-		{
-			stateFreeFall();
-		}
-		else if (abs(getSpeedX()) < FLOAT_EPSILON)
-		{
-			stateStay();
-		}
-		else
-		{
-			if (sign(getSpeedX()) < 0)
-			{
-				stateMoveLeft();
-			}
-			else
-			{
-				stateMoveRight();
-			}
-		}
-
 		activate();
-		action();
+		renew();
+		unitStateupdate();
+
+		return;
+		if (getRect().left < 0)
+		{
+			setSpeedX(0);
+			setAccelX(0);
+			setX(0 + getWidth() / 2);
+		}
+
+		if (getRect().right >= getWidth())
+		{
+			setSpeedX(0);
+			setAccelX(0);
+			setX(getWidth() - getWidth() / 2);
+		}
+
+		if (getRect().top < 0)
+		{
+			setSpeedY(0);
+			setAccelY(0);
+			setY(0 + getHeight() / 2);
+		}
+
+		if (getRect().bottom >= getHeight())
+		{
+			setSpeedY(0);
+			setAccelY(0);
+			setY(getHeight() - getHeight() / 2);
+		}
 	}
 
 	void Unit::render(HDC hdc)
@@ -120,45 +80,95 @@ namespace Terraria
 
 	}
 
-	void Unit::action()
+	void Unit::unitStateupdate()
 	{
-		
+		if (_state.movement == MOVE)
+		{
+			if (_state.direct == LEFT)
+			{
+				setAccelX(-getMoveAccel());
+			}
+			else if (_state.direct == RIGHT)
+			{
+				setAccelX(getMoveAccel());
+			}
+
+			if (abs(getSpeedX()) > getMoveSpeed())
+			{
+				setAccelX(0);
+				setSpeedX(getMoveSpeed() * sign(getSpeedX()));
+			}
+		}
+		else if (_state.movement == STAY)
+		{
+			if (abs(getSpeedX()) > 20)
+			{
+				setAccelX(getMoveAccel() * -sign(getSpeedX()));
+			}
+			else
+			{
+				setSpeedX(0);
+				setAccelX(0);
+			}
+		}
+		printf("%d, %d, %d, %d = %d(%x)\n", _state.direct, _state.movement, _state.position, _state.action, getState(), getState());
 	}
 
-	void Unit::setFloor(float floorY)
+	void Unit::renew()
 	{
-		if (getRect().bottom + 1 > floorY)
+		if (_state.position != FLOOR)
 		{
-			setState(UNIT_STATE_STAY);
-			setSpeedY(0);
-			setAccelY(0);
-			setY(floorY - (getHeight() / 2) + 1);
-		}
-		else
-		{
-			setState(UNIT_STATE_FREEFALL);
 			setAccelY(GRAVITY_ACCEL);
 		}
 	}
 
-	void Unit::stateMoveLeft()
+	void Unit::setFloor(float floorY)
 	{
-		//setAccelX(-getMoveAccel());
+		//setPosition(JUMP);
+		if (getRect().bottom + 1 > floorY)
+		{
+			//setPosition(FLOOR);
+			setSpeedY(0);
+			setAccelY(0);
+			setY(floorY - (getHeight() / 2) + 1);
+		}
 	}
-	void Unit::stateMoveRight()
+
+	void Unit::jump()
 	{
-		//setAccelX(getMoveAccel());
+		if (_state.position == FLOOR)
+		{
+			setPosition(JUMP);
+			setSpeedY(JUMP_SPEED);
+			freeFall();
+		}
 	}
-	void Unit::stateFreeFall()
+
+	void Unit::freeFall()
+	{
+		setPosition(JUMP);
+	}
+
+	void Unit::floor()
+	{
+		setPosition(FLOOR);
+		setSpeedY(0);
+		setAccelY(0);
+	}
+
+	void Unit::action()
 	{
 
 	}
-	void Unit::stateAttack()
-	{
 
-	}
-	void Unit::stateStay()
+	void Unit::stay()
 	{
-
+		setMovement(STAY);
 	}
+	void Unit::move(UNIT_DIRECT direct)
+	{
+		setMovement(MOVE);
+		setDirect(direct);
+	}
+
 }

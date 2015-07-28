@@ -18,20 +18,13 @@ namespace Terraria
 	{
 		Unit::initialize();
 		
-		if (IMAGEMANAGER->addImage("player head", IMAGE("player/head"), 80, 1120, TRUE, TRANS_COLOR) == NULL) return E_FAIL;
-		_head = IMAGEMANAGER->findImage("player head")->createSprite(2, 20);
-
-		if (IMAGEMANAGER->addImage("player body", IMAGE("player/body"), 80, 1120, TRUE, TRANS_COLOR) == NULL) return E_FAIL;
-		_body = IMAGEMANAGER->findImage("player body")->createSprite(2, 20);
-
-		if (IMAGEMANAGER->addImage("player leg", IMAGE("player/leg"), 80, 1120, TRUE, TRANS_COLOR) == NULL) return E_FAIL;
-		_leg = IMAGEMANAGER->findImage("player leg")->createSprite(2, 20);
-
-		if (IMAGEMANAGER->addImage("player hair", IMAGE("player/hair"), 80, 1120, TRUE, TRANS_COLOR) == NULL) return E_FAIL;
-		_hair = IMAGEMANAGER->findImage("player hair")->createSprite(2, 20);
+		if ((_head = IMAGEMANAGER->addImage("player head", IMAGE("player/head"), 80, 1120, TRUE, TRANS_COLOR)) == NULL) return E_FAIL;
+		if ((_body = IMAGEMANAGER->addImage("player body", IMAGE("player/body"), 80, 1120, TRUE, TRANS_COLOR)) == NULL) return E_FAIL;
+		if ((_leg = IMAGEMANAGER->addImage("player leg", IMAGE("player/leg"), 80, 1120, TRUE, TRANS_COLOR)) == NULL) return E_FAIL;
+		if ((_hair = IMAGEMANAGER->addImage("player hair", IMAGE("player/hair"), 80, 1120, TRUE, TRANS_COLOR)) == NULL) return E_FAIL;
 
 		setSize(PLAYER_WIDTH, PLAYER_HEIGHT);
-		setCenter(_option.width() / 2, 0);
+		setCenter(100, 100);
 		setMaxSpeed(MAX_SPEED);
 		setMaxAccel(MAX_ACCEL);
 		setMoveSpeed(PLAYER_MOVE_SPEED);
@@ -40,196 +33,189 @@ namespace Terraria
 		_equip = new Equip;
 		_equip->initialize();
 
+		ANIMATEMANAGER->addSectionFrameAnimation("player stay left", 80, 1120, 2, 20, 0, 1, 1);
+		ANIMATEMANAGER->addSectionFrameAnimation("player stay right", 80, 1120, 2, 20, 0, 0, 0);
+		int moveLeftArr[] = { 13, 15, 17, 19, 21, 23, 25, 27 };
+		ANIMATEMANAGER->addArrFrameAnimation("player move left", 80, 1120, 2, 20, 25, moveLeftArr, 8, true);
+		int moveRightArr[] = { 12, 14, 16, 18, 20, 22, 24, 26 };
+		ANIMATEMANAGER->addArrFrameAnimation("player move right", 80, 1120, 2, 20, 25, moveRightArr, 8, true);
+		int actionLeftArr[] = { 3, 5, 7, 9 };
+		ANIMATEMANAGER->addArrFrameAnimation("player action left", 80, 1120, 2, 20, 12, actionLeftArr, 4, false);
+		int actionRightArr[] = { 2, 4, 6, 8 };
+		ANIMATEMANAGER->addArrFrameAnimation("player action right", 80, 1120, 2, 20, 12, actionRightArr, 4, false);
+		ANIMATEMANAGER->addSectionFrameAnimation("player jump left", 80, 1120, 2, 20, 0, 11, 11);
+		ANIMATEMANAGER->addSectionFrameAnimation("player jump right", 80, 1120, 2, 20, 0, 10, 10);
+
+		_animate = _legAnimate = ANIMATEMANAGER->findAnimation("player stay left");
+
+		setState(UNIT_STATE_STAY_RIGHT);
 		return S_OK;
 	}
 	void Player::release()
 	{
-		SAFE_RELEASE(_head);
-		SAFE_RELEASE(_hair);
-		SAFE_RELEASE(_body);
-		SAFE_RELEASE(_leg);
+
 	}
 	//void update();
 	void Player::render(HDC hdc)
 	{
-		float x = getX() - _option.cameraX() + (_option.width() / 2) - (_head->getFrameWidth() / 2);
-		float y = getY() - _option.cameraY() + (_option.height() / 2) - (_head->getFrameHeight() / 2) - 6;
+		Image* image = NULL;
+		
+		float x = getX() - _option.cameraX() + (_option.width() / 2) - _animate->getFrameWidth() / 2;
+		float y = getY() - _option.cameraY() + (_option.height() / 2) - (_animate->getFrameHeight()) / 2 - 6;
 
-		_head->render(hdc, x, y);
-		_hair->render(hdc, x, y);
-		_body->render(hdc, x, y);
-		_leg->render(hdc, x, y);
-		for (int i = 0; i < EQUIP_NONE; i++)
+		_head->aniRender(hdc, x, y, _animate);
+		if ((image = _equip->getEquipImage(EQUIP_HELMET)) != NULL)
 		{
-			SpriteImage* image = _equip->getSpriteImage((EQUIPMENT_TYPE)i);
-			if (image != NULL) image->render(hdc, x, y);
+			image->aniRender(hdc, x, y, _animate);
 		}
+		else
+		{
+			_hair->aniRender(hdc, x, y, _animate);
+		}
+		_body->aniRender(hdc, x, y, _animate);
+		if ((image = _equip->getEquipImage(EQUIP_TOP)) != NULL) image->aniRender(hdc, x, y, _animate);
+		_leg->aniRender(hdc, x, y, _legAnimate);
+		if ((image = _equip->getEquipImage(EQUIP_PANT)) != NULL) image->aniRender(hdc, x, y, _legAnimate);
+		
+		if ((image = _equip->getEquipImage(EQUIP_ACCESSORY)) != NULL) image->aniRender(hdc, x, y, _animate);
 	}
 
 	void Player::action()
 	{
-		_head->setCenter(getX(), getY() - 6);
-		_hair->setCenter(getX(), getY() - 6);
-		_body->setCenter(getX(), getY() - 6);
-		_leg->setCenter(getX(), getY() - 6);
-
-		
-		if (abs(getSpeedX()) > 1)
+		Unit::action();
+		if (_selectItem != NULL && _selectItem->getItemType() == ITEM_WEAPON_BOW)
 		{
-			if (sign(getSpeedX()) < 0)
-			{
-				_head->setFrameX(1);
-				_hair->setFrameX(1);
-				_body->setFrameX(1);
-				_leg->setFrameX(1);
-			}
-			else
-			{
-				_head->setFrameX(0);
-				_hair->setFrameX(0);
-				_body->setFrameX(0);
-				_leg->setFrameX(0);
-			}
-		}
-		
-		_equip->setCenter(getX(), getY() - 6);
-		for (int i = 0; i < EQUIP_NONE; i++) _equip->setImageFrameX((EQUIPMENT_TYPE)i, _head->getFrameX());
-	}
-
-	void Player::stateMoveLeft()
-	{
-		float frameTime = getSpeed() + 0.02;
-		_head->nextFrameY(frameTime);
-		_hair->nextFrameY(frameTime);
-		_body->nextFrameY(frameTime);
-		_leg->nextFrameY(frameTime);
-
-		for (int i = 0; i < EQUIP_NONE; i++)
-		{
-			if (_equip->getSpriteImage((EQUIPMENT_TYPE)i) == NULL) continue;
-			_equip->getSpriteImage((EQUIPMENT_TYPE)i)->nextFrameY(frameTime);
-		}
-
-		if (_head->getFrameY() > 13 || _head->getFrameY() < 6)
-		{
-			_head->setFrameY(6);
-			_hair->setFrameY(6);
-			_body->setFrameY(6);
-			_leg->setFrameY(6);
-
-			for (int i = 0; i < EQUIP_NONE; i++) _equip->setImageFrameY((EQUIPMENT_TYPE)i, 6);
-		}
-	}
-	void Player::stateMoveRight()
-	{
-		float frameTime = getSpeed() + 0.02;
-		_head->nextFrameY(frameTime);
-		_hair->nextFrameY(frameTime);
-		_body->nextFrameY(frameTime);
-		_leg->nextFrameY(frameTime);
-
-		for (int i = 0; i < EQUIP_NONE; i++)
-		{
-			if (_equip->getSpriteImage((EQUIPMENT_TYPE)i) == NULL) continue;
-			_equip->getSpriteImage((EQUIPMENT_TYPE)i)->nextFrameY(frameTime);
-		}
-
-		if (_head->getFrameY() > 13 || _head->getFrameY() < 6)
-		{
-			_head->setFrameY(6);
-			_hair->setFrameY(6);
-			_body->setFrameY(6);
-			_leg->setFrameY(6);
-
-			for (int i = 0; i < EQUIP_NONE; i++) _equip->setImageFrameY((EQUIPMENT_TYPE)i, 6);
-		}
-	}
-	void Player::stateFreeFall()
-	{
-		_head->setFrameY(5);
-		_hair->setFrameY(5);
-		_body->setFrameY(5);
-		_leg->setFrameY(5);
-
-		for (int i = 0; i < EQUIP_NONE; i++) _equip->setImageFrameY((EQUIPMENT_TYPE)i, 5);
-	}
-	void Player::stateAttack()
-	{
-		float frameTime = getSpeed() + 0.02;
-		_leg->nextFrameY(frameTime);
-
-		if (getState() == UNIT_STATE_FREEFALL)
-		{
-			_leg->setFrameY(5);
-		}
-		else if (abs(getSpeedX()) > 1)
-		{
-			if(_leg->getFrameY() > 13 || _leg->getFrameY() < 6)
-			{
-				_leg->setFrameY(6);
-			}
+			setAction(ACTION_SHOOT);
 		}
 		else
 		{
-			_leg->setFrameY(0);
+			setAction(ACTION_SWING);
 		}
-
-		if (_equip->getSpriteImage(EQUIP_PANT) != NULL)
-		{
-			_equip->getSpriteImage(EQUIP_PANT)->nextFrameY(frameTime);
-
-			if (getState() == UNIT_STATE_FREEFALL)
-			{
-				_equip->getSpriteImage(EQUIP_PANT)->setFrameY(5);
-			}
-			else if (abs(getSpeedX()) > 1)
-			{
-				if (_equip->getSpriteImage(EQUIP_PANT)->getFrameY() > 13 || _equip->getSpriteImage(EQUIP_PANT)->getFrameY() < 6)
-				{
-					_equip->getSpriteImage(EQUIP_PANT)->setFrameY(6);
-				}
-			}
-			else
-			{
-				_equip->getSpriteImage(EQUIP_PANT)->setFrameY(0);
-			}
-		}
-
-		_head->nextFrameY(0.5 / 4);
-		_hair->nextFrameY(0.5 / 4);
-		_body->nextFrameY(0.5 / 4);
-
-		for (int i = 0; i < EQUIP_NONE; i++)
-		{
-			if (i == EQUIP_PANT) continue;
-			if (_equip->getSpriteImage((EQUIPMENT_TYPE)i) == NULL) continue;
-			_equip->getSpriteImage((EQUIPMENT_TYPE)i)->nextFrameY(0.5 / 4);
-		}
-
-		if (_head->getFrameY() > 4 || _head->getFrameY() < 1)
-		{
-			_head->setFrameY(1);
-			_hair->setFrameY(1);
-			_body->setFrameY(1);
-
-			for (int i = 0; i < EQUIP_NONE; i++)
-			{
-				if (i == EQUIP_PANT) continue;
-				_equip->setImageFrameY((EQUIPMENT_TYPE)i, 1);
-			}
-		}
-
+		animate();
+		_animate->start();
 	}
-	void Player::stateStay()
+	void Player::move(UNIT_DIRECT direct)
 	{
-		_head->setFrameY(0);
-		_hair->setFrameY(0);
-		_body->setFrameY(0);
-		_leg->setFrameY(0);
+		Unit::move(direct);
+		animate();
+	}
+	void Player::stay()
+	{
+		Unit::stay();
+		animate();
+	}
+	void Player::jump()
+	{
+		Unit::jump();
+		animate();
+	}
+	void Player::freeFall()
+	{
+		Unit::freeFall();
+		animate();
+	}
+	void Player::floor()
+	{
+		Unit::floor();
+		animate();
+	}
 
-		for (int i = 0; i < EQUIP_NONE; i++)
+	void Player::renew()
+	{
+		Unit::renew();
+		if (!_animate->isPlay()) _animate->start();
+		_animate->frameUpdate(1.0f / MAX_GAME_FPS);
+
+		if (_animate != _legAnimate)
 		{
-			_equip->setImageFrameY((EQUIPMENT_TYPE)i, 0);
+			if (!_legAnimate->isPlay()) _legAnimate->start();
+			_legAnimate->frameUpdate(1.0f / MAX_GAME_FPS);
+		}
+
+		if (getUnitState().action != 0 && !_animate->isPlay())
+		{
+			setAction(0);
+			animate();
+		}
+
+		//animate();
+	}
+
+	void Player::animate()
+	{
+		switch (getState())
+		{
+		case UNIT_STATE_STAY_LEFT:
+			_animate = _legAnimate = ANIMATEMANAGER->findAnimation("player stay left");
+			break;
+		case UNIT_STATE_STAY_RIGHT:
+			_animate = _legAnimate = ANIMATEMANAGER->findAnimation("player stay right");
+			break;
+		case UNIT_STATE_MOVE_LEFT:
+			_animate = _legAnimate = ANIMATEMANAGER->findAnimation("player move left");
+			break;
+		case UNIT_STATE_MOVE_RIGHT:
+			_animate = _legAnimate = ANIMATEMANAGER->findAnimation("player move right");
+			break;
+		case UNIT_STATE_JUMP_LEFT:
+		case UNIT_STATE_JUMP_MOVE_LEFT:
+			_animate = _legAnimate = ANIMATEMANAGER->findAnimation("player jump left");
+			break;
+		case UNIT_STATE_JUMP_RIGHT:
+		case UNIT_STATE_JUMP_MOVE_RIGHT:
+			_animate = _legAnimate = ANIMATEMANAGER->findAnimation("player jump right");
+			break;
+		case UNIT_STATE_SWING_LEFT:
+			_animate = ANIMATEMANAGER->findAnimation("player action left");
+			_legAnimate = ANIMATEMANAGER->findAnimation("player stay left");
+			break;
+		case UNIT_STATE_SWING_RIGHT:
+			_animate = ANIMATEMANAGER->findAnimation("player action right");
+			_legAnimate = ANIMATEMANAGER->findAnimation("player stay right");
+			break;
+		case UNIT_STATE_SWING_MOVE_LEFT:
+			_animate = ANIMATEMANAGER->findAnimation("player action left");
+			_legAnimate = ANIMATEMANAGER->findAnimation("player move left");
+			break;
+		case UNIT_STATE_SWING_MOVE_RIGHT:
+			_animate = ANIMATEMANAGER->findAnimation("player action right");
+			_legAnimate = ANIMATEMANAGER->findAnimation("player move right");
+			break;
+		case UNIT_STATE_SWING_JUMP_LEFT:
+		case UNIT_STATE_SWING_JUMP_MOVE_LEFT:
+			_animate = ANIMATEMANAGER->findAnimation("player action left");
+			_legAnimate = ANIMATEMANAGER->findAnimation("player jump left");
+			break;
+		case UNIT_STATE_SWING_JUMP_RIGHT:
+		case UNIT_STATE_SWING_JUMP_MOVE_RIGHT:
+			_animate = ANIMATEMANAGER->findAnimation("player action right");
+			_legAnimate = ANIMATEMANAGER->findAnimation("player jump right");
+			break;
+		case UNIT_STATE_SHOOT_LEFT:
+			break;
+		case UNIT_STATE_SHOOT_RIGHT:
+			break;
+		case UNIT_STATE_SHOOT_MOVE_LEFT:
+			break;
+		case UNIT_STATE_SHOOT_MOVE_RIGHT:
+			break;
+		case UNIT_STATE_SHOOT_JUMP_LEFT:
+			break;
+		case UNIT_STATE_SHOOT_JUMP_RIGHT:
+			break;
+		case UNIT_STATE_SHOOT_JUMP_MOVE_LEFT:
+			break;
+		case UNIT_STATE_SHOOT_JUMP_MOVE_RIGHT:
+			break;
+		}
+	}
+
+	void Player::setFloor(float floorY)
+	{
+		Unit::setFloor(floorY);
+		if (abs(getSpeedY()) < FLOAT_EPSILON)
+		{
+
 		}
 	}
 }

@@ -19,6 +19,8 @@ namespace Terraria
 		bool collision(Unit* unit);
 		bool collision(POINT point);
 
+		Tile getTile(int x, int y){ return _tiles[x][y]; }
+
 		float getWidth(){ return _tiles[MAP_SIZE_X - 1][0].getRect().right; }
 		float getHeight(){ return _tiles[0][MAP_SIZE_Y - 1].getRect().bottom; }
 
@@ -45,6 +47,8 @@ namespace Terraria
 				if (p.y < MAP_SIZE_Y - 1) _tiles[p.x][p.y + 1].subExistDirect(TILE_EXIST_TOP);
 			}
 		}
+
+		bool pickaxe(int indexX, int indexY);
 
 		TileMap();
 		virtual ~TileMap();

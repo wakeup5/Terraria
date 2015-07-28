@@ -86,7 +86,8 @@ void MainGameScene::update()
 	_ui->update();
 
 	//충돌처리
-	_map->collision(_pm->getPlayer());
+	//_map->collision(_pm->getPlayer());
+	Collision::tileCollision(_pm->getPlayer(), _map);
 
 	//카메라 조작
 	_option.setCamera(_pm->getPlayer()->getX(), _map->getWidth(), _pm->getPlayer()->getY(), _map->getHeight());

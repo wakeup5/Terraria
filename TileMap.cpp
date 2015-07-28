@@ -94,6 +94,20 @@ namespace Terraria
 		}
 	}
 
+	bool TileMap::pickaxe(int indexX, int indexY)
+	{
+		if (_tiles[indexX][indexY].getType() != TILE_NONE)
+		{
+			if (_tiles[indexX][indexY].pickaxe())
+			{
+				setTileType(indexX, indexY, TILE_NONE);
+				return true;
+			}
+		}
+
+		return false;
+	}
+
 	bool TileMap::collision(POINT point)
 	{
 		return _tiles[point.x / METER_TO_PIXEL][point.y / METER_TO_PIXEL].getType() != TILE_NONE;
@@ -119,8 +133,8 @@ namespace Terraria
 		if (sx < 0) sx = 0;
 		if (ex > MAP_SIZE_X) ex = MAP_SIZE_X;
 
-		unit->setState(UNIT_STATE_FREEFALL);
-		unit->setAccelY(GRAVITY_ACCEL);
+		//unit->setPosition(JUMP);
+		
 
 		for (int i = sx; i < ex; i++)
 		{
@@ -141,7 +155,7 @@ namespace Terraria
 				unit->setAccelY(0);
 			}
 		}
-
+		/*
 		//좌우 충돌 처리
 		if (_tiles[x - 1][y - 1].isBlock() &&
 			IntersectRect(&r, &leftRc, &_tiles[x - 1][y - 1].getRect()))
@@ -174,35 +188,10 @@ namespace Terraria
 		{
 			unit->setFloor(_tiles[x][y].getRect().top);
 		}
+		*/
 
 		//화면 밖으로 못 나감
-		if (unitRc.left < 0)
-		{
-			unit->setSpeedX(0);
-			unit->setAccelX(0);
-			unit->setX(0 + unit->getWidth() / 2);
-		}
-
-		if (unitRc.right >= _tiles[MAP_SIZE_X - 1][0].getRect().right)
-		{
-			unit->setSpeedX(0);
-			unit->setAccelX(0);
-			unit->setX(_tiles[MAP_SIZE_X - 1][0].getRect().right - unit->getWidth() / 2);
-		}
-
-		if (unitRc.top < 0)
-		{
-			unit->setSpeedY(0);
-			unit->setAccelY(0);
-			unit->setY(0 + unit->getHeight() / 2);
-		}
-
-		if (unitRc.bottom >= _tiles[0][MAP_SIZE_Y - 1].getRect().bottom)
-		{
-			unit->setSpeedY(0);
-			unit->setAccelY(0);
-			unit->setY(_tiles[0][MAP_SIZE_Y - 1].getRect().bottom - unit->getHeight() / 2);
-		}
+		
 
 		return false;
 	}

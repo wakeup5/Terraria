@@ -82,7 +82,7 @@ namespace Terraria
 	{
 		return _equipment[type]->isEquipped();
 	}
-
+	/*
 	void Equip::setImageFrame(EQUIPMENT_TYPE type, int frameX, int frameY)
 	{
 		if (_equipment[type] == NULL || _equipment[type]->getItem() == NULL) return;
@@ -120,9 +120,22 @@ namespace Terraria
 			_equipment[i]->getItem()->getSpriteImate()->setCenter(x, y);
 		}
 	}
+	*/
 
 	Item* const Equip::getItem(EQUIPMENT_TYPE type)
 	{
 		return _equipment[type]->getItem();
+	}
+
+	Image* Equip::getEquipImage(EQUIPMENT_TYPE type)
+	{
+		Image* image = NULL;
+
+		if (_equipment[type]->isEquipped())
+		{
+			image = _equipment[type]->getItem()->getEquipImage();
+		}
+
+		return image;
 	}
 }

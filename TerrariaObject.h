@@ -38,7 +38,7 @@ namespace Terraria
 		inline void setHeight(int height){ _height = height; updateRect(); }
 		inline void setSize(int width, int height) { setWidth(width); setHeight(height); }
 
-	private:
+	protected:
 		inline void updateRect(){ _rc = makeRectCenter(_x, _y, _width, _height); }
 
 	public:

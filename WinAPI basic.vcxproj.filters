@@ -88,6 +88,9 @@
     <Filter Include="GameStudy\GameClass\ui">
       <UniqueIdentifier>{8716cfc7-8fbb-40d5-ade2-744171f6ebd2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GameStudy\GameClass\util">
+      <UniqueIdentifier>{4b2eadc6-81bb-4ad7-a665-bae31a6e1309}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -225,6 +228,18 @@
     <ClInclude Include="UI.h">
       <Filter>GameStudy\GameClass\ui</Filter>
     </ClInclude>
+    <ClInclude Include="Animate.h">
+      <Filter>Game2DFramework\image</Filter>
+    </ClInclude>
+    <ClInclude Include="SoundManager.h">
+      <Filter>Game2DFramework\manager</Filter>
+    </ClInclude>
+    <ClInclude Include="AnimateManager.h">
+      <Filter>Game2DFramework\manager</Filter>
+    </ClInclude>
+    <ClInclude Include="Collision.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -346,6 +361,18 @@
     </ClCompile>
     <ClCompile Include="UI.cpp">
       <Filter>GameStudy\GameClass\ui</Filter>
+    </ClCompile>
+    <ClCompile Include="Animate.cpp">
+      <Filter>Game2DFramework\image</Filter>
+    </ClCompile>
+    <ClCompile Include="SoundManager.cpp">
+      <Filter>Game2DFramework\manager</Filter>
+    </ClCompile>
+    <ClCompile Include="AnimateManager.cpp">
+      <Filter>Game2DFramework\manager</Filter>
+    </ClCompile>
+    <ClCompile Include="Collision.cpp">
+      <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
