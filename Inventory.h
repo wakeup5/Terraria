@@ -26,7 +26,11 @@ namespace Terraria
 		bool swap(int num, Item* item, Item** result);
 		bool isExist(int num);
 
+		bool isFull(){ return getEmptyNum() == INVENTORY_LENGTH; }
+
 		int getEmptyNum();
+
+		Item* findItem(std::string itemName);
 
 		Inventory();
 		virtual ~Inventory();

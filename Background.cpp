@@ -16,16 +16,16 @@ namespace Terraria
 	HRESULT Background::initailize()
 	{
 		BgSet temp;
-		temp.bg = IMAGEMANAGER->addImage("bgSky", IMAGE("background/sky"), 48, 1300, TRUE, TRANS_COLOR);
-		temp.hear = IMAGEMANAGER->addImage("bg grass hear", IMAGE("background/grass/hear"), 1024, 509, TRUE, TRANS_COLOR);
-		temp.that = IMAGEMANAGER->addImage("bg grass that", IMAGE("background/grass/that"), 1024, 346, TRUE, TRANS_COLOR);
-		temp.there = IMAGEMANAGER->addImage("bg grass there", IMAGE("background/grass/there"), 1024, 435, TRUE, TRANS_COLOR);
+		temp.bg = IMAGEMANAGER->findImage("bgSky");
+		temp.hear = IMAGEMANAGER->findImage("bg grass hear");
+		temp.that = IMAGEMANAGER->findImage("bg grass that");
+		temp.there = IMAGEMANAGER->findImage("bg grass there");
 		temp.height = 450;
 
 		_bgMap.insert(make_pair("grass", temp));
 		_select = temp;
 
-		temp.bg = IMAGEMANAGER->addImage("bgUnder", IMAGE("background/under"), 160, 96, TRUE, TRANS_COLOR);
+		temp.bg = IMAGEMANAGER->findImage("bgUnder");
 		temp.hear = NULL;
 		temp.that = NULL;
 		temp.there = NULL;

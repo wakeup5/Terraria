@@ -91,4 +91,18 @@ namespace Terraria
 
 		return INVENTORY_LENGTH;
 	}
+
+	Item* Inventory::findItem(std::string itemName)
+	{
+		for (int i = 0; i < INVENTORY_LENGTH; i++)
+		{
+			if (_inven[i] == NULL) continue;
+			if (_inven[i]->getName() == itemName)
+			{
+				return _inven[i];
+			}
+		}
+
+		return NULL;
+	}
 }

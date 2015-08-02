@@ -14,5 +14,6 @@ public:
 	virtual void render(void);
 
 	void imageLoad();
+	void soundLoad();
 
 };

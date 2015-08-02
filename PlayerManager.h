@@ -3,6 +3,7 @@
 #include "Player.h"
 #include "Inventory.h"
 #include "TileMap.h"
+#include "DroppedItemManager.h"
 
 namespace Terraria
 {
@@ -12,8 +13,9 @@ namespace Terraria
 		Player* _player;
 		Inventory* _inven;
 		TileMap* _map;
+		DroppedItemManager* _dropItemManager;
 	public:
-		HRESULT initialize(TileMap* tileMap);
+		HRESULT initialize(TileMap* tileMap, DroppedItemManager* dropItemManager);
 		void release();
 		void update();
 		void render(HDC hdc);

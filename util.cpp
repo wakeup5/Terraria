@@ -136,4 +136,55 @@ namespace myUtil
 	{
 		return (variable & bit) == bit;
 	}
+
+	HANDLE AddResourceFont(LPCTSTR ResID, DWORD *Installed)
+	{
+		if (Installed) *Installed = 0;
+
+		HMODULE hMod = GetModuleHandle(NULL);
+		DWORD Count, ErrorCode;
+
+		HRSRC Resource = FindResource(hMod, ResID, RT_FONT); // or RT_FONT or whatever your actual resource type is
+		if (!Resource)
+		{
+			ErrorCode = GetLastError();
+			//...
+			return NULL;
+		}
+
+		DWORD Length = SizeofResource(hMod, Resource);
+		if ((Length == 0) && (GetLastError() != 0))
+		{
+			ErrorCode = GetLastError();
+			//...
+			return NULL;
+		}
+
+		HGLOBAL Address = LoadResource(hMod, Resource);
+		if (!Address)
+		{
+			ErrorCode = GetLastError();
+			//...
+			return NULL;
+		}
+
+		PVOID FontData = LockResource(Address);
+		if (!FontData)
+		{
+			ErrorCode = GetLastError();
+			//...
+			return NULL;
+		}
+
+		HANDLE Handle = AddFontMemResourceEx(FontData, Length, 0, &Count);
+		if (!Handle)
+		{
+			ErrorCode = GetLastError();
+			//...
+			return NULL;
+		}
+
+		if (Installed) *Installed = Count;
+		return Handle;
+	}
 }

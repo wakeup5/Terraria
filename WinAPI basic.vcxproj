@@ -91,6 +91,8 @@
     <ClInclude Include="commonMacroFunction.h" />
     <ClInclude Include="Database.h" />
     <ClInclude Include="DataManager.h" />
+    <ClInclude Include="DroppedItem.h" />
+    <ClInclude Include="DroppedItemManager.h" />
     <ClInclude Include="EffectManager.h" />
     <ClInclude Include="Equip.h" />
     <ClInclude Include="Equipment.h" />
@@ -103,7 +105,10 @@
     <ClInclude Include="ImageManager.h" />
     <ClInclude Include="Inventory.h" />
     <ClInclude Include="Item.h" />
+    <ClInclude Include="ItemManager.h" />
     <ClInclude Include="KeyManager.h" />
+    <ClInclude Include="Loading.h" />
+    <ClInclude Include="LoadingScene.h" />
     <ClInclude Include="LogoScene.h" />
     <ClInclude Include="MainGameScene.h" />
     <ClInclude Include="MainScene.h" />
@@ -141,6 +146,8 @@
     <ClCompile Include="Collision.cpp" />
     <ClCompile Include="Database.cpp" />
     <ClCompile Include="DataManager.cpp" />
+    <ClCompile Include="DroppedItem.cpp" />
+    <ClCompile Include="DroppedItemManager.cpp" />
     <ClCompile Include="EffectManager.cpp" />
     <ClCompile Include="Equip.cpp" />
     <ClCompile Include="Equipment.cpp" />
@@ -152,7 +159,10 @@
     <ClCompile Include="ImageManager.cpp" />
     <ClCompile Include="Inventory.cpp" />
     <ClCompile Include="Item.cpp" />
+    <ClCompile Include="ItemManager.cpp" />
     <ClCompile Include="KeyManager.cpp" />
+    <ClCompile Include="Loading.cpp" />
+    <ClCompile Include="LoadingScene.cpp" />
     <ClCompile Include="LogoScene.cpp" />
     <ClCompile Include="MainGameScene.cpp" />
     <ClCompile Include="MainScene.cpp" />

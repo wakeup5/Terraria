@@ -2,12 +2,13 @@
 
 #define TRANS_COLOR RGB(255, 0, 255)
 
-#define RESOURCE_PATH	"resource/"
-#define IMAGE_PATH		RESOURCE_PATH"image/"
+#define RESOURCE_PATH		"resource/"
+#define IMAGE_PATH			RESOURCE_PATH"image/"
+#define SOUND_PATH			RESOURCE_PATH"sound/"
 
-#define IMAGE(fileName) IMAGE_PATH""fileName".bmp"
-
-
+#define RESOURCE(fileName)	RESOURCE_PATH""fileName
+#define IMAGE(fileName)		IMAGE_PATH""fileName".bmp"
+#define SOUND(fileName)		SOUND_PATH""fileName
 
 #define METER_TO_PIXEL		16
 #define GRAVITY_ACCEL		METER_TO_PIXEL * 60
@@ -22,7 +23,7 @@
 
 #define JUMP_SPEED			-(METER_TO_PIXEL * 28)
 
-#define MAP_SIZE_X 500
+#define MAP_SIZE_X 1000
 #define MAP_SIZE_Y 100
 
 #define INVENTORY_LENGTH 30

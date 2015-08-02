@@ -16,8 +16,12 @@ namespace Terraria
 		RECT _equipRc[EQUIP_NONE];
 
 		Image* _invenBack;
+		Image* _invenBackSelect;
 
 		Item* _selectItem = NULL;
+		Item* _selectItem2 = NULL;
+
+		int _selectNum = 0;
 	public:
 		HRESULT initialize(Player* player, Inventory* inven);
 		void release();

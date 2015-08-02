@@ -56,6 +56,8 @@ namespace Terraria
 
 		virtual void activate(double elapsedTime = 0.0f);
 
+		RECT getNextRect(){ return makeRectCenter(getX() + _speedX, getY() + _speedY, getWidth(), getHeight()); }
+
 	private:
 		float radianToDegree(float radian);
 		float degreeToRadian(float degree);

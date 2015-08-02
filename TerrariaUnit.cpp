@@ -45,7 +45,7 @@ namespace Terraria
 		renew();
 		unitStateupdate();
 
-		return;
+		//return;
 		if (getRect().left < 0)
 		{
 			setSpeedX(0);
@@ -53,11 +53,11 @@ namespace Terraria
 			setX(0 + getWidth() / 2);
 		}
 
-		if (getRect().right >= getWidth())
+		if (getRect().right >= METER_TO_PIXEL * MAP_SIZE_X)
 		{
 			setSpeedX(0);
 			setAccelX(0);
-			setX(getWidth() - getWidth() / 2);
+			setX(METER_TO_PIXEL * MAP_SIZE_X - getWidth() / 2);
 		}
 
 		if (getRect().top < 0)
@@ -67,11 +67,16 @@ namespace Terraria
 			setY(0 + getHeight() / 2);
 		}
 
-		if (getRect().bottom >= getHeight())
+		if (getRect().bottom >= METER_TO_PIXEL * MAP_SIZE_Y)
 		{
 			setSpeedY(0);
 			setAccelY(0);
-			setY(getHeight() - getHeight() / 2);
+			setY(METER_TO_PIXEL * MAP_SIZE_Y - getHeight() / 2);
+		}
+
+		if (abs(getSpeedY() > 400))
+		{
+			setSpeedY(400 * sign(getSpeedY()));
 		}
 	}
 
@@ -169,6 +174,7 @@ namespace Terraria
 	{
 		setMovement(MOVE);
 		setDirect(direct);
+		if (getAction() != ACTION_SHOOT) setView(direct);
 	}
 
 }

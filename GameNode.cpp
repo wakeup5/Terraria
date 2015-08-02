@@ -34,8 +34,8 @@ HRESULT GameNode::initialize(bool managerInit)
 		EFFECTMANAGER->initialize();
 		SCENEMANAGER->initialize();
 
-		Terraria::Background::getSingleton()->initailize();
-
+		SOUNDMANAGER->initialize();
+		ANIMATEMANAGER->init();
 	}
 
 	return S_OK;
@@ -71,6 +71,12 @@ void GameNode::release(void)
 
 	SCENEMANAGER->release();
 	SCENEMANAGER->releaseSingleton();
+
+	SOUNDMANAGER->release();
+	SOUNDMANAGER->releaseSingleton();
+
+	ANIMATEMANAGER->release();
+	ANIMATEMANAGER->releaseSingleton();
 
 	Terraria::Background::getSingleton()->releaseSingleton();
 

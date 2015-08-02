@@ -18,6 +18,12 @@ namespace Terraria
 		int _exist;
 
 		int _hp;
+
+		int _tileNum;
+
+		Image* _darkImage;
+		//0 : view ~ 4 : dark. 5´Ü°è
+		int _darkDepth;
 	public:
 		HRESULT initialize(int x, int y);
 		void render(HDC hdc);
@@ -38,15 +44,18 @@ namespace Terraria
 		void addExistDirect(TILE_EXIST_DIRECT tile)
 		{ 
 			_exist |= tile; 
-			if (_tileImage != NULL) _tileImage->setFrame(_exist, RANDOM->getInt(3)); 
+			setDarkDepth(_darkDepth);
 		}
 		void subExistDirect(TILE_EXIST_DIRECT tile)
 		{ 
-			if (myUtil::existBit(_exist, tile)) _exist -= tile; 
-			if (_tileImage != NULL) _tileImage->setFrame(_exist, RANDOM->getInt(3));
+			if (myUtil::existBit(_exist, tile)) _exist -= tile;
+			setDarkDepth(_darkDepth);
 		}
 
 		bool pickaxe();
+
+		void setDarkDepth(int depth);
+		int getDarkDepth(){ return _darkDepth; }
 	private:
 		void updateRect(){ _rc = makeRect(_idX * METER_TO_PIXEL, _idY * METER_TO_PIXEL, METER_TO_PIXEL, METER_TO_PIXEL); }
 

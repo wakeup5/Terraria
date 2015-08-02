@@ -39,12 +39,14 @@
 #include "TimeManager.h"
 #include "SceneManager.h"
 #include "txtDataManager.h"
+#include "DataManager.h"
 #include "Database.h"
 
 #include "EffectManager.h"
 #include "SoundManager.h"
 #include "AnimateManager.h"
 
+#include "ItemManager.h"
 #include "Background.h"
 
 #include "util.h"
@@ -100,12 +102,16 @@
 #define SCENEMANAGER SceneManager::getSingleton() 
 //class TxtMAnager
 #define TXTMANAGER txtDataManager::getSingleton()
+//class DataManager
+#define DATAMANAGER DataManager::getSingleton()
 //class Database
 #define DATABASE Database::getSingleton()
 //class SoundManager
 #define SOUNDMANAGER SoundManager::getSingleton()
 //class AnimateManager
 #define ANIMATEMANAGER AnimateManager::getSingleton()
+//class ItemManager
+#define ITEMMANAGER Terraria::ItemManager::getSingleton()
 
 //game info
 #define MAX_GAME_FPS	60.0f

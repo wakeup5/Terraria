@@ -13,7 +13,7 @@ namespace Terraria
 
 	}
 
-	HRESULT PlayerManager::initialize(TileMap* tileMap)
+	HRESULT PlayerManager::initialize(TileMap* tileMap, DroppedItemManager* dropItemManager)
 	{
 		_player = new Player;
 		_player->initialize();
@@ -22,6 +22,7 @@ namespace Terraria
 		_inven->initialize();
 
 		_map = tileMap;
+		_dropItemManager - dropItemManager;
 		return S_OK;
 	}
 	void PlayerManager::release()
@@ -52,11 +53,33 @@ namespace Terraria
 			{
 				_player->action();
 
-				if (_player->getSelectItem() != NULL)
+				Item* select = _player->getSelectItem();
+				POINT inMouseTilePt = _map->getPointByMouse(_option.inMousePt());
+				if (select != NULL)
 				{
-					if (_player->getSelectItem()->getItemType() == ITEM_TOOL_PICKAXE)
+					if (select->getItemType() == ITEM_TOOL_PICKAXE)
 					{
-						_map->pickaxe(_option.inMouseX() / METER_TO_PIXEL, _option.inMouseY() / METER_TO_PIXEL);
+						_map->pickaxe(inMouseTilePt.x, inMouseTilePt.y);
+					}
+					else if (select->getItemType() == ITEM_WEAPON_SWORD)
+					{
+
+					}
+					else if (select->getItemType() == ITEM_BLOCK_GRASS)
+					{
+						if (_map->getTile(inMouseTilePt.x, inMouseTilePt.y).getType() == TILE_NONE)
+						{
+							_map->setTileType(inMouseTilePt, TILE_GRASS);
+							select->subAmount(1);
+						}
+					}
+					else if (select->getItemType() == ITEM_BLOCK_STONE)
+					{
+						if (_map->getTile(inMouseTilePt.x, inMouseTilePt.y).getType() == TILE_NONE)
+						{
+							_map->setTileType(inMouseTilePt, TILE_STONE);
+							select->subAmount(1);
+						}
 					}
 				}
 			}

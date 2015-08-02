@@ -13,7 +13,7 @@ namespace Terraria
 
 	}
 
-	HRESULT TileMap::initialize()
+	HRESULT TileMap::initialize(DroppedItemManager* dropItemManager)
 	{
 		//ZeroMemory(&_tiles, sizeof(**_tiles) * MAP_SIZE_X * MAP_SIZE_Y);
 		
@@ -24,6 +24,25 @@ namespace Terraria
 			for (int y = 0; y < MAP_SIZE_Y; y++)
 			{
 				_tiles[x][y].initialize(x, y);
+
+				COLORREF p = GetPixel(image->getMemDC(), x, y);
+
+				if (p == RGB(0, 0, 0))
+				{
+					_tiles[x][y].setType(TILE_GRASS);
+				}
+				else if (p == RGB(0, 0, 255))
+				{
+					_tiles[x][y].setType(TILE_STONE);
+				}
+				else if (p == RGB(127, 127, 127))
+				{
+					_tiles[x][y].setType(TILE_SILVER);
+				}
+				else if (p == RGB(255, 255, 0))
+				{
+					_tiles[x][y].setType(TILE_GOLD);
+				}
 			}
 		}
 
@@ -31,22 +50,27 @@ namespace Terraria
 		{
 			for (int y = 0; y < MAP_SIZE_Y; y++)
 			{
-				COLORREF p = GetPixel(image->getMemDC(), x, y);
+				if (x > 0 && _tiles[x - 1][y].getType() == _tiles[x][y].getType()) _tiles[x - 1][y].addExistDirect(TILE_EXIST_RIGHT);
+				if (y > 0 && _tiles[x][y - 1].getType() == _tiles[x][y].getType()) _tiles[x][y - 1].addExistDirect(TILE_EXIST_BOTTOM);
+				if (x < MAP_SIZE_X - 1 && _tiles[x + 1][y].getType() == _tiles[x][y].getType()) _tiles[x + 1][y].addExistDirect(TILE_EXIST_LEFT);
+				if (y < MAP_SIZE_Y - 1 && _tiles[x][y + 1].getType() == _tiles[x][y].getType()) _tiles[x][y + 1].addExistDirect(TILE_EXIST_TOP);
+			}
+		}
 
-				if (p == RGB(0, 0, 0))
+		//타일 어두움 셋
+		int sx, ex, sy, ey, depth;
+		for (int x = 0; x < MAP_SIZE_X; x++)
+		{
+			for (int y = 0; y < MAP_SIZE_Y; y++)
+			{
+				if (_tiles[x][y].getType() == TILE_NONE)
 				{
-					_tiles[x][y].setType(TILE_GRASS);
-
-				}
-				else
-				{
-					if (x > 0) _tiles[x - 1][y].subExistDirect(TILE_EXIST_RIGHT);
-					if (y > 0) _tiles[x][y - 1].subExistDirect(TILE_EXIST_BOTTOM);
-					if (x < MAP_SIZE_X - 1) _tiles[x + 1][y].subExistDirect(TILE_EXIST_LEFT);
-					if (y < MAP_SIZE_Y - 1) _tiles[x][y + 1].subExistDirect(TILE_EXIST_TOP);
+					setDepth(x, y);
 				}
 			}
 		}
+
+		_dropItemManager = dropItemManager;
 
 		return S_OK;
 	}
@@ -96,11 +120,30 @@ namespace Terraria
 
 	bool TileMap::pickaxe(int indexX, int indexY)
 	{
-		if (_tiles[indexX][indexY].getType() != TILE_NONE)
+		TILE_TYPE type = TILE_NONE;
+		if ((type = _tiles[indexX][indexY].getType()) != TILE_NONE)
 		{
 			if (_tiles[indexX][indexY].pickaxe())
 			{
+				
 				setTileType(indexX, indexY, TILE_NONE);
+				setDepth(indexX, indexY);
+
+				switch (type)
+				{
+				case TILE_GRASS:
+					_dropItemManager->createDroppedItem("tile grass", 1, _option.inMouseX(), _option.inMouseY(), 0);
+					break;
+				case TILE_STONE:
+					_dropItemManager->createDroppedItem("tile stone", 1, _option.inMouseX(), _option.inMouseY(), 0);
+					break;
+				case TILE_SILVER:
+					_dropItemManager->createDroppedItem("tile silver", 1, _option.inMouseX(), _option.inMouseY(), 0);
+					break;
+				case TILE_GOLD:
+					_dropItemManager->createDroppedItem("tile gold", 1, _option.inMouseX(), _option.inMouseY(), 0);
+					break;
+				}
 				return true;
 			}
 		}
@@ -194,5 +237,54 @@ namespace Terraria
 		
 
 		return false;
+	}
+	void TileMap::setTileType(int x, int y, TILE_TYPE type)
+	{
+		_tiles[x][y].setType(type);
+		if (type == TILE_NONE)
+		{
+			if (x > 0) _tiles[x - 1][y].subExistDirect(TILE_EXIST_RIGHT);
+			if (y > 0) _tiles[x][y - 1].subExistDirect(TILE_EXIST_BOTTOM);
+			if (x < MAP_SIZE_X - 1) _tiles[x + 1][y].subExistDirect(TILE_EXIST_LEFT);
+			if (y < MAP_SIZE_Y - 1) _tiles[x][y + 1].subExistDirect(TILE_EXIST_TOP);
+		}
+		else
+		{
+			if (x > 0) _tiles[x - 1][y].addExistDirect(TILE_EXIST_RIGHT);
+			if (y > 0) _tiles[x][y - 1].addExistDirect(TILE_EXIST_BOTTOM);
+			if (x < MAP_SIZE_X - 1) _tiles[x + 1][y].addExistDirect(TILE_EXIST_LEFT);
+			if (y < MAP_SIZE_Y - 1) _tiles[x][y + 1].addExistDirect(TILE_EXIST_TOP);
+
+			if (_tiles[x - 1][y].getType() != _tiles[x][y].getType()) _tiles[x][y].subExistDirect(TILE_EXIST_LEFT);
+			else _tiles[x][y].addExistDirect(TILE_EXIST_LEFT);
+			if (_tiles[x + 1][y].getType() != _tiles[x][y].getType()) _tiles[x][y].subExistDirect(TILE_EXIST_RIGHT);
+			else _tiles[x][y].addExistDirect(TILE_EXIST_RIGHT);
+			if (_tiles[x][y - 1].getType() != _tiles[x][y].getType()) _tiles[x][y].subExistDirect(TILE_EXIST_TOP);
+			else _tiles[x][y].addExistDirect(TILE_EXIST_TOP);
+			if (_tiles[x][y + 1].getType() != _tiles[x][y].getType()) _tiles[x][y].subExistDirect(TILE_EXIST_BOTTOM);
+			else _tiles[x][y].addExistDirect(TILE_EXIST_BOTTOM);
+		}
+	}
+	void TileMap::setTileType(POINT p, TILE_TYPE type)
+	{
+		setTileType(p.x, p.y, type);
+	}
+
+	void TileMap::setDepth(int x, int y)
+	{
+		int sx, ex, sy, ey, depth;
+
+		if ((sx = x - 4) < 0) sx = 0;
+		if ((ex = x + 4) > MAP_SIZE_X - 1) ex = MAP_SIZE_X - 1;
+		if ((sy = y - 4) < 0) sy = 0;
+		if ((ey = y + 4) > MAP_SIZE_Y - 1) ey = MAP_SIZE_Y - 1;
+
+		for (int i = sx; i < ex + 1; i++)
+		{
+			for (int j = sy; j < ey + 1; j++)
+			{
+				_tiles[i][j].setDarkDepth(min((abs(i - x) + abs(j - y) - 1), _tiles[i][j].getDarkDepth()));
+			}
+		}
 	}
 }

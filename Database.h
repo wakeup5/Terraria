@@ -1,9 +1,32 @@
 #pragma once
 #include "SingletonBase.h"
 
-#include <vector>
+#include <set>
 #include <map>
 
+typedef std::map<std::string, std::string> Row;
+typedef std::set<Row*> Table;
+typedef std::map<std::string, Table*> DB;
+
+class Database : public SingletonBase < Database >
+{
+private:
+	DB _db;
+public:
+	bool addTable(std::string tablename);
+	bool removeTable(std::string tablename);
+	bool isExistTable(std::string tablename);
+	Table* getTable(std::string tablename);
+
+	bool add(std::string tablename, std::string keyValue, Row &object);
+	bool modify(std::string tablename, std::string keyValue, Row &object);
+	bool remove(std::string tablename, std::string keyValue);
+	Row* get(std::string tablename, std::string keyValue);
+
+	Database();
+	~Database();
+};
+/*
 class DataObject
 {
 public:
@@ -91,3 +114,4 @@ public:
 	~Database();
 };
 
+*/

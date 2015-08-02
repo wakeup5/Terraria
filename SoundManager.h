@@ -23,18 +23,18 @@ using namespace FMOD;
 class SoundManager : public SingletonBase < SoundManager >
 {
 private:
-	typedef map<string, Sound**> arrSounds;
-	typedef map<string, Sound**>::iterator arrSoundsIter;
-	typedef map<string, Channel**> arrChannels;
-	typedef map<string, Channel**>::iterator arrChannelsIter;
+	typedef map<string, Sound*> SoundMap;
+	typedef map<string, Sound*>::iterator SoundMapIter;
+	typedef map<string, Channel*> ChannelMap;
+	typedef map<string, Channel*>::iterator ChannelMapIter;
 
 private:
 	System* _system;
-	Sound** _sound;
-	Channel** _channel;
+	Sound* _sound;
+	Channel* _channel;
 
-	arrSounds _mTotalSounds;
-	arrChannels _mTotalChannels;
+	SoundMap _soundMap;
+	ChannelMap _channelMap;
 
 public:
 	HRESULT initialize();

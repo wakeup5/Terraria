@@ -237,8 +237,23 @@
     <ClInclude Include="AnimateManager.h">
       <Filter>Game2DFramework\manager</Filter>
     </ClInclude>
+    <ClInclude Include="DroppedItem.h">
+      <Filter>GameStudy\GameClass\object\item</Filter>
+    </ClInclude>
     <ClInclude Include="Collision.h">
-      <Filter>헤더 파일</Filter>
+      <Filter>GameStudy\GameClass\object\unit</Filter>
+    </ClInclude>
+    <ClInclude Include="LoadingScene.h">
+      <Filter>GameStudy\GameClass\main</Filter>
+    </ClInclude>
+    <ClInclude Include="Loading.h">
+      <Filter>GameStudy\GameClass\main</Filter>
+    </ClInclude>
+    <ClInclude Include="ItemManager.h">
+      <Filter>GameStudy\GameClass\object\item</Filter>
+    </ClInclude>
+    <ClInclude Include="DroppedItemManager.h">
+      <Filter>GameStudy\GameClass\object\item</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -371,8 +386,23 @@
     <ClCompile Include="AnimateManager.cpp">
       <Filter>Game2DFramework\manager</Filter>
     </ClCompile>
+    <ClCompile Include="DroppedItem.cpp">
+      <Filter>GameStudy\GameClass\object\item</Filter>
+    </ClCompile>
     <ClCompile Include="Collision.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>GameStudy\GameClass\object\unit</Filter>
+    </ClCompile>
+    <ClCompile Include="LoadingScene.cpp">
+      <Filter>GameStudy\GameClass\main</Filter>
+    </ClCompile>
+    <ClCompile Include="Loading.cpp">
+      <Filter>GameStudy\GameClass\main</Filter>
+    </ClCompile>
+    <ClCompile Include="ItemManager.cpp">
+      <Filter>GameStudy\GameClass\object\item</Filter>
+    </ClCompile>
+    <ClCompile Include="DroppedItemManager.cpp">
+      <Filter>GameStudy\GameClass\object\item</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

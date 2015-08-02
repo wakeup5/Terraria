@@ -19,11 +19,14 @@ namespace Terraria
 
 		Animate* _animate;
 		Animate* _legAnimate;
+
+		float _actionTime;
 	public:
 		HRESULT initialize();
 		void release();
 		//void update();
 		void render(HDC hdc);
+		void swingRender(HDC hdc);
 
 		void renew();
 

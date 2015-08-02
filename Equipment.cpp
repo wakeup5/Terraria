@@ -52,8 +52,8 @@ namespace Terraria
 
 		if (isEquipped())
 		{
-			*resultItem = _item;
-			undress();
+			//resultItem* = _item;
+			undress(resultItem);
 		}
 
 

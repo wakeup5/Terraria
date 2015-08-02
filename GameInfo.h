@@ -13,6 +13,8 @@ private:
 
 	float _cameraX;
 	float _cameraY;
+
+	float _volume;
 public:
 	GameInfo();
 	~GameInfo();
@@ -50,5 +52,11 @@ public:
 	inline void setCamera(float x, float y){ _cameraX = x; _cameraY = y; setInMousePoint(_mousePoint); }
 
 	void setCamera(float x, float maxX, float y, float maxY);
+
+	inline float getRenderX(float x) { return x - cameraX() + (width() / 2); }
+	inline float getRenderY(float y) { return y - cameraY() + (height() / 2); }
+
+	inline void setVolume(float volume){ _volume = max(0.0, min(1.0, volume)); }
+	inline float volume(){ return _volume; }
 };
 

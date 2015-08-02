@@ -16,8 +16,6 @@ GameInfo _option;
 
 GameStudy _gameStudy;
 
-Terraria::Camera _camera;
-
 LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
 void setWindowPositionAndSize(int x, int y, int width, int height);
 
@@ -80,7 +78,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmd
 		}
 		else
 		{
-			TIMEMANAGER->update(60.0f);
+			TIMEMANAGER->update(MAX_GAME_FPS);
 			_gameStudy.update();
 			_gameStudy.render();
 		}

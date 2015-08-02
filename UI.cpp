@@ -19,7 +19,8 @@ namespace Terraria
 		_inven = inven;
 		_invenOpen = false;
 
-		_invenBack = IMAGEMANAGER->addImage("inven back", IMAGE("ui/Inventory_Back"), 52, 52, TRUE, RGB(255, 0, 255));
+		_invenBack = IMAGEMANAGER->findImage("ui inven back");
+		_invenBackSelect = IMAGEMANAGER->findImage("ui inven back select");
 
 		float x, y;
 
@@ -36,8 +37,9 @@ namespace Terraria
 			y = 230 + 55 * i;
 			_equipRc[i] = makeRect(x, y, 52, 52);
 		}
+		_selectNum = 0;
 
-		_player->setSelectItem(_inven->getItemInfo(0));
+		_player->setSelectItem(_inven->getItemInfo(_selectNum));
 
 		return S_OK;
 	}
@@ -49,15 +51,15 @@ namespace Terraria
 	{
 		if (KEYMANAGER->isOnceKeyDown(VK_F1))
 		{
+			_invenOpen = !_invenOpen;
 			if (_invenOpen)
 			{
-
+				SOUNDMANAGER->play("ui open", _option.volume());
 			}
 			else
 			{
-
+				SOUNDMANAGER->play("ui close", _option.volume());
 			}
-			_invenOpen = !_invenOpen;
 		}
 
 		if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
@@ -70,6 +72,76 @@ namespace Terraria
 			uiRClickUpdate();
 		}
 
+		if (KEYMANAGER->isOnceKeyDown('1'))
+		{
+			_selectNum = 0;
+			_player->setSelectItem(_inven->getItemInfo(_selectNum));
+		}
+		if (KEYMANAGER->isOnceKeyDown('2'))
+		{
+			_selectNum = 1;
+			_player->setSelectItem(_inven->getItemInfo(_selectNum));
+		}
+		if (KEYMANAGER->isOnceKeyDown('3'))
+		{
+			_selectNum = 2;
+			_player->setSelectItem(_inven->getItemInfo(_selectNum));
+		}
+		if (KEYMANAGER->isOnceKeyDown('4'))
+		{
+			_selectNum = 3;
+			_player->setSelectItem(_inven->getItemInfo(_selectNum));
+		}
+		if (KEYMANAGER->isOnceKeyDown('5'))
+		{
+			_selectNum = 4;
+			_player->setSelectItem(_inven->getItemInfo(_selectNum));
+		}
+		if (KEYMANAGER->isOnceKeyDown('6'))
+		{
+			_selectNum = 5;
+			_player->setSelectItem(_inven->getItemInfo(_selectNum));
+		}
+		if (KEYMANAGER->isOnceKeyDown('7'))
+		{
+			_selectNum = 6;
+			_player->setSelectItem(_inven->getItemInfo(_selectNum));
+		}
+		if (KEYMANAGER->isOnceKeyDown('8'))
+		{
+			_selectNum = 7;
+			_player->setSelectItem(_inven->getItemInfo(_selectNum));
+		}
+		if (KEYMANAGER->isOnceKeyDown('9'))
+		{
+			_selectNum = 8;
+			_player->setSelectItem(_inven->getItemInfo(_selectNum));
+		}
+		if (KEYMANAGER->isOnceKeyDown('0'))
+		{
+			_selectNum = 9;
+			_player->setSelectItem(_inven->getItemInfo(_selectNum));
+		}
+
+		if (_selectItem == NULL)
+		{
+			_selectItem2 = _inven->getItemInfo(_selectNum);
+			_player->setSelectItem(_inven->getItemInfo(_selectNum));
+		}
+		//if (_selectItem2 != NULL) setSelectItem(NULL);
+
+		if (_selectItem != NULL && _selectItem->getAmount() <= 0)
+		{
+			//SAFE_RELEASE(_selectItem);
+			_selectItem = NULL;
+			_player->setSelectItem(NULL);
+		}
+		if (_selectItem2 != NULL && _selectItem2->getAmount() <= 0)
+		{
+			//SAFE_RELEASE(_selectItem2);
+			_selectItem2 = NULL;
+			_player->setSelectItem(NULL);
+		}
 	}
 	void UI::render(HDC hdc)
 	{
@@ -79,9 +151,31 @@ namespace Terraria
 			//인벤토리 출력
 			for (int i = 0; i < INVENTORY_LENGTH; i++)
 			{
-				_invenBack->render(hdc, _invenRc[i].left, _invenRc[i].top, 200);
+				if (_selectNum == i)
+				{
+					_invenBackSelect->render(hdc, _invenRc[i].left, _invenRc[i].top, 200);
+				}
+				else
+				{
+					_invenBack->render(hdc, _invenRc[i].left, _invenRc[i].top, 200);
+				}
 				item = _inven->getItemInfo(i);
-				if (item != NULL) item->imageRender(hdc, _invenRc[i].left + 55 / 2, _invenRc[i].top + 55 / 2);
+				if (item != NULL)
+				{
+					item->imageRender(hdc, _invenRc[i].left + 55 / 2, _invenRc[i].top + 55 / 2);
+
+					if (item->getAmount() > 1)
+					{
+						char str[5];
+						sprintf_s(str, "%d", item->getAmount());
+
+						HFONT f = CreateFont(25, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, "HW Andy"), of = (HFONT)SelectObject(hdc, f);
+						TextOut(hdc, _invenRc[i].right - 10, _invenRc[i].bottom - 25, str, strlen(str));
+
+						SelectObject(hdc, of);
+						DeleteObject(f);
+					}
+				}
 			}
 
 			//장비 장착 정보
@@ -98,9 +192,31 @@ namespace Terraria
 			//인벤토리 안열어도 10개는 출력
 			for (int i = 0; i < 10; i++)
 			{
-				_invenBack->render(hdc, _invenRc[i].left, 10, 150);
+				if (_selectNum == i)
+				{
+					_invenBackSelect->render(hdc, _invenRc[i].left, 10, 150);
+				}
+				else
+				{
+					_invenBack->render(hdc, _invenRc[i].left, 10, 150);
+				}
 				item = _inven->getItemInfo(i);
-				if (item != NULL) item->imageRender(hdc, _invenRc[i].left + 55 / 2, _invenRc[i].top + 55 / 2);
+				if (item != NULL)
+				{
+					item->imageRender(hdc, _invenRc[i].left + 55 / 2, _invenRc[i].top + 55 / 2);
+
+					if (item->getAmount() > 1)
+					{
+						char str[5];
+						sprintf_s(str, "%d", item->getAmount());
+
+						HFONT f = CreateFont(25, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, "HW Andy"), of = (HFONT)SelectObject(hdc, f);
+						TextOut(hdc, _invenRc[i].right - 10, _invenRc[i].bottom - 25, str, strlen(str));
+
+						SelectObject(hdc, of);
+						DeleteObject(f);
+					}
+				}
 			}
 		}
 
@@ -108,6 +224,14 @@ namespace Terraria
 		{
 			_selectItem->getImage()->render(hdc, _option.mouseX(), _option.mouseY());
 		}
+
+
+		if (_selectItem2 != NULL)
+		{
+			_selectItem2->getImage()->render(hdc, _option.mouseX(), _option.mouseY());
+		}
+
+		
 	}
 
 	void UI::uiClickUpdate()
@@ -134,6 +258,8 @@ namespace Terraria
 					_inven->swap(i, _selectItem, &_selectItem);
 				}
 				_player->setSelectItem(_selectItem);
+
+				SOUNDMANAGER->play("ui grab", _option.volume());
 			}
 		}
 
@@ -162,6 +288,8 @@ namespace Terraria
 					equip->swap(_selectItem, &_selectItem);
 				}
 				_player->setSelectItem(_selectItem);
+
+				SOUNDMANAGER->play("ui grab", 0.5);
 			}
 		}
 	}
