@@ -23,7 +23,7 @@ HRESULT MainScene::initialize()
 	_singlePlayer = new Button;
 	_singlePlayer->initialize(_singlePlayerImage, _option.width() / 2.0f, 250);
 	_singlePlayer->onCLickUp([](){
-		SCENEMANAGER->changeScene("mainGame");
+		SCENEMANAGER->changeScene("loading");
 	});
 	_setting = new Button;
 	_setting->initialize(_settingImage, _option.width() / 2.0f, 310);

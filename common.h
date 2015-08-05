@@ -11,15 +11,15 @@
 #define SOUND(fileName)		SOUND_PATH""fileName
 
 #define METER_TO_PIXEL		16
-#define GRAVITY_ACCEL		METER_TO_PIXEL * 60
+#define GRAVITY_ACCEL		(METER_TO_PIXEL * 60)
 
-#define PLAYER_WIDTH		METER_TO_PIXEL * 1.5
-#define PLAYER_HEIGHT		METER_TO_PIXEL * 2
+#define PLAYER_WIDTH		(METER_TO_PIXEL * 1.5)
+#define PLAYER_HEIGHT		(METER_TO_PIXEL * 2)
 
-#define MAX_SPEED			METER_TO_PIXEL * 40
-#define MAX_ACCEL			METER_TO_PIXEL * 100
-#define PLAYER_MOVE_SPEED	METER_TO_PIXEL * 15
-#define PLAYER_MOVE_ACCEL	METER_TO_PIXEL * 50
+#define MAX_SPEED			(METER_TO_PIXEL * 40)
+#define MAX_ACCEL			(METER_TO_PIXEL * 100)
+#define PLAYER_MOVE_SPEED	(METER_TO_PIXEL * 15)
+#define PLAYER_MOVE_ACCEL	(METER_TO_PIXEL * 25)
 
 #define JUMP_SPEED			-(METER_TO_PIXEL * 28)
 
@@ -44,6 +44,7 @@ namespace Terraria
 		ITEM_EQUIP,
 		ITEM_WEAPON_SWORD,
 		ITEM_WEAPON_BOW,
+		ITEM_WEAPON_GUN,
 		ITEM_WEAPON_MAGIC,
 		ITEM_TOOL_PICKAXE,
 		ITEM_TOOL_AXE,
@@ -65,6 +66,8 @@ namespace Terraria
 		float MP;
 		float attack;
 		float defense;
+		float atkSpeed;
+		int shootNum;
 	} ItemAbillity;
 
 	typedef enum TILE_TYPE

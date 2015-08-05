@@ -48,6 +48,9 @@ public:
 	void resume(string keyName);
 	void stop(string keyName);
 
+	bool isPlay(string keyName);
+	bool isPause(string keyName);
+
 public:
 	SoundManager();
 	~SoundManager();

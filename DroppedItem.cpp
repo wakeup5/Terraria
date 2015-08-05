@@ -25,7 +25,7 @@ namespace Terraria
 		if (_amount > _maxAmount) _amount = _maxAmount;
 
 		setMaxSpeed(200);
-		setSize(20, 20);
+		setSize(METER_TO_PIXEL, METER_TO_PIXEL);
 
 		return S_OK;
 	}

@@ -99,10 +99,10 @@ namespace Terraria
 		int unitIdX = playerX / METER_TO_PIXEL;
 		int unitIdY = playerY / METER_TO_PIXEL;
 
-		int sx = (unitIdX - (_option.width() / METER_TO_PIXEL) / 2) - 5;
-		int ex = (unitIdX + (_option.width() / METER_TO_PIXEL) / 2) + 5;
-		int sy = (unitIdY - (_option.height() / METER_TO_PIXEL) / 2) - 5;
-		int ey = (unitIdY + (_option.height() / METER_TO_PIXEL) / 2) + 5;
+		int sx = (unitIdX - (_option.width() / METER_TO_PIXEL) / 2);// +5;
+		int ex = (unitIdX + (_option.width() / METER_TO_PIXEL) / 2) + 1;// -5;
+		int sy = (unitIdY - (_option.height() / METER_TO_PIXEL) / 2);// +5;
+		int ey = (unitIdY + (_option.height() / METER_TO_PIXEL) / 2) + 2;// -5;
 
 		if (sx < 0) sx = 0;
 		if (ex > MAP_SIZE_X) ex = MAP_SIZE_X;

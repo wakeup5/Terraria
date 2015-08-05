@@ -37,7 +37,7 @@ namespace Terraria
 			(*_siItem)->update();
 			Collision::tileCollision((*_siItem), _tileMap);
 		}
-		//eathOtherCollision();
+		eathOtherCollision();
 	}
 	void DroppedItemManager::render(HDC hdc)
 	{
@@ -66,26 +66,31 @@ namespace Terraria
 		set<DroppedItem*>::iterator d1;
 		set<DroppedItem*>::iterator d2;
 		RECT r;
-
-		for (d1 = _sItem.begin(); d1 != _sItem.end(); d1++)
+		int i, j;
+		DroppedItem* item1;
+		DroppedItem* item2;
+		for (d1 = _sItem.begin(), i = 0; d1 != _sItem.end(); d1++, i++)
 		{
-			for (d2 = _sItem.begin(); d2 != _sItem.end(); d2++)
+			item1 = *d1;
+			for (d2 = _sItem.begin(), j = 0; d2 != _sItem.end(); d2++, j++)
 			{
-				if (*d1 == *d2) continue;
+				if (i == j) continue;
+				item2 = *d2;
 
-				if (IntersectRect(&r, &(*d1)->getRect(), &(*d2)->getRect()) &&
-					(*d1)->getName() == (*d2)->getName())
+				if (IntersectRect(&r, &item1->getRect(), &item2->getRect()) &&
+					item1->getName() == item2->getName())
 				{
-					if (!(*d1)->isFull())
+					if (!item1->isFull())
 					{
-						(*d1)->addAmount((*d2)->getAmount());
-						(*d2)->release();
+						item1->addAmount(item2->getAmount());
+						item2->release();
 					}
-					else if (!(*d2)->isFull())
+					else if (!item2->isFull())
 					{
-						(*d2)->addAmount((*d1)->getAmount());
-						(*d1)->release();
+						item1->addAmount(item2->getAmount());
+						item2->release();
 					}
+					break;
 				}
 			}
 		}

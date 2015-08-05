@@ -23,7 +23,8 @@ namespace Terraria
 	public:
 		HRESULT initialize(string itemName, string imageName, string spriteImageName, EQUIPMENT_TYPE type = EQUIP_NONE);
 		HRESULT initialize(string itemName, string imageName, string spriteImageName, ITEM_TYPE type = ITEM_NONE, int maxAmount = 1);
-		HRESULT initialize(string itemName, string imageName, string spriteImageName, ITEM_TYPE type, EQUIPMENT_TYPE equipType, int maxAmount, int hp, int mp, int attack, int defense);
+		HRESULT initialize(string itemName, string imageName, string spriteImageName, ITEM_TYPE type, EQUIPMENT_TYPE equipType,
+			int maxAmount, int hp, int mp, int attack, int defense, float atkSpeed = 1000, int shootNum = 0);
 		void release();
 		void imageRender(HDC hdc, float centerX, float centerY);
 
@@ -36,12 +37,14 @@ namespace Terraria
 		Image* getImage(){ return _image; }
 		Image* getEquipImage(){ return _equipImage; }
 
-		void setAbillity(float hp, float mp, float attack, float defense)
+		void setAbillity(float hp, float mp, float attack, float defense, float atkSpeed, int shootNum)
 		{
 			_abillity.HP = hp;
 			_abillity.MP = mp;
 			_abillity.attack = attack;
 			_abillity.defense = defense;
+			_abillity.atkSpeed = atkSpeed;
+			_abillity.shootNum = shootNum;
 		}
 
 		ItemAbillity getAbillity() { return _abillity; }

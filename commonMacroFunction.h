@@ -445,3 +445,16 @@ void setWindowPositionAndSize(HWND hWnd, int x, int y, int width, int height)
 	AdjustWindowRect(&rc, WS_OVERLAPPEDWINDOW, false);
 	SetWindowPos(hWnd, NULL, x, y, rc.right - rc.left, rc.bottom - rc.top, SWP_NOZORDER | SWP_NOMOVE);
 }
+
+inline void writeText(HDC hdc, std::string text, int x, int y, int fontSize, COLORREF color, const char* fontName = "HW Andy")
+{
+	HFONT f = CreateFont(fontSize, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, fontName), of = (HFONT)SelectObject(hdc, f);
+	COLORREF oc = SetTextColor(hdc, color);
+	TextOut(hdc, x, y, text.c_str(), text.size());
+
+	SetTextColor(hdc, oc);
+	SelectObject(hdc, of);
+	DeleteObject(f);
+
+	return;
+}

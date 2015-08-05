@@ -114,16 +114,16 @@ void SoundManager::play(string keyName, float volume)
 
 	if (iter != _soundMap.end())
 	{
-		if (cIter == _channelMap.end())
+		//if (cIter == _channelMap.end())
 		{
 			_system->playSound(FMOD_CHANNEL_FREE, iter->second, false, &_channel);
 
 			_channelMap.insert(make_pair(keyName, _channel));
 		}
-		else
-		{
-			_channel = cIter->second;
-		}
+		//else
+		//{
+		//	_channel = cIter->second;
+		//}
 
 		_channel->setVolume(volume);
 	}
@@ -233,4 +233,30 @@ void SoundManager::update(void)
 			i++;
 		}
 	}
+}
+
+bool SoundManager::isPlay(string keyName)
+{
+	bool result = false;
+	ChannelMapIter iter = _channelMap.find(keyName);
+
+	if (iter != _channelMap.end())
+	{
+		return true;
+		//iter->second->isPlaying(&result);
+	}
+
+	return false;
+}
+bool SoundManager::isPause(string keyName)
+{
+	bool result = false;
+	ChannelMapIter iter = _channelMap.find(keyName);
+
+	if (iter != _channelMap.end())
+	{
+		iter->second->getPaused(&result);
+	}
+
+	return result;
 }

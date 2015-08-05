@@ -14,13 +14,13 @@ namespace Terraria
 		HRESULT initialize();
 		void release();
 
-		Item* createItem(std::string itemName);
+		Item* createItem(std::string itemName, int amount = 1);
 
 		std::string getImageName(std::string itemName);
 		int getMaxAmount(std::string itemName);
 
 		void inputItemInfo();
-		void addItemInfo(string name, string image, string spriteImage, ITEM_TYPE item, EQUIPMENT_TYPE equip, int max, int hp, int mp, int atk, int def);
+		void addItemInfo(string name, string image, string spriteImage, ITEM_TYPE item, EQUIPMENT_TYPE equip, int max, int hp, int mp, int atk, int def, float atkSpeed = 333, int shootNum = 0);
 
 		ItemManager();
 		~ItemManager();

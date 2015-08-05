@@ -81,6 +81,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Action.h" />
+    <ClInclude Include="Ammo.h" />
     <ClInclude Include="Animate.h" />
     <ClInclude Include="AnimateManager.h" />
     <ClInclude Include="AnimationImage.h" />
@@ -112,6 +113,7 @@
     <ClInclude Include="LogoScene.h" />
     <ClInclude Include="MainGameScene.h" />
     <ClInclude Include="MainScene.h" />
+    <ClInclude Include="MonsterManager.h" />
     <ClInclude Include="Physical.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="PlayerManager.h" />
@@ -123,6 +125,8 @@
     <ClInclude Include="SpriteImage.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
+    <ClInclude Include="TEffect.h" />
+    <ClInclude Include="TEffectManager.h" />
     <ClInclude Include="TerrariaNode.h" />
     <ClInclude Include="TerrariaObject.h" />
     <ClInclude Include="TerrariaUnit.h" />
@@ -134,9 +138,11 @@
     <ClInclude Include="txtDataManager.h" />
     <ClInclude Include="UI.h" />
     <ClInclude Include="util.h" />
+    <ClInclude Include="Zombie.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Action.cpp" />
+    <ClCompile Include="Ammo.cpp" />
     <ClCompile Include="Animate.cpp" />
     <ClCompile Include="AnimateManager.cpp" />
     <ClCompile Include="AnimationImage.cpp" />
@@ -166,6 +172,7 @@
     <ClCompile Include="LogoScene.cpp" />
     <ClCompile Include="MainGameScene.cpp" />
     <ClCompile Include="MainScene.cpp" />
+    <ClCompile Include="MonsterManager.cpp" />
     <ClCompile Include="Physical.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayerManager.cpp" />
@@ -177,6 +184,8 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="TEffect.cpp" />
+    <ClCompile Include="TEffectManager.cpp" />
     <ClCompile Include="TerrariaObject.cpp" />
     <ClCompile Include="TerrariaUnit.cpp" />
     <ClCompile Include="TestScene.cpp" />
@@ -188,6 +197,7 @@
     <ClCompile Include="UI.cpp" />
     <ClCompile Include="util.cpp" />
     <ClCompile Include="WinAPI basic.cpp" />
+    <ClCompile Include="Zombie.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="Text.txt" />

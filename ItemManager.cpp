@@ -26,7 +26,7 @@ namespace Terraria
 		_vItem.clear();
 	}
 
-	Item* ItemManager::createItem(std::string itemName)
+	Item* ItemManager::createItem(std::string itemName, int amount)
 	{
 		Item* item = NULL;
 
@@ -43,9 +43,12 @@ namespace Terraria
 		int mp = atoi(row->find("mp")->second.c_str());
 		int attack = atoi(row->find("attack")->second.c_str());
 		int defense = atoi(row->find("defense")->second.c_str());
+		int atkSpeed = atoi(row->find("atkspeed")->second.c_str());
+		int shootNum = atoi(row->find("shootnum")->second.c_str());
 
 		item = new Item;
-		item->initialize(itemName, imageName, spriteImageName, itemType, equipType, maxAmount, hp, mp, attack, defense);
+		item->initialize(itemName, imageName, spriteImageName, itemType, equipType, maxAmount, hp, mp, attack, defense, atkSpeed, shootNum);
+		item->addAmount(amount);
 
 		_vItem.push_back(item);
 
@@ -77,7 +80,7 @@ namespace Terraria
 		addItemInfo("body test", "body 46 image", "body 46", ITEM_EQUIP, EQUIP_TOP, 1, 10, 0, 0, 10);
 		addItemInfo("pant test", "pant 46 image", "pant 46", ITEM_EQUIP, EQUIP_PANT, 1, 10, 0, 0, 10);
 
-		addItemInfo("pickaxe", "pickaxe basic", "pickaxe basic", ITEM_TOOL_PICKAXE, EQUIP_NONE, 1, 0, 0, 0, 0);
+		addItemInfo("pickaxe", "pickaxe basic", "pickaxe basic", ITEM_TOOL_PICKAXE, EQUIP_NONE, 1, 0, 0, 0, 0, 250);
 
 		addItemInfo("tile grass", "item tile grass", "item tile grass", ITEM_BLOCK_GRASS, EQUIP_NONE, 999, 0, 0, 0, 0);
 		addItemInfo("tile stone", "item tile stone", "item tile stone", ITEM_BLOCK_STONE, EQUIP_NONE, 999, 0, 0, 0, 0);
@@ -94,12 +97,20 @@ namespace Terraria
 
 		addItemInfo("body costume", "body costume image", "body costume", ITEM_EQUIP, EQUIP_TOP, 1, 0, 0, 0, 0);
 
-		addItemInfo("sword basic", "sword basic", "sword basic", ITEM_WEAPON_SWORD, EQUIP_NONE, 1, 0, 0, 20, 0);
+		addItemInfo("sword basic", "sword basic", "sword basic", ITEM_WEAPON_SWORD, EQUIP_NONE, 1, 0, 0, 20, 0, 100);
+		addItemInfo("bow basic", "bow basic", "bow basic", ITEM_WEAPON_BOW, EQUIP_NONE, 1, 0, 0, 10, 0, 200, 1);
+		addItemInfo("gun basic", "gun basic", "gun basic", ITEM_WEAPON_GUN, EQUIP_NONE, 1, 0, 0, 10, 0, 80, 1);
+		addItemInfo("magic basic", "magic basic", "magic basic", ITEM_WEAPON_MAGIC, EQUIP_NONE, 1, 0, 0, 12, 0, 200);
+
+		addItemInfo("arrow", "arrow", "arrow image", ITEM_AMMO_ARROW, EQUIP_NONE, 999, 0, 0, 10, 0, 0);
+		addItemInfo("bullet", "bullet", "bullet image", ITEM_AMMO_BULLET, EQUIP_NONE, 999, 0, 0, 8, 0, 0);
 
 		DATAMANAGER->saveDatabase("item", RESOURCE("/data/item.ini"));
 	}
 
-	void ItemManager::addItemInfo(string name, string image, string spriteImage, ITEM_TYPE item, EQUIPMENT_TYPE equip, int max, int hp, int mp, int atk, int def)
+	void ItemManager::addItemInfo(
+		string name, string image, string spriteImage, ITEM_TYPE item, EQUIPMENT_TYPE equip, 
+		int max, int hp, int mp, int atk, int def, float atkSpeed, int shootNum)
 	{
 		Row row;
 		
@@ -113,7 +124,16 @@ namespace Terraria
 		row.insert(make_pair("mp", to_string(mp)));
 		row.insert(make_pair("attack", to_string(atk)));
 		row.insert(make_pair("defense", to_string(def)));
+		row.insert(make_pair("atkspeed", to_string(atkSpeed)));
+		row.insert(make_pair("shootnum", to_string(shootNum)));
 
-		DATABASE->add("item", name, row);
+		if (DATABASE->get("item", name) == NULL)
+		{
+			DATABASE->add("item", name, row);
+		}
+		else
+		{
+			DATABASE->modify("item", name, row);
+		}
 	}
 }

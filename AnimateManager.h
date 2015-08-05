@@ -20,43 +20,43 @@ public:
 	/////////////////////////////////////
 
 	void addDefFrameAnimation(string aniKeyName,
-		int width, int height, int maxFrameX, int maxFrameY, int fps = (1.0f / 60.0f), BOOL reverse = FALSE,
+		int width, int height,  int maxFrameX, int maxFrameY, int fps = (1.0f / 60.0f), BOOL reverse = FALSE,
 		BOOL loop = FALSE);
 
 	void addDefFrameAnimation(string aniKeyName,
-		int width, int height, int maxFrameX, int maxFrameY, int fps, BOOL reverse,
+		int width, int height,  int maxFrameX, int maxFrameY, int fps, BOOL reverse,
 		BOOL loop, void* cbFunction);
 
 	void addDefFrameAnimation(string aniKeyName,
-		int width, int height, int maxFrameX, int maxFrameY, int fps, BOOL reverse,
+		int width, int height,  int maxFrameX, int maxFrameY, int fps, BOOL reverse,
 		BOOL loop, void* cbFunction, void* obj);
 
 	/////////////////////////////////////
 
 	void addArrFrameAnimation(string aniKeyName,
-		int width, int height, int maxFrameX, int maxFrameY, int fps = (1.0f / 60.0f), int* playArr = NULL,
+		int width, int height,  int maxFrameX, int maxFrameY, int fps = (1.0f / 60.0f), int* playArr = NULL,
 		int arrLen = 0, BOOL loop = FALSE);
 
 	void addArrFrameAnimation(string aniKeyName,
-		int width, int height, int maxFrameX, int maxFrameY, int fps, int* playArr,
+		int width, int height,  int maxFrameX, int maxFrameY, int fps, int* playArr,
 		int arrLen, BOOL loop, void* cbFunction);
 
 	void addArrFrameAnimation(string aniKeyName,
-		int width, int height, int maxFrameX, int maxFrameY, int fps, int* playArr,
+		int width, int height,  int maxFrameX, int maxFrameY, int fps, int* playArr,
 		int arrLen, BOOL loop, void* cbFunction, void* obj);
 
 	/////////////////////////////////////
 
 	void addSectionFrameAnimation(string aniKeyName,
-		int width, int height, int maxFrameX, int maxFrameY, int fps = (1.0f / 60.0f), int start = 0,
+		int width, int height,  int maxFrameX, int maxFrameY, int fps = (1.0f / 60.0f), int start = 0,
 		int end = 0, BOOL reverse = FALSE, BOOL loop = FALSE);
 
 	void addSectionFrameAnimation(string aniKeyName,
-		int width, int height, int maxFrameX, int maxFrameY, int fps, int start,
+		int width, int height,  int maxFrameX, int maxFrameY, int fps, int start,
 		int end, BOOL reverse, BOOL loop, void* cbFunction);
 
 	void addSectionFrameAnimation(string aniKeyName,
-		int width, int height, int maxFrameX, int maxFrameY, int fps, int start,
+		int width, int height,  int maxFrameX, int maxFrameY, int fps, int start,
 		int end, BOOL reverse, BOOL loop, void* cbFunction, void* obj);
 
 	/////////////////////////////////////

@@ -5,6 +5,7 @@
 #include "LogoScene.h"
 #include "MainScene.h"
 #include "MainGameScene.h"
+#include "LoadingScene.h"
 #include "ItemManager.h"
 
 using namespace std;
@@ -26,6 +27,7 @@ HRESULT GameStudy::initialize(void)
 	SCENEMANAGER->addScene("logo", new LogoScene());
 	SCENEMANAGER->addScene("main", new MainScene());
 	SCENEMANAGER->addScene("mainGame", new MainGameScene());
+	SCENEMANAGER->addScene("loading", new LoadingScene());
 	SCENEMANAGER->changeScene("main");
 
 	_option.setVolume(0.5);
@@ -67,6 +69,7 @@ void GameStudy::imageLoad()
 {
 	IMAGEMANAGER->addImage("backMap", "backMap.bmp", 10, 10);
 
+	return;
 	//타일
 	IMAGEMANAGER->addImage("tile grass", IMAGE("tile/grass"), 288, 270, TRUE, TRANS_COLOR);
 	IMAGEMANAGER->addImage("tile stone", IMAGE("tile/stone"), 288, 270, TRUE, TRANS_COLOR);
@@ -105,6 +108,8 @@ void GameStudy::imageLoad()
 	IMAGEMANAGER->addImage("body costume image", IMAGE("/item/equip/body costume image"), 32, 32, TRUE, TRANS_COLOR);
 
 	IMAGEMANAGER->addImage("sword basic", IMAGE("/item/weapon/sword basic"), 32, 32, TRUE, TRANS_COLOR);
+	IMAGEMANAGER->addImage("bow basic", IMAGE("/item/weapon/bow basic"), 16, 32, TRUE, TRANS_COLOR);
+	IMAGEMANAGER->addImage("magic basic", IMAGE("/item/weapon/magic basic"), 28, 28, TRUE, TRANS_COLOR);
 
 	//플레이어
 	IMAGEMANAGER->addImage("player head", IMAGE("player/head"), 80, 1120, TRUE, TRANS_COLOR);
@@ -126,6 +131,8 @@ void GameStudy::imageLoad()
 
 void GameStudy::soundLoad()
 {
+	return;
+
 	//타일
 	SOUNDMANAGER->addSound("grass dig 0", SOUND("tile/grass dig 0.wav"), false, false);
 	SOUNDMANAGER->addSound("grass dig 1", SOUND("tile/grass dig 1.wav"), false, false);

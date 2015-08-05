@@ -68,10 +68,13 @@ namespace Terraria
 	};
 	enum UNIT_ACTION
 	{
+		ACTION_STAY = (UCHAR)0,
 		ACTION_SWING = (UCHAR)1,
 		ACTION_SHOOT = (UCHAR)2,
+		ACTION_NONE = (UCHAR)3
 	};
 
+	/*
 	enum UNIT_STATE
 	{
 		UNIT_STATE_STAY_LEFT				= (LEFT << DIRECT)	+ (LEFT << VIEW)	+ (STAY << MOVEMENT) + (FLOOR << POSITION),
@@ -103,6 +106,7 @@ namespace Terraria
 		ORDER_BUILD = 0x00000100,
 		ORDER_NONE = 0x00000000
 	} UNIT_ORDER;
+	*/
 
 	class Unit : public Physical
 	{
@@ -117,6 +121,13 @@ namespace Terraria
 
 		bool _isAttack;
 		float _attackFrameTime;
+
+		int _mhp;
+		int _hp;
+		int _mmp;
+		int _mp;
+		int _attack;
+		int _defense;
 	public:
 		Unit();
 		virtual ~Unit();
@@ -126,8 +137,8 @@ namespace Terraria
 		virtual void update();
 		virtual void render(HDC hdc);
 
-		void order(UNIT_ORDER order){ _order = order; }
-		void addOrder(UNIT_ORDER order){ _order += order; }
+		//void order(UNIT_ORDER order){ _order = order; }
+		//void addOrder(UNIT_ORDER order){ _order += order; }
 
 		inline void setMoveAccel(float moveAccel){ _moveAccel = moveAccel; }
 		inline void setMoveSpeed(float moveSpeed){ _moveSpeed = moveSpeed; }
@@ -164,6 +175,20 @@ namespace Terraria
 		virtual void freeFall();
 		virtual void floor();
 		virtual void action();
+		virtual void hit(UNIT_DIRECT direct, int atk = 0);
+
+		inline void setUnitInfo(int hp, int mp, int atk, int def){ _hp = _mhp = hp; _mp = _mmp = mp; _attack = atk; _defense = def; }
+		inline virtual void setHp(int hp){ _hp = hp; }
+		inline virtual void setMp(int mp){ _mp = mp; }
+		inline virtual void setAtk(int atk){ _attack = atk; }
+		inline virtual void setDef(int def){ _defense = def; }
+		inline virtual int getHp(){ return _hp; }
+		inline virtual int getMp(){ return _mp; }
+		inline virtual int getAtk(){ return _attack; }
+		inline virtual int getDef(){ return _defense; }
+		inline virtual int getMaxHp(){ return _mhp; }
+		inline virtual int getMaxMp(){ return _mmp; }
+
 	private:
 		void unitStateupdate();
 

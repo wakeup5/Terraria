@@ -58,5 +58,10 @@ public:
 
 	inline void setVolume(float volume){ _volume = max(0.0, min(1.0, volume)); }
 	inline float volume(){ return _volume; }
+
+	inline float getMouseAngle(float x, float y)
+	{
+		return myUtil::getAngle(x, y, inMouseX(), inMouseY());
+	}
 };
 

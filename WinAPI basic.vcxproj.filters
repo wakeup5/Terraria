@@ -91,6 +91,18 @@
     <Filter Include="GameStudy\GameClass\util">
       <UniqueIdentifier>{4b2eadc6-81bb-4ad7-a665-bae31a6e1309}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GameStudy\GameClass\loading">
+      <UniqueIdentifier>{936eb5d2-d193-49da-9293-5c80bcd5458b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameStudy\GameClass\object\unit\monster">
+      <UniqueIdentifier>{d68b8047-317b-4950-8658-bd86c68e3a63}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameStudy\GameClass\object\unit\player\ammo">
+      <UniqueIdentifier>{934580d1-0b2c-4aa9-89fb-330beb9bda2c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameStudy\GameClass\object\effect">
+      <UniqueIdentifier>{f71c7def-0ad4-4a35-a650-c19cf34d912f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -243,17 +255,32 @@
     <ClInclude Include="Collision.h">
       <Filter>GameStudy\GameClass\object\unit</Filter>
     </ClInclude>
-    <ClInclude Include="LoadingScene.h">
-      <Filter>GameStudy\GameClass\main</Filter>
-    </ClInclude>
-    <ClInclude Include="Loading.h">
-      <Filter>GameStudy\GameClass\main</Filter>
-    </ClInclude>
     <ClInclude Include="ItemManager.h">
       <Filter>GameStudy\GameClass\object\item</Filter>
     </ClInclude>
     <ClInclude Include="DroppedItemManager.h">
       <Filter>GameStudy\GameClass\object\item</Filter>
+    </ClInclude>
+    <ClInclude Include="LoadingScene.h">
+      <Filter>GameStudy\GameClass\loading</Filter>
+    </ClInclude>
+    <ClInclude Include="Loading.h">
+      <Filter>GameStudy\GameClass\loading</Filter>
+    </ClInclude>
+    <ClInclude Include="Zombie.h">
+      <Filter>GameStudy\GameClass\object\unit\monster</Filter>
+    </ClInclude>
+    <ClInclude Include="MonsterManager.h">
+      <Filter>GameStudy\GameClass\object\unit\monster</Filter>
+    </ClInclude>
+    <ClInclude Include="Ammo.h">
+      <Filter>GameStudy\GameClass\object\unit\player\ammo</Filter>
+    </ClInclude>
+    <ClInclude Include="TEffect.h">
+      <Filter>GameStudy\GameClass\object\effect</Filter>
+    </ClInclude>
+    <ClInclude Include="TEffectManager.h">
+      <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -392,17 +419,32 @@
     <ClCompile Include="Collision.cpp">
       <Filter>GameStudy\GameClass\object\unit</Filter>
     </ClCompile>
-    <ClCompile Include="LoadingScene.cpp">
-      <Filter>GameStudy\GameClass\main</Filter>
-    </ClCompile>
-    <ClCompile Include="Loading.cpp">
-      <Filter>GameStudy\GameClass\main</Filter>
-    </ClCompile>
     <ClCompile Include="ItemManager.cpp">
       <Filter>GameStudy\GameClass\object\item</Filter>
     </ClCompile>
     <ClCompile Include="DroppedItemManager.cpp">
       <Filter>GameStudy\GameClass\object\item</Filter>
+    </ClCompile>
+    <ClCompile Include="LoadingScene.cpp">
+      <Filter>GameStudy\GameClass\loading</Filter>
+    </ClCompile>
+    <ClCompile Include="Loading.cpp">
+      <Filter>GameStudy\GameClass\loading</Filter>
+    </ClCompile>
+    <ClCompile Include="Zombie.cpp">
+      <Filter>GameStudy\GameClass\object\unit\monster</Filter>
+    </ClCompile>
+    <ClCompile Include="MonsterManager.cpp">
+      <Filter>GameStudy\GameClass\object\unit\monster</Filter>
+    </ClCompile>
+    <ClCompile Include="Ammo.cpp">
+      <Filter>GameStudy\GameClass\object\unit\player\ammo</Filter>
+    </ClCompile>
+    <ClCompile Include="TEffect.cpp">
+      <Filter>GameStudy\GameClass\object\effect</Filter>
+    </ClCompile>
+    <ClCompile Include="TEffectManager.cpp">
+      <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

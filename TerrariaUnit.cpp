@@ -15,7 +15,7 @@ namespace Terraria
 
 	HRESULT Unit::initialize()
 	{
-		_order = (UNIT_INPUT_ORDER)0;
+		//_order = (UNIT_INPUT_ORDER)0;
 
 		setMoveAccel(0);
 		setMoveSpeed(0);
@@ -175,6 +175,21 @@ namespace Terraria
 		setMovement(MOVE);
 		setDirect(direct);
 		if (getAction() != ACTION_SHOOT) setView(direct);
+	}
+
+	void Unit::hit(UNIT_DIRECT direct, int atk)
+	{
+		setSpeedY(getSpeedY() - 100);
+		if (direct == LEFT)
+		{
+			setSpeedX(getSpeedX() - 300);
+		}
+		else
+		{
+			setSpeedX(getSpeedX() + 300);
+		}
+
+		setHp(getHp() - max(0, atk - getDef() / 2));
 	}
 
 }

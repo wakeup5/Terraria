@@ -2,6 +2,8 @@
 #include "TerrariaNode.h"
 #include "TerrariaUnit.h"
 #include "Physical.h"
+#include "PlayerManager.h"
+#include "MonsterManager.h"
 
 namespace Terraria
 {
@@ -14,10 +16,12 @@ namespace Terraria
 		static bool tileCollisionSide(Unit* unit, TileMap* tileMap);
 	public:
 		static void tileCollision(Unit* unit, TileMap* tileMap);
-
-	private:
-	public:
 		static bool tileCollision(Physical* obj, TileMap* tileMap);
+		static void tileCollision(MonsterManager* mm, TileMap* tileMap);
+
+		static bool playerMonsterCollision(Player* player, MonsterManager* mm);
+
+		static bool ammoMonsterCollision(Physical* ammo, MonsterManager* mm, int damage);
 	private:
 		Collision(){}
 		virtual ~Collision(){}

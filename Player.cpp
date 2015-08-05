@@ -14,7 +14,7 @@ namespace Terraria
 
 	}
 
-	HRESULT Player::initialize()
+	HRESULT Player::initialize(Inventory* inven)
 	{
 		Unit::initialize();
 		
@@ -33,23 +33,46 @@ namespace Terraria
 		_equip = new Equip;
 		_equip->initialize();
 
-		ANIMATEMANAGER->addSectionFrameAnimation("player stay left", 80, 1120, 2, 20, 0, 1, 1);
-		ANIMATEMANAGER->addSectionFrameAnimation("player stay right", 80, 1120, 2, 20, 0, 0, 0);
+		_inven = inven;
+
+		int width = _head->getWidth();
+		int height = _head->getHeight();
+
+		ANIMATEMANAGER->addSectionFrameAnimation("player stay left", width, height, 2, 20, 0, 1, 1);
+		ANIMATEMANAGER->addSectionFrameAnimation("player stay right", width, height, 2, 20, 0, 0, 0);
 		int moveLeftArr[] = { 13, 15, 17, 19, 21, 23, 25, 27 };
-		ANIMATEMANAGER->addArrFrameAnimation("player move left", 80, 1120, 2, 20, 25, moveLeftArr, 8, true);
+		ANIMATEMANAGER->addArrFrameAnimation("player move left", width, height, 2, 20, 25, moveLeftArr, 8, true);
 		int moveRightArr[] = { 12, 14, 16, 18, 20, 22, 24, 26 };
-		ANIMATEMANAGER->addArrFrameAnimation("player move right", 80, 1120, 2, 20, 25, moveRightArr, 8, true);
+		ANIMATEMANAGER->addArrFrameAnimation("player move right", width, height, 2, 20, 25, moveRightArr, 8, true);
+		int moveLeftArrRe[] = { 27, 25, 23, 21, 19, 17, 15, 13 };
+		ANIMATEMANAGER->addArrFrameAnimation("player move left reverse", width, height, 2, 20, 25, moveLeftArr, 8, true);
+		int moveRightArrRe[] = { 26, 24, 22, 20, 18, 16, 14, 12 };
+		ANIMATEMANAGER->addArrFrameAnimation("player move right reverse", width, height, 2, 20, 25, moveRightArr, 8, true);
 		int actionLeftArr[] = { 3, 5, 7, 9 };
-		ANIMATEMANAGER->addArrFrameAnimation("player action left", 80, 1120, 2, 20, 16, actionLeftArr, 4, false);
+		ANIMATEMANAGER->addArrFrameAnimation("player action left", width, height, 2, 20, 16, actionLeftArr, 4, false);
 		int actionRightArr[] = { 2, 4, 6, 8 };
-		ANIMATEMANAGER->addArrFrameAnimation("player action right", 80, 1120, 2, 20, 16, actionRightArr, 4, false);
-		ANIMATEMANAGER->addSectionFrameAnimation("player jump left", 80, 1120, 2, 20, 0, 11, 11);
-		ANIMATEMANAGER->addSectionFrameAnimation("player jump right", 80, 1120, 2, 20, 0, 10, 10);
+		ANIMATEMANAGER->addArrFrameAnimation("player action right", width, height, 2, 20, 16, actionRightArr, 4, false);
+		ANIMATEMANAGER->addSectionFrameAnimation("player jump left", width, height, 2, 20, 0, 11, 11);
+		ANIMATEMANAGER->addSectionFrameAnimation("player jump right", width, height, 2, 20, 0, 10, 10);
+
+		//½´ÆÃ °ø°Ý
+		ANIMATEMANAGER->addSectionFrameAnimation("player shoot right 1", width, height, 2, 20, 0, 2, 2);
+		ANIMATEMANAGER->addSectionFrameAnimation("player shoot right 2", width, height, 2, 20, 0, 4, 4);
+		ANIMATEMANAGER->addSectionFrameAnimation("player shoot right 3", width, height, 2, 20, 0, 6, 6);
+		ANIMATEMANAGER->addSectionFrameAnimation("player shoot right 4", width, height, 2, 20, 0, 8, 8);
+		ANIMATEMANAGER->addSectionFrameAnimation("player shoot right 5", width, height, 2, 20, 0, 0, 0);
+
+		ANIMATEMANAGER->addSectionFrameAnimation("player shoot left 1", width, height, 2, 20, 0, 3, 3);
+		ANIMATEMANAGER->addSectionFrameAnimation("player shoot left 2", width, height, 2, 20, 0, 5, 5);
+		ANIMATEMANAGER->addSectionFrameAnimation("player shoot left 3", width, height, 2, 20, 0, 7, 7);
+		ANIMATEMANAGER->addSectionFrameAnimation("player shoot left 4", width, height, 2, 20, 0, 9, 9);
+		ANIMATEMANAGER->addSectionFrameAnimation("player shoot left 5", width, height, 2, 20, 0, 1, 1);
 
 		_animate = _legAnimate = ANIMATEMANAGER->findAnimation("player stay left");
 
 		setState(UnitState{ US(LEFT, LEFT, STAY, JUMP, 0) });
 
+		setUnitInfo(100, 100, 0, 0);
 		//SOUNDMANAGER->pause("player run");
 
 		return S_OK;
@@ -61,6 +84,8 @@ namespace Terraria
 	//void update();
 	void Player::render(HDC hdc)
 	{
+		if (_unbeatableTime > 0 && ((int)_unbeatableTime % 100) > 50) return;
+
 		Image* image = NULL;
 		
 		float x = _option.getRenderX(getX()) - _animate->getFrameWidth() / 2;
@@ -77,19 +102,23 @@ namespace Terraria
 			_hair->aniRender(hdc, x, y, _animate);
 		}
 
+		//¹ÙÁö¿Í ÇÏÀÇ
+		_leg->aniRender(hdc, x, y, _legAnimate);
+		if ((image = _equip->getEquipImage(EQUIP_PANT)) != NULL) image->aniRender(hdc, x, y, _legAnimate);
+
 		//½ºÀ® ¹«±â ÈÖµÎ¸£±â
 		if (getAction() == ACTION_SWING)
 		{
 			swingRender(hdc);
 		}
+		else if (getAction() == ACTION_SHOOT)
+		{
+			shootRender(hdc);
+		}
 
 		//¹Ùµð¿Í °©¿Ê
 		_body->aniRender(hdc, x, y, _animate);
 		if ((image = _equip->getEquipImage(EQUIP_TOP)) != NULL) image->aniRender(hdc, x, y, _animate);
-
-		//¹ÙÁö¿Í ÇÏÀÇ
-		_leg->aniRender(hdc, x, y, _legAnimate);
-		if ((image = _equip->getEquipImage(EQUIP_PANT)) != NULL) image->aniRender(hdc, x, y, _legAnimate);
 		
 		//¾Ç¼¼¼­¸®
 		if ((image = _equip->getEquipImage(EQUIP_ACCESSORY)) != NULL) image->aniRender(hdc, x, y, _animate);
@@ -101,22 +130,22 @@ namespace Terraria
 		{
 			if (_actionTime > 0)
 			{
-				_actionTime -= TIMEMANAGER->getElapsedTime();
+				//_actionTime -= TIMEMANAGER->getElapsedTime();
 
 				float angleR = 0;
 				if (getDirect() == LEFT)
 				{
-					angleR = M_PI + (_actionTime / (TIMEMANAGER->getElapsedTime() * 12)) * M_PI;
+					angleR = M_PI + (_actionTime / getAtkSpeed()) * M_PI;
 				}
 				else
 				{
-					angleR = M_PI - (_actionTime / (TIMEMANAGER->getElapsedTime() * 12)) * M_PI;
+					angleR = M_PI - (_actionTime / getAtkSpeed()) * M_PI;
 				}
 				Image* image = _selectItem->getImage();
 				float itemX, itemY;
 
-				itemX = (getX() - _option.cameraX() + (_option.width() / 2)) + sin(angleR) * 25;
-				itemY = (getY() - _option.cameraY() + (_option.height() / 2)) - cos(angleR) * 25;
+				itemX = _option.getRenderX(getX()) + sin(angleR) * 25;
+				itemY = _option.getRenderY(getY()) - cos(angleR) * 25;
 
 				image->setCenter(itemX, itemY);
 				image->rotateRender(hdc, -(angleR - M_PI / 4));
@@ -124,12 +153,31 @@ namespace Terraria
 		}
 	}
 
+	void Player::shootRender(HDC hdc)
+	{
+		//float angleR = -myUtil::getAngle(getX(), getY(), _option.inMouseX(), _option.inMouseY());
+
+		Image* image = _selectItem->getImage();
+		float itemX, itemY;
+
+		itemX = (getX() - _option.cameraX() + (_option.width() / 2)) + sin(_shootAngle + M_PI / 2) * 15;
+		itemY = (getY() - _option.cameraY() + (_option.height() / 2)) - cos(_shootAngle + M_PI / 2) * 15;
+
+		image->setCenter(itemX, itemY);
+		image->rotateRender(hdc, -(_shootAngle));
+	}
+
 	void Player::action()
 	{
+		if (_actionTime > 0) return;
+
 		Unit::action();
-		if (_selectItem != NULL && _selectItem->getItemType() == ITEM_WEAPON_BOW)
+		if (_selectItem != NULL && 
+			((_selectItem->getItemType() == ITEM_WEAPON_BOW && getArrow() != NULL) ||
+			_selectItem->getItemType() == ITEM_WEAPON_GUN && getBullet() != NULL))
 		{
 			setAction(ACTION_SHOOT);
+			_shootAngle = -myUtil::getAngle(getX(), getY(), _option.inMouseX(), _option.inMouseY());
 			if (getX() > _option.inMouseX())
 			{
 				setView(LEFT);
@@ -146,7 +194,7 @@ namespace Terraria
 		animate();
 		_animate->start();
 
-		_actionTime = TIMEMANAGER->getElapsedTime() * 12;
+		_actionTime = getAtkSpeed();
 	}
 	void Player::move(UNIT_DIRECT direct)
 	{
@@ -162,6 +210,7 @@ namespace Terraria
 	{
 		Unit::jump();
 		animate();
+		//SOUNDMANAGER->play("player jump", _option.volume());
 	}
 	void Player::freeFall()
 	{
@@ -178,7 +227,15 @@ namespace Terraria
 	{
 		Unit::renew();
 		if (!_animate->isPlay()) _animate->start();
-		_animate->frameUpdate(1.0f / MAX_GAME_FPS);
+
+		if (getAction() == ACTION_SWING)
+		{
+			_animate->frameUpdate(4 / getAtkSpeed());// 1.0f / MAX_GAME_FPS);
+		}
+		else
+		{ 
+			_animate->frameUpdate(1.0f / MAX_GAME_FPS);
+		}
 
 		if (_animate != _legAnimate)
 		{
@@ -186,7 +243,7 @@ namespace Terraria
 			_legAnimate->frameUpdate(1.0f / MAX_GAME_FPS);
 		}
 
-		if (!_animate->isPlay())
+		if (_actionTime < 0 || !_animate->isPlay())
 		{
 			if (getAction() == ACTION_SWING)
 			{
@@ -198,22 +255,26 @@ namespace Terraria
 				{
 					setView(getDirect());
 				}
+				else
+				{
+					setDirect(getView());
+				}
 				setAction(0);
 			}
 			animate();
 		}
+		
+		printf("%f\n", _actionTime);
 
-		if (getMovement() == MOVE && getPosition() == FLOOR)
+		if (getMovement() == MOVE &&
+			getPosition() == FLOOR && 
+			!SOUNDMANAGER->isPlay("player run"))
 		{
-			//SOUNDMANAGER->resume("player run");
 			SOUNDMANAGER->play("player run", _option.volume());
 		}
-		else
-		{
-			//SOUNDMANAGER->pause("player run");
-			SOUNDMANAGER->stop("player run");
-		}
-		//animate();
+
+		if (_actionTime > 0) _actionTime -= TIMEMANAGER->getElapsedTime() * 1000;
+		if (_unbeatableTime > 0) _unbeatableTime -= TIMEMANAGER->getElapsedTime() * 1000;
 	}
 
 	void Player::animate()
@@ -244,6 +305,19 @@ namespace Terraria
 			_animate = _legAnimate = ANIMATEMANAGER->findAnimation("player jump right");
 		}
 
+		//leg reverse
+		if (getMovement() == MOVE && getView() != getDirect())
+		{
+			if (getView() == LEFT)
+			{
+				_legAnimate = ANIMATEMANAGER->findAnimation("player move left reverse");
+			}
+			else
+			{
+				_legAnimate = ANIMATEMANAGER->findAnimation("player move right reverse");
+			}
+		}
+
 		//swing
 		if (getAction() == ACTION_SWING)
 		{
@@ -260,6 +334,38 @@ namespace Terraria
 		//shoot
 		if (getAction() == ACTION_SHOOT)
 		{
+			float angle = myUtil::getAngle(getX(), getY(), _option.inMouseX(), _option.inMouseY());
+			angle = myUtil::degFromRad(angle);
+
+			while (angle > 360) angle -= 360;
+			while (angle < 0) angle += 360;
+
+			if ((angle >= 90) && (angle < 140))
+			{
+				_animate = ANIMATEMANAGER->findAnimation("player shoot left 2");
+			}
+			else if ((angle >= 140) && (angle < 190))
+			{
+				_animate = ANIMATEMANAGER->findAnimation("player shoot left 3");
+			}
+			else if ((angle >= 190) && (angle < 270))
+			{
+				_animate = ANIMATEMANAGER->findAnimation("player shoot left 4");
+			}
+			else if ((angle >= 40) && (angle < 90))
+			{
+				_animate = ANIMATEMANAGER->findAnimation("player shoot right 2");
+			}
+			else if ((angle >= 270) && (angle < 350))
+			{
+				_animate = ANIMATEMANAGER->findAnimation("player shoot right 4");
+			}
+			else
+			{
+				_animate = ANIMATEMANAGER->findAnimation("player shoot right 3");
+			}
+
+			/*
 			if (getView() == LEFT)
 			{
 				_animate = ANIMATEMANAGER->findAnimation("player action left");
@@ -268,6 +374,7 @@ namespace Terraria
 			{
 				_animate = ANIMATEMANAGER->findAnimation("player action right");
 			}
+			*/
 		}
 	}
 
@@ -278,5 +385,89 @@ namespace Terraria
 		{
 
 		}
+	}
+
+	void Player::hit(UNIT_DIRECT direct, int atk)
+	{
+		Unit::hit(direct, atk);
+		_unbeatableTime = 1000;
+
+		switch (RANDOM->getInt(3))
+		{
+		case 0:
+			SOUNDMANAGER->play("hit 1", _option.volume());
+			break;
+		case 1:
+			SOUNDMANAGER->play("hit 2", _option.volume());
+			break;
+		case 2: default:
+			SOUNDMANAGER->play("hit 3", _option.volume());
+			break;
+		}
+	}
+
+	float Player::getAtkSpeed()
+	{ 
+		if (_selectItem != NULL && _selectItem->getAbillity().atkSpeed > 0)
+			return _selectItem->getAbillity().atkSpeed;
+		else
+			return 333;
+	}
+
+	int Player::getHp()
+	{
+		return Unit::getHp();
+	}
+	int Player::getMp()
+	{
+		return Unit::getMp();
+	}
+	int Player::getAtk()
+	{
+		float atk = (_selectItem == NULL) ? 0 : _selectItem->getAbillity().attack;
+		return max(0, Unit::getAtk() + _equip->getTotalAbillity().attack + atk);
+	}
+	int Player::getDef()
+	{
+		return Unit::getDef() + _equip->getTotalAbillity().defense;
+	}
+	int Player::getMaxHp()
+	{
+		return Unit::getMaxHp() + _equip->getTotalAbillity().HP;
+	}
+	int Player::getMaxMp()
+	{
+		return Unit::getMaxMp() + _equip->getTotalAbillity().MP;
+	}
+
+	Item* Player::getArrow()
+	{
+		Item* item;
+		for (int i = 0; i < INVENTORY_LENGTH; i++)
+		{
+			item = _inven->getItemInfo(i);
+			if (item != NULL &&
+				item->getItemType() == ITEM_AMMO_ARROW)
+			{
+				return item;
+			}
+		}
+
+		return NULL;
+	}
+	Item* Player::getBullet()
+	{
+		Item* item;
+		for (int i = 0; i < INVENTORY_LENGTH; i++)
+		{
+			item = _inven->getItemInfo(i);
+			if (item != NULL &&
+				item->getItemType() == ITEM_AMMO_BULLET)
+			{
+				return item;
+			}
+		}
+
+		return NULL;
 	}
 }

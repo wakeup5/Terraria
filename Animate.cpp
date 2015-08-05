@@ -129,6 +129,8 @@ void Animate::setPlayFrame(int* playArr, int arrLen, BOOL loop)
 	//뻉뺑이냐?
 	_isLoop = loop;
 
+	_frameNum = arrLen;
+
 	//플레이 리스트 벡터 클리어
 	_playList.clear();
 

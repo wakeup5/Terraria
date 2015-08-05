@@ -37,4 +37,6 @@ namespace myUtil
 	bool existBit(UINT variable, UINT bit);
 
 	HANDLE AddResourceFont(LPCTSTR ResID, DWORD *Installed);
+
+
 }

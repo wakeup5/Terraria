@@ -2,6 +2,7 @@
 #include "TerrariaNode.h"
 #include "Player.h"
 #include "Inventory.h"
+#include "TileMap.h"
 
 namespace Terraria
 {
@@ -10,6 +11,7 @@ namespace Terraria
 	private:
 		Player* _player;
 		Inventory* _inven;
+		TileMap* _map;
 
 		bool _invenOpen;
 		RECT _invenRc[INVENTORY_LENGTH];
@@ -17,13 +19,14 @@ namespace Terraria
 
 		Image* _invenBack;
 		Image* _invenBackSelect;
+		Image* _minimapBack;
 
 		Item* _selectItem = NULL;
 		Item* _selectItem2 = NULL;
 
 		int _selectNum = 0;
 	public:
-		HRESULT initialize(Player* player, Inventory* inven);
+		HRESULT initialize(Player* player, Inventory* inven, TileMap* tileMap);
 		void release();
 		void update();
 		void render(HDC hdc);

@@ -52,7 +52,9 @@ namespace Terraria
 		return S_OK;
 	}
 
-	HRESULT Item::initialize(string itemName, string imageName, string spriteImageName, ITEM_TYPE type, EQUIPMENT_TYPE equipType, int maxAmount, int hp, int mp, int attack, int defense)
+	HRESULT Item::initialize(
+		string itemName, string imageName, string spriteImageName, ITEM_TYPE type, EQUIPMENT_TYPE equipType,
+		int maxAmount, int hp, int mp, int attack, int defense, float atkSpeed, int shootNum)
 	{
 		if (type == ITEM_EQUIP)
 		{
@@ -63,7 +65,7 @@ namespace Terraria
 			initialize(itemName, imageName, spriteImageName, type, maxAmount);
 		}
 
-		setAbillity(hp, mp, attack, defense);
+		setAbillity(hp, mp, attack, defense, atkSpeed, shootNum);
 
 		return S_OK;
 	}

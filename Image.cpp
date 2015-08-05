@@ -302,7 +302,6 @@ void Image::render(HDC hdc, int destX, int destY, int destWidth, int destHeight,
 		destY = 0;
 	}
 	
-
 	//투명도가 있으면
 	if (alpha != 255)
 	{

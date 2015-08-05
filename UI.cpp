@@ -13,14 +13,16 @@ namespace Terraria
 
 	}
 
-	HRESULT UI::initialize(Player* player, Inventory* inven)
+	HRESULT UI::initialize(Player* player, Inventory* inven, TileMap* tileMap)
 	{
 		_player = player;
 		_inven = inven;
+		_map = tileMap;
 		_invenOpen = false;
 
 		_invenBack = IMAGEMANAGER->findImage("ui inven back");
 		_invenBackSelect = IMAGEMANAGER->findImage("ui inven back select");
+		_minimapBack = IMAGEMANAGER->findImage("ui minimap");
 
 		float x, y;
 
@@ -166,14 +168,7 @@ namespace Terraria
 
 					if (item->getAmount() > 1)
 					{
-						char str[5];
-						sprintf_s(str, "%d", item->getAmount());
-
-						HFONT f = CreateFont(25, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, "HW Andy"), of = (HFONT)SelectObject(hdc, f);
-						TextOut(hdc, _invenRc[i].right - 10, _invenRc[i].bottom - 25, str, strlen(str));
-
-						SelectObject(hdc, of);
-						DeleteObject(f);
+						writeText(hdc, to_string(item->getAmount()), _invenRc[i].left + 5, _invenRc[i].top + 2, 20, RGB(50, 50, 50), "HW Andy");
 					}
 				}
 			}
@@ -207,31 +202,70 @@ namespace Terraria
 
 					if (item->getAmount() > 1)
 					{
-						char str[5];
-						sprintf_s(str, "%d", item->getAmount());
-
-						HFONT f = CreateFont(25, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, "HW Andy"), of = (HFONT)SelectObject(hdc, f);
-						TextOut(hdc, _invenRc[i].right - 10, _invenRc[i].bottom - 25, str, strlen(str));
-
-						SelectObject(hdc, of);
-						DeleteObject(f);
+						writeText(hdc, to_string(item->getAmount()), _invenRc[i].left + 5, _invenRc[i].top + 2, 20, RGB(50, 50, 50), "HW Andy");
 					}
 				}
+			}
+
+			if (_selectItem2 != NULL)
+			{
+				_selectItem2->getImage()->render(hdc, _option.mouseX(), _option.mouseY());
 			}
 		}
 
 		if (_selectItem != NULL)
 		{
 			_selectItem->getImage()->render(hdc, _option.mouseX(), _option.mouseY());
-		}
+		}	
 
+		//맵, 플레이어
+		int textColorValue = 255 - abs(sin(TIMEMANAGER->getWorldTime()) * 127);
+		writeText(hdc, "Life : " + to_string(_player->getHp()) + "/" + to_string(_player->getMaxHp()), _option.width() - 160, 10, 25, RGB(textColorValue, textColorValue, textColorValue));
 
-		if (_selectItem2 != NULL)
+		return;
+		int playerX = _player->getX() / METER_TO_PIXEL;
+		int playerY = _player->getY() / METER_TO_PIXEL;
+		int x, y;
+		COLORREF color = RGB(0, 0, 0);
+
+		for (int i = -30; i < 30; i++)
 		{
-			_selectItem2->getImage()->render(hdc, _option.mouseX(), _option.mouseY());
-		}
+			x = playerX + i;
+			if (x < 0 || x > MAP_SIZE_X) continue;
 
-		
+			for (int j = -30; j < 30; j++)
+			{
+				y = playerY + j;
+				if (y < 0 || y > MAP_SIZE_Y) continue;
+
+				if (_map->getTile(x, y).getDarkDepth() > 3)
+				{
+					SetPixel(hdc, _option.width() - 120 + i, 120 + j, RGB(0, 0, 0));
+					continue;
+				}
+
+				switch (_map->getTile(x, y).getType())
+				{
+				case TILE_GRASS:
+					color = RGB(200, 100, 100);
+					break;
+				case TILE_STONE:
+					color = RGB(50, 50, 50);
+					break;
+				case TILE_SILVER:
+					color = RGB(180, 180, 180);
+					break;
+				case TILE_GOLD:
+					color = RGB(255, 200, 0);
+					break;
+				case TILE_NONE: default:
+					color = RGB(100, 100, 255);
+					break;
+				}
+				SetPixel(hdc, _option.width() - 120 + i, 120 + j, color);
+			}
+		}
+		_minimapBack->render(hdc, _option.width() - 180, 60);
 	}
 
 	void UI::uiClickUpdate()
@@ -260,6 +294,10 @@ namespace Terraria
 				_player->setSelectItem(_selectItem);
 
 				SOUNDMANAGER->play("ui grab", _option.volume());
+
+				//플레이어 액션 안함
+				_player->setAction(ACTION_NONE);
+				_player->setActionTime(200);
 			}
 		}
 
@@ -290,6 +328,10 @@ namespace Terraria
 				_player->setSelectItem(_selectItem);
 
 				SOUNDMANAGER->play("ui grab", 0.5);
+
+				//플레이어 액션 안함
+				_player->setAction(ACTION_NONE);
+				_player->setActionTime(200);
 			}
 		}
 	}

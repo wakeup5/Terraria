@@ -68,6 +68,9 @@ public:
 
 	//프레임 세로 크기 얻어온다
 	inline int getFrameHeight(void) { return _frameHeight; }
+
+	inline int maxFrame(){ return _frameNum; }
+	inline int currentFrame(){ return _nowPlayIndex; }
 public:
 	Animate();
 	virtual ~Animate();

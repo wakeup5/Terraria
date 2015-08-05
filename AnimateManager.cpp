@@ -39,14 +39,13 @@ void AnimateManager::render(void)
 
 //처음부터 그냥 애니메이션..
 void AnimateManager::addDefFrameAnimation(string aniKeyName,
-	int width, int height, int maxFrameX, int maxFrameY, int fps, BOOL reverse,
+	int width, int height,  int maxFrameX, int maxFrameY, int fps, BOOL reverse,
 	BOOL loop)
 {
 	
 	Animate* ani = new Animate;
-
-	ani->init(width, height,
-		 width / maxFrameX, height / maxFrameY);
+	
+	ani->init(width, height, width / maxFrameX, height / maxFrameY);
 	ani->setDefPlayFrame(reverse, loop);
 	ani->setFPS(fps);
 
@@ -54,14 +53,12 @@ void AnimateManager::addDefFrameAnimation(string aniKeyName,
 }
 
 void AnimateManager::addDefFrameAnimation(string aniKeyName,
-	int width, int height, int maxFrameX, int maxFrameY, int fps, BOOL reverse,
+	int width, int height,  int maxFrameX, int maxFrameY, int fps, BOOL reverse,
 	BOOL loop, void* cbFunction)
 {
-	
 	Animate* ani = new Animate;
 
-	ani->init(width, height,
-		 width / maxFrameX, height / maxFrameY);
+	ani->init(width, height, width / maxFrameX, height / maxFrameY);
 	ani->setDefPlayFrame(reverse, loop, (CALLBACK_FUNC)cbFunction);
 	ani->setFPS(fps);
 
@@ -69,14 +66,12 @@ void AnimateManager::addDefFrameAnimation(string aniKeyName,
 }
 
 void AnimateManager::addDefFrameAnimation(string aniKeyName,
-	int width, int height, int maxFrameX, int maxFrameY, int fps, BOOL reverse,
+	int width, int height,  int maxFrameX, int maxFrameY, int fps, BOOL reverse,
 	BOOL loop, void* cbFunction, void* obj)
 {
-	
 	Animate* ani = new Animate;
 
-	ani->init(width, height,
-		 width / maxFrameX, height / maxFrameY);
+	ani->init(width, height, width / maxFrameX, height / maxFrameY);
 	ani->setDefPlayFrame(reverse, loop, (CALLBACK_FUNC_PARAMETER)cbFunction, obj);
 	ani->setFPS(fps);
 
@@ -85,14 +80,12 @@ void AnimateManager::addDefFrameAnimation(string aniKeyName,
 
 //수동으로 선택한 애니메이션
 void AnimateManager::addArrFrameAnimation(string aniKeyName,
-	int width, int height, int maxFrameX, int maxFrameY, int fps, int* playArr,
+	int width, int height,  int maxFrameX, int maxFrameY, int fps, int* playArr,
 	int arrLen, BOOL loop)
 {
-	
 	Animate* ani = new Animate;
 
-	ani->init(width, height,
-		 width / maxFrameX, height / maxFrameY);
+	ani->init(width, height, width / maxFrameX, height / maxFrameY);
 	ani->setPlayFrame(playArr, arrLen, loop);
 	ani->setFPS(fps);
 
@@ -100,14 +93,12 @@ void AnimateManager::addArrFrameAnimation(string aniKeyName,
 }
 
 void AnimateManager::addArrFrameAnimation(string aniKeyName,
-	int width, int height, int maxFrameX, int maxFrameY, int fps, int* playArr,
+	int width, int height,  int maxFrameX, int maxFrameY, int fps, int* playArr,
 	int arrLen, BOOL loop, void* cbFunction)
 {
-	
 	Animate* ani = new Animate;
 
-	ani->init(width, height,
-		 width / maxFrameX, height / maxFrameY);
+	ani->init(width, height, width / maxFrameX, height / maxFrameY);
 	ani->setPlayFrame(playArr, arrLen, loop, (CALLBACK_FUNC)cbFunction);
 	ani->setFPS(fps);
 
@@ -115,14 +106,12 @@ void AnimateManager::addArrFrameAnimation(string aniKeyName,
 }
 
 void AnimateManager::addArrFrameAnimation(string aniKeyName,
-	int width, int height, int maxFrameX, int maxFrameY, int fps, int* playArr,
+	int width, int height,  int maxFrameX, int maxFrameY, int fps, int* playArr,
 	int arrLen, BOOL loop, void* cbFunction, void* obj)
 {
-	
 	Animate* ani = new Animate;
 
-	ani->init(width, height,
-		 width / maxFrameX, height / maxFrameY);
+	ani->init(width, height, width / maxFrameX, height / maxFrameY);
 	ani->setPlayFrame(playArr, arrLen, loop, (CALLBACK_FUNC_PARAMETER)cbFunction, obj);
 	ani->setFPS(fps);
 
@@ -130,7 +119,7 @@ void AnimateManager::addArrFrameAnimation(string aniKeyName,
 }
 
 //구간반복 애니메이션
-void AnimateManager::addSectionFrameAnimation(string aniKeyName, int width, int height, int maxFrameX, int maxFrameY, int fps, int start, int end, BOOL reverse, BOOL loop)
+void AnimateManager::addSectionFrameAnimation(string aniKeyName,int width, int height, int maxFrameX, int maxFrameY, int fps, int start, int end, BOOL reverse, BOOL loop)
 {
 	Animate* ani = new Animate;
 
@@ -142,14 +131,12 @@ void AnimateManager::addSectionFrameAnimation(string aniKeyName, int width, int 
 }
 
 void AnimateManager::addSectionFrameAnimation(string aniKeyName,
-	int width, int height, int maxFrameX, int maxFrameY, int fps, int start,
+	int width, int height,  int maxFrameX, int maxFrameY, int fps, int start,
 	int end, BOOL reverse, BOOL loop, void* cbFunction)
 {
-	
 	Animate* ani = new Animate;
 
-	ani->init(width, height,
-		 width / maxFrameX, height / maxFrameY);
+	ani->init(width, height, width / maxFrameX, height / maxFrameY);
 	ani->setPlayFrame(start, end, reverse, loop, (CALLBACK_FUNC)cbFunction);
 	ani->setFPS(fps);
 
@@ -157,14 +144,12 @@ void AnimateManager::addSectionFrameAnimation(string aniKeyName,
 }
 
 void AnimateManager::addSectionFrameAnimation(string aniKeyName,
-	int width, int height, int maxFrameX, int maxFrameY, int fps, int start,
+	int width, int height,  int maxFrameX, int maxFrameY, int fps, int start,
 	int end, BOOL reverse, BOOL loop, void* cbFunction, void* obj)
 {
-	
 	Animate* ani = new Animate;
 
-	ani->init(width, height,
-		 width / maxFrameX, height / maxFrameY);
+	ani->init(width, height, width / maxFrameX, height / maxFrameY);
 	ani->setPlayFrame(start, end, reverse, loop, (CALLBACK_FUNC_PARAMETER)cbFunction, obj);
 	ani->setFPS(fps);
 
