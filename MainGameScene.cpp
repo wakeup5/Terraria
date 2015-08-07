@@ -20,7 +20,7 @@ HRESULT MainGameScene::initialize()
 	DATAMANAGER->loadDatabase("item", RESOURCE("data/item.ini"));
 	ITEMMANAGER->inputItemInfo();
 
-	TEffectManager::getSingleton()->initialize(200);
+	TEffectManager::getSingleton()->initialize(1000);
 	
 	_map = new TileMap;
 	_dropItemManager = new DroppedItemManager;
@@ -101,7 +101,7 @@ void MainGameScene::update()
 
 			TEffectManager::getSingleton()->createEffects(
 				(*iter)->getX(), (*iter)->getY(), //x, y
-				8, _option.getMouseAngle(_pm->getPlayer()->getX(), _pm->getPlayer()->getY()), METER_TO_PIXEL * 5, // angle 
+				8, _option.getMouseAngle(_pm->getPlayer()->getX(), _pm->getPlayer()->getY()), METER_TO_PIXEL * 10, // angle 
 				"blood", 1, 5, 1000, true); //option
 
 			SAFE_RELEASE(*iter);

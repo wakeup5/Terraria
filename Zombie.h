@@ -1,5 +1,6 @@
 #pragma once
 #include "TerrariaUnit.h"
+#include "TEffectManager.h"
 
 namespace Terraria
 {
@@ -24,6 +25,8 @@ namespace Terraria
 		virtual void action();
 
 		virtual void renew();
+
+		virtual void hit(UNIT_DIRECT direct, int atk = 0);
 
 		Zombie();
 		virtual ~Zombie();

@@ -89,6 +89,7 @@
     <ClInclude Include="Button.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Collision.h" />
+    <ClInclude Include="CombineUI.h" />
     <ClInclude Include="commonMacroFunction.h" />
     <ClInclude Include="Database.h" />
     <ClInclude Include="DataManager.h" />
@@ -150,6 +151,7 @@
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Collision.cpp" />
+    <ClCompile Include="CombineUI.cpp" />
     <ClCompile Include="Database.cpp" />
     <ClCompile Include="DataManager.cpp" />
     <ClCompile Include="DroppedItem.cpp" />

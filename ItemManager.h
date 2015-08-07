@@ -5,11 +5,13 @@
 
 namespace Terraria
 {
+	typedef std::vector<Item*> vItem;
+	typedef vItem::iterator viItem;
 	class ItemManager : public SingletonBase < ItemManager >
 	{
 	private:
-		std::vector<Item*> _vItem;
-		std::vector<Item*>::iterator _viItem;
+		vItem _vItem;
+		viItem _viItem;
 	public:
 		HRESULT initialize();
 		void release();
@@ -20,7 +22,8 @@ namespace Terraria
 		int getMaxAmount(std::string itemName);
 
 		void inputItemInfo();
-		void addItemInfo(string name, string image, string spriteImage, ITEM_TYPE item, EQUIPMENT_TYPE equip, int max, int hp, int mp, int atk, int def, float atkSpeed = 333, int shootNum = 0);
+		void addItemInfo(string name, string image, string spriteImage, 
+			ITEM_TYPE item, EQUIPMENT_TYPE equip, int max, int hp, int mp, int atk, int def, float atkSpeed = 333, int shootNum = 0);
 
 		ItemManager();
 		~ItemManager();

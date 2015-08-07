@@ -130,7 +130,7 @@ namespace Terraria
 	{
 		Item* select = _player->getSelectItem();
 		POINT inMouseTilePt = _map->getPointByMouse(_option.inMousePt());
-		if (_map->getTile(inMouseTilePt.x, inMouseTilePt.y).getType() == TILE_NONE)
+		if (_map->getTile(inMouseTilePt.x, inMouseTilePt.y)->getType() == TILE_NONE)
 		{
 			_map->setTileType(inMouseTilePt, type);
 			select->subAmount(1);
@@ -150,6 +150,11 @@ namespace Terraria
 			if (IntersectRect(&r, &atkRect, &(*iter)->getRect()))
 			{
 				(*iter)->hit((UNIT_DIRECT)_player->getDirect(), _player->getAtk());
+
+				TEffectManager::getSingleton()->createEffects(
+					(*iter)->getX(), (*iter)->getY(), //x, y
+					8, _option.getMouseAngle(_player->getX(), _player->getY()), METER_TO_PIXEL * 10, // angle 
+					"blood", 1, 5, 1000, true); //option
 			}
 		}
 	}

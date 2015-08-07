@@ -45,6 +45,6 @@ namespace Terraria
 	}
 	void TEffect::render(HDC hdc)
 	{
-		_image->render(hdc, 127);
+		_image->render(hdc, 160);
 	}
 }

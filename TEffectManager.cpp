@@ -21,16 +21,23 @@ namespace Terraria
 	}
 	void TEffectManager::release()
 	{
+		/*
 		viEffect iter = _vEffect.begin();
 		for (; iter != _vEffect.end(); iter++)
 		{
 			SAFE_RELEASE(*iter);
+		}
+		*/
+		for (int i = 0; i < _vEffect.size(); i++)
+		{
+			SAFE_RELEASE(_vEffect[i]);
 		}
 
 		_vEffect.clear();
 	}
 	void TEffectManager::update()
 	{
+		/*
 		viEffect iter = _vEffect.begin();
 		for (; iter != _vEffect.end();)
 		{
@@ -46,13 +53,31 @@ namespace Terraria
 				iter++;
 			}
 		}
+		*/
+		for (int i = 0; i < _vEffect.size(); i++)
+		{
+			_vEffect[i]->update();
+
+			if (!_vEffect[i]->isLive())
+			{
+				SAFE_RELEASE(_vEffect[i]);
+				_vEffect.erase(_vEffect.begin() + i);
+				i--;
+			}
+		}
 	}
 	void TEffectManager::render(HDC hdc)
 	{
+		/*
 		viEffect iter = _vEffect.begin();
 		for (; iter != _vEffect.end(); iter++)
 		{
 			(*iter)->render(hdc);
+		}
+		*/
+		for (int i = 0; i < _vEffect.size(); i++)
+		{
+			_vEffect[i]->render(hdc);
 		}
 	}
 
@@ -91,8 +116,8 @@ namespace Terraria
 
 			createEffect(
 				x, y, //x, y
-				angle + RANDOM->getFloatTo(-0.1, 0.1), // angle 
-				(speed + (speed * sin(angle - playerAngle + M_PI / 2)) / 1.2) * RANDOM->getFloatTo(0.8, 1.2), //speed
+				angle + RANDOM->getFloat(M_PI / 4), // angle 
+				(speed + (speed * sin(angle - playerAngle + M_PI / 2)) * 2), //speed
 				imageName, frameX, frameY, lifeTime, false, isGravity); //option
 		}
 	}

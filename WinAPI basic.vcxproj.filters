@@ -280,7 +280,10 @@
       <Filter>GameStudy\GameClass\object\effect</Filter>
     </ClInclude>
     <ClInclude Include="TEffectManager.h">
-      <Filter>헤더 파일</Filter>
+      <Filter>GameStudy\GameClass\object\effect</Filter>
+    </ClInclude>
+    <ClInclude Include="CombineUI.h">
+      <Filter>GameStudy\GameClass\ui</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -444,7 +447,10 @@
       <Filter>GameStudy\GameClass\object\effect</Filter>
     </ClCompile>
     <ClCompile Include="TEffectManager.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>GameStudy\GameClass\object\effect</Filter>
+    </ClCompile>
+    <ClCompile Include="CombineUI.cpp">
+      <Filter>GameStudy\GameClass\ui</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

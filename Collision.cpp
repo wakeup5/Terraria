@@ -39,15 +39,15 @@ namespace Terraria
 		if (sx < 0) sx = 0;
 		if (ex > MAP_SIZE_X) ex = MAP_SIZE_X;
 
-		Tile tile;
+		Tile* tile;
 
 		for (int i = sx; i < ex; i++)
 		{
 			tile = tileMap->getTile(i, y + 1);
-			if (unit->getSpeedY() >= -FLOAT_EPSILON && tile.isBlock() &&
-				IntersectRect(&r, &unitRc, &tile.getRect()))
+			if (unit->getSpeedY() >= -FLOAT_EPSILON && tile->isBlock() &&
+				IntersectRect(&r, &unitRc, &tile->getRect()))
 			{
-				unit->setFloor(tile.getRect().top);
+				unit->setFloor(tile->getRect().top);
 				return true;
 			}
 		}
@@ -71,13 +71,13 @@ namespace Terraria
 		if (sx < 0) sx = 0;
 		if (ex > MAP_SIZE_X) ex = MAP_SIZE_X;
 
-		Tile tile;
+		Tile* tile;
 
 		for (int i = sx; i < ex; i++)
 		{
 			tile = tileMap->getTile(i, y - 2);
-			if (unit->getSpeedY() < -FLOAT_EPSILON && tile.isBlock() &&
-				IntersectRect(&r, &unitRc, &tile.getRect()))
+			if (unit->getSpeedY() < -FLOAT_EPSILON && tile->isBlock() &&
+				IntersectRect(&r, &unitRc, &tile->getRect()))
 			{
 				unit->setSpeedY(0);
 				unit->setAccelY(0);
@@ -109,19 +109,19 @@ namespace Terraria
 
 		//if (unit->getUnitState().direct == LEFT)
 		{
-			if (tileMap->getTile(x - 1, y - 1).isBlock() &&
-				IntersectRect(&r, &leftRc, &tileMap->getTile(x - 1, y - 1).getRect()))
+			if (tileMap->getTile(x - 1, y - 1)->isBlock() &&
+				IntersectRect(&r, &leftRc, &tileMap->getTile(x - 1, y - 1)->getRect()))
 			{
 				unit->setSpeedX(0);
 				unit->setAccelX(0);
-				unit->setX(tileMap->getTile(x - 1, y - 1).getRect().right + 1 + unit->getWidth() / 2);
+				unit->setX(tileMap->getTile(x - 1, y - 1)->getRect().right + 1 + unit->getWidth() / 2);
 
 				return true;
 			}
-			else if (unit->getSpeedY() >= -1 && tileMap->getTile(x - 1, y).isBlock() &&
-				IntersectRect(&r, &unitRc, &tileMap->getTile(x - 1, y).getRect()))
+			else if (unit->getSpeedY() >= -1 && tileMap->getTile(x - 1, y)->isBlock() &&
+				IntersectRect(&r, &unitRc, &tileMap->getTile(x - 1, y)->getRect()))
 			{
-				unit->setFloor(tileMap->getTile(x - 1, y).getRect().top);
+				unit->setFloor(tileMap->getTile(x - 1, y)->getRect().top);
 
 				return false;
 			}
@@ -129,19 +129,19 @@ namespace Terraria
 
 		//if (unit->getUnitState().direct == RIGHT)
 		{
-			if (tileMap->getTile(x + 1, y - 1).isBlock() &&
-				IntersectRect(&r, &rightRc, &tileMap->getTile(x + 1, y - 1).getRect()))
+			if (tileMap->getTile(x + 1, y - 1)->isBlock() &&
+				IntersectRect(&r, &rightRc, &tileMap->getTile(x + 1, y - 1)->getRect()))
 			{
 				unit->setSpeedX(0);
 				unit->setAccelX(0);
-				unit->setX(tileMap->getTile(x + 1, y - 1).getRect().left - unit->getWidth() / 2 - 1);
+				unit->setX(tileMap->getTile(x + 1, y - 1)->getRect().left - unit->getWidth() / 2 - 1);
 
 				return true;
 			}
-			else if (unit->getSpeedY() >= -1 && tileMap->getTile(x + 1, y).isBlock() &&
-				IntersectRect(&r, &unitRc, &tileMap->getTile(x + 1, y).getRect()))
+			else if (unit->getSpeedY() >= -1 && tileMap->getTile(x + 1, y)->isBlock() &&
+				IntersectRect(&r, &unitRc, &tileMap->getTile(x + 1, y)->getRect()))
 			{
-				unit->setFloor(tileMap->getTile(x + 1, y).getRect().top);
+				unit->setFloor(tileMap->getTile(x + 1, y)->getRect().top);
 
 				return false;
 			}
@@ -167,9 +167,9 @@ namespace Terraria
 		sy = y - 1;
 		ey = y + 1;
 
-		Tile tile;
+		Tile* tile;
 		tile = tileMap->getTile(x, y);
-		if (tile.isBlock()) return true;
+		if (tile->isBlock()) return true;
 
 
 		for (int i = sx; i < ex + 1; i++)
@@ -180,27 +180,27 @@ namespace Terraria
 				if (j < 0 || j > MAP_SIZE_Y - 1) continue;
 
 				tile = tileMap->getTile(i, j);
-				if (tile.isBlock() && IntersectRect(&r, &rc, &tile.getRect()))
+				if (tile->isBlock() && IntersectRect(&r, &rc, &tile->getRect()))
 				{
 					obj->setSpeed(0);
 					obj->setAccel(0);
 					
 					if (i < x)
 					{
-						obj->setX((tile.getRect().right + 1) + (obj->getWidth() / 2));
+						obj->setX((tile->getRect().right + 1) + (obj->getWidth() / 2));
 					}
 					else if (i > x)
 					{
-						obj->setX((tile.getRect().left) - (obj->getWidth() / 2));
+						obj->setX((tile->getRect().left) - (obj->getWidth() / 2));
 					}
 
 					if (j < y)
 					{
-						obj->setY((tile.getRect().bottom + 1) + (obj->getHeight() / 2));
+						obj->setY((tile->getRect().bottom + 1) + (obj->getHeight() / 2));
 					}
 					else if (j > y)
 					{
-						obj->setY((tile.getRect().top) - (obj->getHeight() / 2));
+						obj->setY((tile->getRect().top) - (obj->getHeight() / 2));
 					}
 
 					return true;

@@ -98,7 +98,7 @@ namespace Terraria
 		addItemInfo("body costume", "body costume image", "body costume", ITEM_EQUIP, EQUIP_TOP, 1, 0, 0, 0, 0);
 
 		addItemInfo("sword basic", "sword basic", "sword basic", ITEM_WEAPON_SWORD, EQUIP_NONE, 1, 0, 0, 20, 0, 100);
-		addItemInfo("bow basic", "bow basic", "bow basic", ITEM_WEAPON_BOW, EQUIP_NONE, 1, 0, 0, 10, 0, 200, 1);
+		addItemInfo("bow basic", "bow basic", "bow basic", ITEM_WEAPON_BOW, EQUIP_NONE, 1, 0, 0, 10, 0, 200, 5);
 		addItemInfo("gun basic", "gun basic", "gun basic", ITEM_WEAPON_GUN, EQUIP_NONE, 1, 0, 0, 10, 0, 80, 1);
 		addItemInfo("magic basic", "magic basic", "magic basic", ITEM_WEAPON_MAGIC, EQUIP_NONE, 1, 0, 0, 12, 0, 200);
 

@@ -20,6 +20,9 @@ namespace Terraria
 		_map = tileMap;
 		_invenOpen = false;
 
+		_combineUI = new CombineUI;
+		_combineUI->initialize();
+
 		_invenBack = IMAGEMANAGER->findImage("ui inven back");
 		_invenBackSelect = IMAGEMANAGER->findImage("ui inven back select");
 		_minimapBack = IMAGEMANAGER->findImage("ui minimap");
@@ -47,9 +50,36 @@ namespace Terraria
 	}
 	void UI::release()
 	{
-
+		_combineUI->release();
 	}
 	void UI::update()
+	{
+		keyUpdate();
+		_combineUI->update();
+
+		if (_selectItem == NULL)
+		{
+			_selectItem2 = _inven->getItemInfo(_selectNum);
+			_player->setSelectItem(_inven->getItemInfo(_selectNum));
+		}
+		//if (_selectItem2 != NULL) setSelectItem(NULL);
+
+		if (_selectItem != NULL && _selectItem->getAmount() <= 0)
+		{
+			//SAFE_RELEASE(_selectItem);
+			_selectItem = NULL;
+			_player->setSelectItem(NULL);
+		}
+		if (_selectItem2 != NULL && _selectItem2->getAmount() <= 0)
+		{
+			//SAFE_RELEASE(_selectItem2);
+			_selectItem2 = NULL;
+			_player->setSelectItem(NULL);
+		}
+
+		viewInfo();
+	}
+	void UI::keyUpdate()
 	{
 		if (KEYMANAGER->isOnceKeyDown(VK_F1))
 		{
@@ -57,6 +87,7 @@ namespace Terraria
 			if (_invenOpen)
 			{
 				SOUNDMANAGER->play("ui open", _option.volume());
+				_combineUI->updateList();
 			}
 			else
 			{
@@ -124,148 +155,159 @@ namespace Terraria
 			_selectNum = 9;
 			_player->setSelectItem(_inven->getItemInfo(_selectNum));
 		}
+	}
+	void UI::viewInfo()
+	{
+		//if (_viewItem != NULL) return;
 
-		if (_selectItem == NULL)
+		//아이템에 마우스 올렸을때 보이는 정보
+		int length = (_invenOpen ? INVENTORY_LENGTH : 10);
+		RECT r;
+		for (int i = 0; i < length; i++)
 		{
-			_selectItem2 = _inven->getItemInfo(_selectNum);
-			_player->setSelectItem(_inven->getItemInfo(_selectNum));
+			if (PtInRect(&_invenRc[i], _option.mousePt()) && _inven->getItemInfo(i) != NULL)
+			{
+				_viewItem = _inven->getItemInfo(i);
+				return;
+			}
 		}
-		//if (_selectItem2 != NULL) setSelectItem(NULL);
 
-		if (_selectItem != NULL && _selectItem->getAmount() <= 0)
+		for (int i = 0; i < EQUIP_NONE; i++)
 		{
-			//SAFE_RELEASE(_selectItem);
-			_selectItem = NULL;
-			_player->setSelectItem(NULL);
+			if (PtInRect(&_equipRc[i], _option.mousePt()) && _player->getEquip()->getItem((EQUIPMENT_TYPE)i) != NULL)
+			{
+				_viewItem = _player->getEquip()->getItem((EQUIPMENT_TYPE)i);
+				return;
+			}
 		}
-		if (_selectItem2 != NULL && _selectItem2->getAmount() <= 0)
-		{
-			//SAFE_RELEASE(_selectItem2);
-			_selectItem2 = NULL;
-			_player->setSelectItem(NULL);
-		}
+
+		_viewItem = _combineUI->getViewItem();
+
+		//_viewItem = NULL;
 	}
 	void UI::render(HDC hdc)
 	{
-		Item* item;
 		if (_invenOpen)
 		{
-			//인벤토리 출력
-			for (int i = 0; i < INVENTORY_LENGTH; i++)
-			{
-				if (_selectNum == i)
-				{
-					_invenBackSelect->render(hdc, _invenRc[i].left, _invenRc[i].top, 200);
-				}
-				else
-				{
-					_invenBack->render(hdc, _invenRc[i].left, _invenRc[i].top, 200);
-				}
-				item = _inven->getItemInfo(i);
-				if (item != NULL)
-				{
-					item->imageRender(hdc, _invenRc[i].left + 55 / 2, _invenRc[i].top + 55 / 2);
-
-					if (item->getAmount() > 1)
-					{
-						writeText(hdc, to_string(item->getAmount()), _invenRc[i].left + 5, _invenRc[i].top + 2, 20, RGB(50, 50, 50), "HW Andy");
-					}
-				}
-			}
-
-			//장비 장착 정보
-			for (int i = 0; i < EQUIP_NONE; i++)
-			{
-				_invenBack->render(hdc, _equipRc[i].left, _equipRc[i].top, 200);
-				item = _player->getEquip()->getItem((EQUIPMENT_TYPE)i);
-				if (item != NULL) item->imageRender(hdc, _equipRc[i].left + 55 / 2, _equipRc[i].top + 55 / 2);
-			}
-			
+			invenOpenRender(hdc);
+			_combineUI->render(hdc);
 		}
 		else
 		{
-			//인벤토리 안열어도 10개는 출력
-			for (int i = 0; i < 10; i++)
-			{
-				if (_selectNum == i)
-				{
-					_invenBackSelect->render(hdc, _invenRc[i].left, 10, 150);
-				}
-				else
-				{
-					_invenBack->render(hdc, _invenRc[i].left, 10, 150);
-				}
-				item = _inven->getItemInfo(i);
-				if (item != NULL)
-				{
-					item->imageRender(hdc, _invenRc[i].left + 55 / 2, _invenRc[i].top + 55 / 2);
-
-					if (item->getAmount() > 1)
-					{
-						writeText(hdc, to_string(item->getAmount()), _invenRc[i].left + 5, _invenRc[i].top + 2, 20, RGB(50, 50, 50), "HW Andy");
-					}
-				}
-			}
-
-			if (_selectItem2 != NULL)
-			{
-				_selectItem2->getImage()->render(hdc, _option.mouseX(), _option.mouseY());
-			}
+			invenCloseRender(hdc);
 		}
+
 
 		if (_selectItem != NULL)
 		{
 			_selectItem->getImage()->render(hdc, _option.mouseX(), _option.mouseY());
 		}	
 
+		if (_viewItem != NULL)
+		{
+			viewInfoRender(hdc);
+		}
+
 		//맵, 플레이어
 		int textColorValue = 255 - abs(sin(TIMEMANAGER->getWorldTime()) * 127);
 		writeText(hdc, "Life : " + to_string(_player->getHp()) + "/" + to_string(_player->getMaxHp()), _option.width() - 160, 10, 25, RGB(textColorValue, textColorValue, textColorValue));
+	}
 
-		return;
-		int playerX = _player->getX() / METER_TO_PIXEL;
-		int playerY = _player->getY() / METER_TO_PIXEL;
-		int x, y;
-		COLORREF color = RGB(0, 0, 0);
-
-		for (int i = -30; i < 30; i++)
+	void UI::invenOpenRender(HDC hdc)
+	{
+		Item* item;
+		//인벤토리 출력
+		for (int i = 0; i < INVENTORY_LENGTH; i++)
 		{
-			x = playerX + i;
-			if (x < 0 || x > MAP_SIZE_X) continue;
-
-			for (int j = -30; j < 30; j++)
+			if (_selectNum == i)
 			{
-				y = playerY + j;
-				if (y < 0 || y > MAP_SIZE_Y) continue;
+				_invenBackSelect->render(hdc, _invenRc[i].left, _invenRc[i].top, 200);
+			}
+			else
+			{
+				_invenBack->render(hdc, _invenRc[i].left, _invenRc[i].top, 200);
+			}
+			item = _inven->getItemInfo(i);
+			if (item != NULL)
+			{
+				item->imageRender(hdc, _invenRc[i].left + 55 / 2, _invenRc[i].top + 55 / 2);
 
-				if (_map->getTile(x, y).getDarkDepth() > 3)
+				if (item->getAmount() > 1)
 				{
-					SetPixel(hdc, _option.width() - 120 + i, 120 + j, RGB(0, 0, 0));
-					continue;
+					writeText(hdc, to_string(item->getAmount()), _invenRc[i].left + 5, _invenRc[i].top + 2, 20, RGB(50, 50, 50), "HW Andy");
 				}
-
-				switch (_map->getTile(x, y).getType())
-				{
-				case TILE_GRASS:
-					color = RGB(200, 100, 100);
-					break;
-				case TILE_STONE:
-					color = RGB(50, 50, 50);
-					break;
-				case TILE_SILVER:
-					color = RGB(180, 180, 180);
-					break;
-				case TILE_GOLD:
-					color = RGB(255, 200, 0);
-					break;
-				case TILE_NONE: default:
-					color = RGB(100, 100, 255);
-					break;
-				}
-				SetPixel(hdc, _option.width() - 120 + i, 120 + j, color);
 			}
 		}
-		_minimapBack->render(hdc, _option.width() - 180, 60);
+
+		//장비 장착 정보
+		for (int i = 0; i < EQUIP_NONE; i++)
+		{
+			_invenBack->render(hdc, _equipRc[i].left, _equipRc[i].top, 200);
+			item = _player->getEquip()->getItem((EQUIPMENT_TYPE)i);
+			if (item != NULL) item->imageRender(hdc, _equipRc[i].left + 55 / 2, _equipRc[i].top + 55 / 2);
+		}
+
+	}
+	void UI::invenCloseRender(HDC hdc)
+	{
+		Item* item;
+		//인벤토리 안열어도 10개는 출력
+		for (int i = 0; i < 10; i++)
+		{
+			if (_selectNum == i)
+			{
+				_invenBackSelect->render(hdc, _invenRc[i].left, 10, 150);
+			}
+			else
+			{
+				_invenBack->render(hdc, _invenRc[i].left, 10, 150);
+			}
+			item = _inven->getItemInfo(i);
+			if (item != NULL)
+			{
+				item->imageRender(hdc, _invenRc[i].left + 55 / 2, _invenRc[i].top + 55 / 2);
+
+				if (item->getAmount() > 1)
+				{
+					writeText(hdc, to_string(item->getAmount()), _invenRc[i].left + 5, _invenRc[i].top + 2, 20, RGB(50, 50, 50), "HW Andy");
+				}
+			}
+		}
+
+		if (_selectItem2 != NULL)
+		{
+			_selectItem2->getImage()->render(hdc, _option.mouseX(), _option.mouseY());
+		}
+	}
+	void UI::viewInfoRender(HDC hdc)
+	{
+		float x = _option.mouseX() + 10;
+		float y = _option.mouseY() + 10;
+		if (x > _option.width() - 150) x = _option.width() - 150;
+		if (y > _option.height() - 150) y = _option.height() - 150;
+		RECT rc = makeRect(x, y, 150, 150);
+		char str[200];
+		sprintf_s(str, "%s\n", _viewItem->getName().c_str());
+
+		if (_viewItem->getItemType() <= ITEM_EQUIP) sprintf_s(str, "%s%s\n", str, "Equipment");
+		else if (_viewItem->getItemType() <= ITEM_WEAPON_MAGIC) sprintf_s(str, "%s%s\n", str, "Weapon");
+		else if (_viewItem->getItemType() <= ITEM_TOOL_AXE) sprintf_s(str, "%s%s\n", str, "Tool");
+		else if (_viewItem->getItemType() <= ITEM_AMMO_BULLET) sprintf_s(str, "%s%s\n", str, "Ammo");
+		else if (_viewItem->getItemType() <= ITEM_BLOCK_PLATFORM) sprintf_s(str, "%s%s\n", str, "Block");
+
+		if (_viewItem->getAbillity().attack > 0) sprintf_s(str, "%sattack : %.0f\n", str, _viewItem->getAbillity().attack);
+		if (_viewItem->getAbillity().defense > 0) sprintf_s(str, "%sdefense : %.0f\n", str, _viewItem->getAbillity().defense);
+		if (_viewItem->getAbillity().HP > 0) sprintf_s(str, "%sHP : %.0f\n", str, _viewItem->getAbillity().HP);
+		if (_viewItem->getAbillity().MP > 0) sprintf_s(str, "%sMP : %.0f\n", str, _viewItem->getAbillity().MP);
+		if (_viewItem->getAbillity().shootNum > 0) sprintf_s(str, "%sshooting num : %d\n", str, _viewItem->getAbillity().shootNum);
+
+		int textColorValue = 255 - abs(sin(TIMEMANAGER->getWorldTime()) * 80);
+		HFONT f = CreateFont(25, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, "HW Andy"), of = (HFONT)SelectObject(hdc, f);
+		COLORREF oc = SetTextColor(hdc, RGB(textColorValue, textColorValue, textColorValue));
+		DrawText(hdc, str, 200, &rc, 0);
+		SetTextColor(hdc, oc);
+		SelectObject(hdc, of);
+		DeleteObject(f);
 	}
 
 	void UI::uiClickUpdate()
@@ -382,3 +424,50 @@ namespace Terraria
 		}
 	}
 }
+
+/*
+return;
+int playerX = _player->getX() / METER_TO_PIXEL;
+int playerY = _player->getY() / METER_TO_PIXEL;
+int x, y;
+COLORREF color = RGB(0, 0, 0);
+
+for (int i = -30; i < 30; i++)
+{
+x = playerX + i;
+if (x < 0 || x > MAP_SIZE_X) continue;
+
+for (int j = -30; j < 30; j++)
+{
+y = playerY + j;
+if (y < 0 || y > MAP_SIZE_Y) continue;
+
+if (_map->getTile(x, y)->getDarkDepth() > 3)
+{
+SetPixel(hdc, _option.width() - 120 + i, 120 + j, RGB(0, 0, 0));
+continue;
+}
+
+switch (_map->getTile(x, y)->getType())
+{
+case TILE_GRASS:
+color = RGB(200, 100, 100);
+break;
+case TILE_STONE:
+color = RGB(50, 50, 50);
+break;
+case TILE_SILVER:
+color = RGB(180, 180, 180);
+break;
+case TILE_GOLD:
+color = RGB(255, 200, 0);
+break;
+case TILE_NONE: default:
+color = RGB(100, 100, 255);
+break;
+}
+SetPixel(hdc, _option.width() - 120 + i, 120 + j, color);
+}
+}
+_minimapBack->render(hdc, _option.width() - 180, 60);
+*/

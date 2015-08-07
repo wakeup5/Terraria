@@ -62,7 +62,10 @@ namespace Terraria
 	}
 	void Zombie::release()
 	{
-
+		TEffectManager::getSingleton()->createEffects(
+			getX(), getY(), //x, y
+			16, M_PI / 2, METER_TO_PIXEL * 10, // angle 
+			"blood", 1, 5, 2500, true); //option
 	}
 
 	void Zombie::update()
@@ -138,5 +141,10 @@ namespace Terraria
 	void Zombie::action()
 	{
 		Unit::action();
+	}
+
+	void Zombie::hit(UNIT_DIRECT direct, int atk)
+	{
+		Unit::hit(direct, atk);
 	}
 }
