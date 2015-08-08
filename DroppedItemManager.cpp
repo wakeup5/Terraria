@@ -47,12 +47,13 @@ namespace Terraria
 		}
 	}
 
-	DroppedItem* DroppedItemManager::createDroppedItem(std::string itemName, int amount, float x, float y, float speedX)
+	DroppedItem* DroppedItemManager::createDroppedItem(std::string itemName, int amount, float x, float y, float speedX, float angle)
 	{
 		DroppedItem* item = new DroppedItem;
 		item->initialize(itemName, amount);
 		item->setManager(this);
 		item->setCenter(x, y);
+		item->setAngleR(angle);
 		item->setSpeedX(speedX);
 
 		_sItem.insert(item);
@@ -108,7 +109,7 @@ namespace Terraria
 				Item* item = pm->getInventory()->findItem((*iter)->getName());
 				if ((item == NULL || item->isMaxAmount()) && !pm->getInventory()->isFull())
 				{
-					pm->getInventory()->setItem(pm->getInventory()->getEmptyNum(), ITEMMANAGER->createItem((*iter)->getName()));
+					pm->getInventory()->setItem(pm->getInventory()->getEmptyNum(), ITEMMANAGER->createItem((*iter)->getName(), (*iter)->getAmount()));
 					delete (*iter);
 					iter = _sItem.erase(iter);
 				}

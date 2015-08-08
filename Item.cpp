@@ -54,7 +54,8 @@ namespace Terraria
 
 	HRESULT Item::initialize(
 		string itemName, string imageName, string spriteImageName, ITEM_TYPE type, EQUIPMENT_TYPE equipType,
-		int maxAmount, int hp, int mp, int attack, int defense, float atkSpeed, int shootNum)
+		int maxAmount, int hp, int mp, int attack, int defense, float atkSpeed, int shootNum, 
+		int mana, bool doubleJump, bool fastRun, bool fly)
 	{
 		if (type == ITEM_EQUIP)
 		{
@@ -65,7 +66,7 @@ namespace Terraria
 			initialize(itemName, imageName, spriteImageName, type, maxAmount);
 		}
 
-		setAbillity(hp, mp, attack, defense, atkSpeed, shootNum);
+		setAbillity(hp, mp, attack, defense, atkSpeed, shootNum, mana, doubleJump, fastRun, fly);
 
 		return S_OK;
 	}
@@ -73,6 +74,7 @@ namespace Terraria
 	void Item::release()
 	{
 		SAFE_RELEASE(_spriteImage);
+		_delete = true;
 	}
 
 	void Item::imageRender(HDC hdc, float centerX, float centerY)

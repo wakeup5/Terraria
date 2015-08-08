@@ -4,6 +4,7 @@
 #include "Inventory.h"
 #include "TileMap.h"
 #include "CombineUI.h"
+#include "DroppedItemManager.h"
 
 namespace Terraria
 {
@@ -13,6 +14,7 @@ namespace Terraria
 		Player* _player;
 		Inventory* _inven;
 		TileMap* _map;
+		DroppedItemManager* _dm;
 
 		CombineUI* _combineUI;
 
@@ -33,7 +35,7 @@ namespace Terraria
 
 		int _selectNum = 0;
 	public:
-		HRESULT initialize(Player* player, Inventory* inven, TileMap* tileMap);
+		HRESULT initialize(Player* player, Inventory* inven, TileMap* tileMap, DroppedItemManager* dm);
 		void release();
 		void update();
 		void render(HDC hdc);

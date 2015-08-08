@@ -26,7 +26,14 @@ namespace Terraria
 	}
 	void Inventory::update()
 	{
-
+		for (int i = 0; i < INVENTORY_LENGTH; i++)
+		{
+			if (_inven[i] != NULL && _inven[i]->getAmount() <= 0)
+			{
+				_inven[i]->release();
+				_inven[i] = NULL;
+			}
+		}
 	}
 	void Inventory::render(HDC hdc)
 	{

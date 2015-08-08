@@ -19,6 +19,8 @@ HRESULT MainGameScene::initialize()
 {
 	DATAMANAGER->loadDatabase("item", RESOURCE("data/item.ini"));
 	ITEMMANAGER->inputItemInfo();
+	DATAMANAGER->loadDatabase("combine", RESOURCE("data/combine.ini"));
+	ITEMMANAGER->inputCombineInfo();
 
 	TEffectManager::getSingleton()->initialize(1000);
 	
@@ -37,23 +39,29 @@ HRESULT MainGameScene::initialize()
 
 	_mm->initialize(_pm->getPlayer());
 
-	_ui->initialize(_pm->getPlayer(), _pm->getInventory(), _map);
+	_ui->initialize(_pm->getPlayer(), _pm->getInventory(), _map, _dropItemManager);
 
-	_pm->getInventory()->setItem(_pm->getInventory()->getEmptyNum(), ITEMMANAGER->createItem("body test"));
-	_pm->getInventory()->setItem(_pm->getInventory()->getEmptyNum(), ITEMMANAGER->createItem("pickaxe"));
-	_pm->getInventory()->setItem(_pm->getInventory()->getEmptyNum(), ITEMMANAGER->createItem("body gold"));
-	_pm->getInventory()->setItem(_pm->getInventory()->getEmptyNum(), ITEMMANAGER->createItem("pant gold"));
-	_pm->getInventory()->setItem(_pm->getInventory()->getEmptyNum(), ITEMMANAGER->createItem("helmet gold"));
-	_pm->getInventory()->setItem(_pm->getInventory()->getEmptyNum(), ITEMMANAGER->createItem("body silver"));
-	_pm->getInventory()->setItem(_pm->getInventory()->getEmptyNum(), ITEMMANAGER->createItem("pant silver"));
-	_pm->getInventory()->setItem(_pm->getInventory()->getEmptyNum(), ITEMMANAGER->createItem("helmet silver"));
-	_pm->getInventory()->setItem(_pm->getInventory()->getEmptyNum(), ITEMMANAGER->createItem("body costume"));
+	//기본 아이템 지급
+	_pm->getInventory()->setItem(0, ITEMMANAGER->createItem("pickaxe"));
+
 	_pm->getInventory()->setItem(3, ITEMMANAGER->createItem("sword basic"));
-	_pm->getInventory()->setItem(0, ITEMMANAGER->createItem("gun basic"));
+	//_pm->getInventory()->setItem(0, ITEMMANAGER->createItem("gun basic"));
 	_pm->getInventory()->setItem(1, ITEMMANAGER->createItem("bow basic"));
 	_pm->getInventory()->setItem(2, ITEMMANAGER->createItem("magic basic"));
-	_pm->getInventory()->setItem(_pm->getInventory()->getEmptyNum(), ITEMMANAGER->createItem("arrow", 999));
-	_pm->getInventory()->setItem(_pm->getInventory()->getEmptyNum(), ITEMMANAGER->createItem("bullet", 999));
+	
+	_pm->getInventory()->setItem(_pm->getInventory()->getEmptyNum(), ITEMMANAGER->createItem("arrow", 100));
+	_pm->getInventory()->setItem(_pm->getInventory()->getEmptyNum(), ITEMMANAGER->createItem("bullet", 100));
+
+	//test
+	_pm->getInventory()->setItem(_pm->getInventory()->getEmptyNum(), ITEMMANAGER->createItem("ingot silver", 999));
+	_pm->getInventory()->setItem(_pm->getInventory()->getEmptyNum(), ITEMMANAGER->createItem("ingot gold", 999));
+	_pm->getInventory()->setItem(_pm->getInventory()->getEmptyNum(), ITEMMANAGER->createItem("ingot cobalt", 999));
+	_pm->getInventory()->setItem(_pm->getInventory()->getEmptyNum(), ITEMMANAGER->createItem("ingot mythril", 999));
+	_pm->getInventory()->setItem(_pm->getInventory()->getEmptyNum(), ITEMMANAGER->createItem("ingot blood", 999));
+
+	_pm->getInventory()->setItem(_pm->getInventory()->getEmptyNum(), ITEMMANAGER->createItem("blue baloon"));
+	_pm->getInventory()->setItem(_pm->getInventory()->getEmptyNum(), ITEMMANAGER->createItem("gray baloon"));
+	_pm->getInventory()->setItem(_pm->getInventory()->getEmptyNum(), ITEMMANAGER->createItem("green baloon"));
 
 	return S_OK;
 }

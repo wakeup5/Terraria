@@ -20,11 +20,14 @@ namespace Terraria
 
 		int _maxAmount;
 		int _currentAmount;
+
+		bool _delete = false;
 	public:
 		HRESULT initialize(string itemName, string imageName, string spriteImageName, EQUIPMENT_TYPE type = EQUIP_NONE);
 		HRESULT initialize(string itemName, string imageName, string spriteImageName, ITEM_TYPE type = ITEM_NONE, int maxAmount = 1);
 		HRESULT initialize(string itemName, string imageName, string spriteImageName, ITEM_TYPE type, EQUIPMENT_TYPE equipType,
-			int maxAmount, int hp, int mp, int attack, int defense, float atkSpeed = 1000, int shootNum = 0);
+			int maxAmount, int hp, int mp, int attack, int defense, float atkSpeed = 1000, int shootNum = 0, 
+			int mana = 0, bool doubleJump = false, bool fastRun = false, bool fly = false);
 		void release();
 		void imageRender(HDC hdc, float centerX, float centerY);
 
@@ -37,7 +40,7 @@ namespace Terraria
 		Image* getImage(){ return _image; }
 		Image* getEquipImage(){ return _equipImage; }
 
-		void setAbillity(float hp, float mp, float attack, float defense, float atkSpeed, int shootNum)
+		void setAbillity(float hp, float mp, float attack, float defense, float atkSpeed, int shootNum, int mana, bool doubleJump, bool fastRun, bool fly)
 		{
 			_abillity.HP = hp;
 			_abillity.MP = mp;
@@ -45,6 +48,10 @@ namespace Terraria
 			_abillity.defense = defense;
 			_abillity.atkSpeed = atkSpeed;
 			_abillity.shootNum = shootNum;
+			_abillity.mana = mana;
+			_abillity.doubleJump = doubleJump;
+			_abillity.fastRun = fastRun;
+			_abillity.fly = fly;
 		}
 
 		ItemAbillity getAbillity() { return _abillity; }
@@ -56,6 +63,8 @@ namespace Terraria
 		int getAmount(){ return _currentAmount; }
 
 		string getName(){ return _itemName; }
+
+		bool isDelete(){ return _delete; }
 
 		Item();
 		virtual ~Item();

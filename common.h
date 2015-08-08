@@ -57,6 +57,7 @@ namespace Terraria
 		ITEM_BLOCK_SILVER,
 		ITEM_BLOCK_GOLD,
 		ITEM_BLOCK_PLATFORM,
+		ITEM_MATERIAL,
 		ITEM_NONE
 	} ItemType;
 
@@ -68,6 +69,10 @@ namespace Terraria
 		float defense;
 		float atkSpeed;
 		int shootNum;
+		int mana;
+		bool doubleJump;
+		bool fastRun;
+		bool fly;
 	} ItemAbillity;
 
 	typedef enum TILE_TYPE

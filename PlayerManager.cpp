@@ -40,6 +40,7 @@ namespace Terraria
 	{
 		_player->update();
 		_ammo->update();
+		_inven->update();
 
 		if (KEYMANAGER->isOnceKeyDown('A') || 
 			(KEYMANAGER->isStayKeyDown('A') && KEYMANAGER->isOnceKeyUp('D')))
@@ -64,10 +65,16 @@ namespace Terraria
 
 		if (KEYMANAGER->isOnceKeyDown(VK_SPACE))
 		{
-			if (_player->getPosition() == FLOOR)
-			{
-				_player->jump();
-			}
+			_player->jump();
+		}
+
+		if (KEYMANAGER->isStayKeyDown(VK_SPACE))
+		{
+			_player->flyDown();
+		}
+		else if (KEYMANAGER->isOnceKeyUp(VK_SPACE))
+		{
+			_player->flyUp();
 		}
 		
 		//_player->setFloor(_option.height());

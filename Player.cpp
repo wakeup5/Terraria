@@ -68,7 +68,16 @@ namespace Terraria
 		ANIMATEMANAGER->addSectionFrameAnimation("player shoot left 4", width, height, 2, 20, 0, 9, 9);
 		ANIMATEMANAGER->addSectionFrameAnimation("player shoot left 5", width, height, 2, 20, 0, 1, 1);
 
+		int accLeft[] = { 0, 2, 4, 6 };
+		ANIMATEMANAGER->addArrFrameAnimation("player acc left", 104, 224, 2, 4, 5, accLeft, 4, true);
+		int accRight[] = { 1, 3, 5, 7 };
+		ANIMATEMANAGER->addArrFrameAnimation("player acc right", 104, 224, 2, 4, 5, accRight, 4, true);
+
 		_animate = _legAnimate = ANIMATEMANAGER->findAnimation("player stay left");
+		_accAni = ANIMATEMANAGER->findAnimation("player acc left");
+
+		ANIMATEMANAGER->findAnimation("player acc left")->start();
+		ANIMATEMANAGER->findAnimation("player acc right")->start();
 
 		setState(UnitState{ US(LEFT, LEFT, STAY, JUMP, 0) });
 
@@ -87,11 +96,16 @@ namespace Terraria
 		if (_unbeatableTime > 0 && ((int)_unbeatableTime % 100) > 50) return;
 
 		Image* image = NULL;
+
+		//악세서리
+		float accX = _option.getRenderX(getX()) - _accAni->getFrameWidth() / 2;
+		float accY = _option.getRenderY(getY()) - (_accAni->getFrameHeight()) / 2 - 20;
+		if ((image = _equip->getEquipImage(EQUIP_ACCESSORY)) != NULL) image->aniRender(hdc, accX, accY, _accAni);
 		
+		//머리와 투구와 헤어
 		float x = _option.getRenderX(getX()) - _animate->getFrameWidth() / 2;
 		float y = _option.getRenderY(getY()) - (_animate->getFrameHeight()) / 2 - 6;
 
-		//머리와 투구와 헤어
 		_head->aniRender(hdc, x, y, _animate);
 		if ((image = _equip->getEquipImage(EQUIP_HELMET)) != NULL)
 		{
@@ -119,9 +133,6 @@ namespace Terraria
 		//바디와 갑옷
 		_body->aniRender(hdc, x, y, _animate);
 		if ((image = _equip->getEquipImage(EQUIP_TOP)) != NULL) image->aniRender(hdc, x, y, _animate);
-		
-		//악세서리
-		if ((image = _equip->getEquipImage(EQUIP_ACCESSORY)) != NULL) image->aniRender(hdc, x, y, _animate);
 	}
 
 	void Player::swingRender(HDC hdc)
@@ -208,8 +219,34 @@ namespace Terraria
 	}
 	void Player::jump()
 	{
-		Unit::jump();
-		animate();
+		if (getPosition() != FLOOR)
+		{
+			if (_equip->getItem(EQUIP_ACCESSORY) != NULL && 
+				_equip->getItem(EQUIP_ACCESSORY)->getAbillity().doubleJump &&
+  				!_isDoubleJump)
+			{
+				setPosition(FLOOR);
+				Unit::jump();
+				animate();
+				_isDoubleJump = true;
+				_fly = true;
+			}
+		}
+		else
+		{
+			Unit::jump();
+			animate();
+			if (_equip->getItem(EQUIP_ACCESSORY) != NULL &&
+				_equip->getItem(EQUIP_ACCESSORY)->getAbillity().doubleJump)
+			{
+				_fly = false;
+			}
+			else
+			{
+				_fly = true;
+			}
+		}
+
 		//SOUNDMANAGER->play("player jump", _option.volume());
 	}
 	void Player::freeFall()
@@ -221,6 +258,34 @@ namespace Terraria
 	{
 		Unit::floor();
 		animate();
+
+		_isDoubleJump = false;
+		_flyTime = 5000;
+		_fly = false;
+	}
+
+	void Player::flyDown()
+	{
+		if (_flyTime > 0)
+		{
+			if (_fly &&
+				_equip->getItem(EQUIP_ACCESSORY) != NULL &&
+				_equip->getItem(EQUIP_ACCESSORY)->getAbillity().fly)
+			{
+				setAccelY(0);
+				setSpeedY((JUMP_SPEED) * 0.5);
+			}
+
+			_flyTime -= TIMEMANAGER->getElapsedTime() * 1000;
+		}
+		else
+		{
+			flyUp();
+		}
+	}
+	void Player::flyUp()
+	{
+		setAccelY(GRAVITY_ACCEL);
 	}
 
 	void Player::renew()
@@ -236,6 +301,7 @@ namespace Terraria
 		{ 
 			_animate->frameUpdate(1.0f / MAX_GAME_FPS);
 		}
+		_accAni->frameUpdate(1.0f / MAX_GAME_FPS);
 
 		if (_animate != _legAnimate)
 		{
@@ -263,8 +329,8 @@ namespace Terraria
 			}
 			animate();
 		}
-		
-		printf("%f\n", _actionTime);
+
+		//printf("%f\n", _actionTime);
 
 		if (getMovement() == MOVE &&
 			getPosition() == FLOOR && 
@@ -275,6 +341,20 @@ namespace Terraria
 
 		if (_actionTime > 0) _actionTime -= TIMEMANAGER->getElapsedTime() * 1000;
 		if (_unbeatableTime > 0) _unbeatableTime -= TIMEMANAGER->getElapsedTime() * 1000;
+
+		if (getHp() < getMaxHp()) setHp(getHp() + 10 * TIMEMANAGER->getElapsedTime());
+		else if (getHp() > getMaxHp()) setHp(getMaxHp());
+
+		//fast run
+		if (_equip->getItem(EQUIP_ACCESSORY) != NULL &&
+			_equip->getItem(EQUIP_ACCESSORY)->getAbillity().fastRun)
+		{
+			setMoveSpeed(PLAYER_MOVE_SPEED * 1.5);
+		}
+		else
+		{
+			setMoveSpeed(PLAYER_MOVE_SPEED);
+		}
 	}
 
 	void Player::animate()
@@ -376,6 +456,17 @@ namespace Terraria
 			}
 			*/
 		}
+
+		//accesory
+		if (getView() == LEFT)
+		{
+			_accAni = ANIMATEMANAGER->findAnimation("player acc left");
+		}
+		else
+		{
+			_accAni = ANIMATEMANAGER->findAnimation("player acc right");
+		}
+
 	}
 
 	void Player::setFloor(float floorY)
@@ -414,11 +505,11 @@ namespace Terraria
 			return 333;
 	}
 
-	int Player::getHp()
+	float Player::getHp()
 	{
 		return Unit::getHp();
 	}
-	int Player::getMp()
+	float Player::getMp()
 	{
 		return Unit::getMp();
 	}

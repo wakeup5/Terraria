@@ -25,7 +25,7 @@ namespace Terraria
 		void update();
 		void render(HDC hdc);
 
-		DroppedItem* createDroppedItem(std::string itemName, int amount, float x, float y, float speedX = 0.0f);
+		DroppedItem* createDroppedItem(std::string itemName, int amount, float x, float y, float speedX = 0.0f, float angle = (M_PI / 2));
 
 	private:
 		void eathOtherCollision();

@@ -22,12 +22,17 @@ namespace Terraria
 
 		Animate* _animate;
 		Animate* _legAnimate;
+		Animate* _accAni;
 
 		float _actionTime;
 
 		float _unbeatableTime;
 
 		float _shootAngle;
+
+		float _isDoubleJump;
+		float _flyTime;
+		bool _fly;
 	public:
 		HRESULT initialize(Inventory* inven);
 		void release();
@@ -48,6 +53,9 @@ namespace Terraria
 		void floor();
 		void hit(UNIT_DIRECT direct, int atk = 0);
 
+		void flyDown();
+		void flyUp();
+
 		void setFloor(float floorY);
 
 		inline Equip* getEquip(){ return _equip; }
@@ -60,8 +68,8 @@ namespace Terraria
 
 		float getAtkSpeed();
 
-		inline virtual int getHp();
-		inline virtual int getMp();
+		inline virtual float getHp();
+		inline virtual float getMp();
 		inline virtual int getAtk();
 		inline virtual int getDef();
 		inline virtual int getMaxHp();

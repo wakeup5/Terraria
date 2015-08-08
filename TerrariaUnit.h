@@ -123,9 +123,9 @@ namespace Terraria
 		float _attackFrameTime;
 
 		int _mhp;
-		int _hp;
+		float _hp;
 		int _mmp;
-		int _mp;
+		float _mp;
 		int _attack;
 		int _defense;
 	public:
@@ -178,12 +178,12 @@ namespace Terraria
 		virtual void hit(UNIT_DIRECT direct, int atk = 0);
 
 		inline void setUnitInfo(int hp, int mp, int atk, int def){ _hp = _mhp = hp; _mp = _mmp = mp; _attack = atk; _defense = def; }
-		inline virtual void setHp(int hp){ _hp = hp; }
-		inline virtual void setMp(int mp){ _mp = mp; }
+		inline virtual void setHp(float hp){ _hp = hp; }
+		inline virtual void setMp(float mp){ _mp = mp; }
 		inline virtual void setAtk(int atk){ _attack = atk; }
 		inline virtual void setDef(int def){ _defense = def; }
-		inline virtual int getHp(){ return _hp; }
-		inline virtual int getMp(){ return _mp; }
+		inline virtual float getHp(){ return _hp; }
+		inline virtual float getMp(){ return _mp; }
 		inline virtual int getAtk(){ return _attack; }
 		inline virtual int getDef(){ return _defense; }
 		inline virtual int getMaxHp(){ return _mhp; }

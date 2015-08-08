@@ -51,6 +51,7 @@ void GameStudy::update(void)
 {
 	GameNode::update();
 
+	ITEMMANAGER->update();
 	EFFECTMANAGER->update();
 	SCENEMANAGER->update();
 	SOUNDMANAGER->update();

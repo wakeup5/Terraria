@@ -13,15 +13,16 @@ namespace Terraria
 
 	}
 
-	HRESULT UI::initialize(Player* player, Inventory* inven, TileMap* tileMap)
+	HRESULT UI::initialize(Player* player, Inventory* inven, TileMap* tileMap, DroppedItemManager* dm)
 	{
 		_player = player;
 		_inven = inven;
 		_map = tileMap;
+		_dm = dm;
 		_invenOpen = false;
 
 		_combineUI = new CombineUI;
-		_combineUI->initialize();
+		_combineUI->initialize(_inven);
 
 		_invenBack = IMAGEMANAGER->findImage("ui inven back");
 		_invenBackSelect = IMAGEMANAGER->findImage("ui inven back select");
@@ -98,11 +99,13 @@ namespace Terraria
 		if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
 		{
 			uiClickUpdate();
+			_combineUI->updateList();
 		}
 
 		if (KEYMANAGER->isOnceKeyDown(VK_RBUTTON))
 		{
 			uiRClickUpdate();
+			_combineUI->updateList();
 		}
 
 		if (KEYMANAGER->isOnceKeyDown('1'))
@@ -201,6 +204,10 @@ namespace Terraria
 		if (_selectItem != NULL)
 		{
 			_selectItem->getImage()->render(hdc, _option.mouseX(), _option.mouseY());
+			if (_selectItem->getAmount() > 1)
+			{
+				writeText(hdc, to_string(_selectItem->getAmount()), _option.mouseX() + 10, _option.mouseY() + 10, 25, RGB(255, 255, 255));
+			}
 		}	
 
 		if (_viewItem != NULL)
@@ -210,7 +217,9 @@ namespace Terraria
 
 		//맵, 플레이어
 		int textColorValue = 255 - abs(sin(TIMEMANAGER->getWorldTime()) * 127);
-		writeText(hdc, "Life : " + to_string(_player->getHp()) + "/" + to_string(_player->getMaxHp()), _option.width() - 160, 10, 25, RGB(textColorValue, textColorValue, textColorValue));
+		char lifeStr[16];
+		sprintf_s(lifeStr, "Life : %.0f/%d", _player->getHp(), _player->getMaxHp());
+		writeText(hdc, lifeStr, _option.width() - 160, 10, 25, RGB(textColorValue, textColorValue, textColorValue));
 	}
 
 	void UI::invenOpenRender(HDC hdc)
@@ -285,7 +294,7 @@ namespace Terraria
 		float y = _option.mouseY() + 10;
 		if (x > _option.width() - 150) x = _option.width() - 150;
 		if (y > _option.height() - 150) y = _option.height() - 150;
-		RECT rc = makeRect(x, y, 150, 150);
+		RECT rc = makeRect(x, y, 200, 200);
 		char str[200];
 		sprintf_s(str, "%s\n", _viewItem->getName().c_str());
 
@@ -294,12 +303,17 @@ namespace Terraria
 		else if (_viewItem->getItemType() <= ITEM_TOOL_AXE) sprintf_s(str, "%s%s\n", str, "Tool");
 		else if (_viewItem->getItemType() <= ITEM_AMMO_BULLET) sprintf_s(str, "%s%s\n", str, "Ammo");
 		else if (_viewItem->getItemType() <= ITEM_BLOCK_PLATFORM) sprintf_s(str, "%s%s\n", str, "Block");
+		else if (_viewItem->getItemType() <= ITEM_MATERIAL) sprintf_s(str, "%s%s\n", str, "Material");
 
 		if (_viewItem->getAbillity().attack > 0) sprintf_s(str, "%sattack : %.0f\n", str, _viewItem->getAbillity().attack);
 		if (_viewItem->getAbillity().defense > 0) sprintf_s(str, "%sdefense : %.0f\n", str, _viewItem->getAbillity().defense);
 		if (_viewItem->getAbillity().HP > 0) sprintf_s(str, "%sHP : %.0f\n", str, _viewItem->getAbillity().HP);
 		if (_viewItem->getAbillity().MP > 0) sprintf_s(str, "%sMP : %.0f\n", str, _viewItem->getAbillity().MP);
 		if (_viewItem->getAbillity().shootNum > 0) sprintf_s(str, "%sshooting num : %d\n", str, _viewItem->getAbillity().shootNum);
+		if (_viewItem->getAbillity().mana > 0) sprintf_s(str, "%smana : %d\n", str, _viewItem->getAbillity().mana);
+		if (_viewItem->getAbillity().doubleJump == true) sprintf_s(str, "%s%s\n", str, "can double jump");
+		if (_viewItem->getAbillity().fastRun) sprintf_s(str, "%s%s\n", str, "can fast run");
+		if (_viewItem->getAbillity().fly) sprintf_s(str, "%s%s\n", str, "can fly");
 
 		int textColorValue = 255 - abs(sin(TIMEMANAGER->getWorldTime()) * 80);
 		HFONT f = CreateFont(25, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, "HW Andy"), of = (HFONT)SelectObject(hdc, f);
@@ -326,6 +340,14 @@ namespace Terraria
 				else if (_selectItem != NULL && _inven->getItemInfo(i) == NULL)
 				{
 					_inven->setItem(i, _selectItem);
+					_selectItem = NULL;
+				}
+				//둘다 있는데 같은건데 맥스 갯수가 아니면
+				else if (_selectItem != NULL && 
+					_inven->getItemInfo(i)->getName() == _selectItem->getName() && 
+					!_inven->getItemInfo(i)->isMaxAmount())
+				{
+					_inven->getItemInfo(i)->addAmount(_selectItem->getAmount());
 					_selectItem = NULL;
 				}
 				//둘다 있을때 - 두개를 바꿈
@@ -383,6 +405,7 @@ namespace Terraria
 		int maxLength = (_invenOpen) ? INVENTORY_LENGTH : 10;
 		Equip* equip = _player->getEquip();
 
+		//인벤을 클릭했을때
 		for (int i = 0; i < maxLength; i++)
 		{
 			if (PtInRect(&_invenRc[i], _option.mousePt()))
@@ -403,9 +426,11 @@ namespace Terraria
 						equip->dress(_inven->getItem(i));
 					}
 				}
+				return;
 			}
 		}
 
+		//장착 장비를 클릭했을때
 		for (int i = 0; i < EQUIP_NONE; i++)
 		{
 			if (PtInRect(&_equipRc[i], _option.mousePt()))
@@ -420,7 +445,32 @@ namespace Terraria
 					equip->undress((EQUIPMENT_TYPE)i, &temp);
 					_inven->setItem(emptyNum, temp);
 				}
+				return;
 			}
+		}
+
+		//조합대 클릭
+		Item* temp = _combineUI->getCombineItem();
+		if (_selectItem == NULL)
+		{
+			_selectItem = temp;
+			return;
+		}
+		else if (temp != NULL && _selectItem->getName() == temp->getName())
+		{
+			_selectItem->addAmount(temp->getAmount());
+			return;
+		}
+
+		//밖을 클릭했을때 - 드랍
+		if (_selectItem != NULL)
+		{
+			float x = (_player->getView() == LEFT) ? -METER_TO_PIXEL * 1.5 : METER_TO_PIXEL * 1.5;
+			float speed = x * 10;
+			float angle = (_player->getView() == LEFT) ? M_PI : 0;
+			_dm->createDroppedItem(_selectItem->getName(), _selectItem->getAmount(), _player->getX() + x, _player->getY(), speed, angle);
+			_selectItem = NULL;
+			_player->setSelectItem(NULL);
 		}
 	}
 }

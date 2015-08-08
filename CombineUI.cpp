@@ -13,8 +13,9 @@ namespace Terraria
 
 	}
 
-	HRESULT CombineUI::initialize()
+	HRESULT CombineUI::initialize(Inventory* inven)
 	{
+		_inven = inven;
 		_invenBack = IMAGEMANAGER->findImage("ui inven back");
 		_invenBackSelect = IMAGEMANAGER->findImage("ui inven back select");
 
@@ -46,9 +47,13 @@ namespace Terraria
 	{
 		if (KEYMANAGER->isOnceKeyDown(VK_UP)) _num = max(0, _num - 1);
 		if (KEYMANAGER->isOnceKeyDown(VK_DOWN)) _num = min(_list.size() - 1, _num + 1);
+
+		_num = min(_list.size() - 1, max(0, _num));
 	}
 	void CombineUI::render(HDC hdc)
 	{
+		if (_list.size() == 0) return;
+
 		int start = max(_num - 2, 0);
 		int end = min(_num + 2, _list.size() - 1) + 1;
 
@@ -67,7 +72,56 @@ namespace Terraria
 
 	void CombineUI::updateList()
 	{
-		_num = _list.size() - 1;
+		deleteList();
+		_list.clear();
+
+		Table firstList;
+		Item* temp;
+		string tempName;
+		int tempAmount;
+
+		Table* table = DATABASE->getTable("combine");
+		Table::iterator iter;
+		for (iter = table->begin(); iter != table->end(); iter++)
+		{
+			tempName = (*iter)->find("name1")->second;
+			tempAmount = atoi((*iter)->find("amount1")->second.c_str());
+
+			temp = _inven->findItem(tempName);
+
+			if (temp != NULL && temp->getAmount() >= tempAmount)
+			{
+				tempName = (*iter)->find("name2")->second;
+				tempAmount = atoi((*iter)->find("amount2")->second.c_str());
+				if (tempName == "" || tempAmount <= 0)
+				{
+					tempName = (*iter)->find("resultname")->second;
+					tempAmount = atoi((*iter)->find("resultamount")->second.c_str());
+					_list.push_back(ITEMMANAGER->createItem(tempName, tempAmount));
+				}
+				else
+				{
+					firstList.insert(*iter);
+				}
+			}
+		}
+
+		for (iter = firstList.begin(); iter != firstList.end(); iter++)
+		{
+			tempName = (*iter)->find("name2")->second;
+			tempAmount = atoi((*iter)->find("amount2")->second.c_str());
+
+			temp = _inven->findItem(tempName);
+
+			if (temp != NULL && temp->getAmount() >= tempAmount)
+			{
+				tempName = (*iter)->find("resultname")->second;
+				tempAmount = atoi((*iter)->find("resultamount")->second.c_str());
+				_list.push_back(ITEMMANAGER->createItem(tempName, tempAmount));
+			}
+		}
+
+		//_num = max(0, _list.size() - 1);
 	}
 
 	Item* CombineUI::getViewItem()
@@ -85,5 +139,46 @@ namespace Terraria
 		}
 
 		return result;
+	}
+
+	Item* CombineUI::getCombineItem()
+	{
+		Item* result = NULL;
+		for (int i = 0; i < 5; i++)
+		{
+			if (PtInRect(&_rc[i], _option.mousePt()))
+			{
+				if (_num + (i - 2) < 0 || _num + (i - 2) > _list.size() - 1) return NULL;
+
+				result = ITEMMANAGER->createItem(_list[_num + (i - 2)]->getName(), _list[_num + (i - 2)]->getAmount());
+				break;
+			}
+		}
+		if (result == NULL) return NULL;
+
+		Row* row = DATABASE->get("combine", result->getName());
+		string tempName = row->find("name1")->second.c_str();
+		int tempAmount = atoi(row->find("amount1")->second.c_str());
+
+		_inven->findItem(tempName)->subAmount(tempAmount);
+		
+		tempName = row->find("name2")->second.c_str();
+		tempAmount = atoi(row->find("amount2")->second.c_str());
+		if (tempName != "" && tempAmount > 0)
+		{
+			_inven->findItem(tempName)->subAmount(tempAmount);
+		}
+
+		return result;
+	}
+
+	void CombineUI::deleteList()
+	{
+		for (int i = 0; i < _list.size(); i++)
+		{
+			_list[i]->release();
+		}
+
+		_list.clear();
 	}
 }
