@@ -3,6 +3,7 @@
 #include "Inventory.h"
 #include "Equip.h"
 #include "Animate.h"
+#include "TEffectManager.h"
 
 namespace Terraria
 {
@@ -40,6 +41,7 @@ namespace Terraria
 		void render(HDC hdc);
 		void swingRender(HDC hdc);
 		void shootRender(HDC hdc);
+		void magicRender(HDC hdc);
 
 		void renew();
 

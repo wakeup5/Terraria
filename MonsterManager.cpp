@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "MonsterManager.h"
 #include "Player.h"
+#include "DroppedItemManager.h"
 
 namespace Terraria
 {
@@ -123,5 +124,23 @@ namespace Terraria
 		monster->setCenter(x, y);
 
 		_vMonster.push_back(monster);
+	}
+
+	void MonsterManager::createEyeBoss(DroppedItemManager* dm, float x, float y)
+	{
+		EyeBoss* monster = new EyeBoss;
+		monster->initialize(dm, _player, 1000, 30, 5);
+		monster->setCenter(x, y);
+
+		_vMonster.push_back(monster);
+	}
+
+	void MonsterManager::createSnakeBoss(DroppedItemManager* dm, TileMap* tileMap, Player* player, float x, float y)
+	{
+		SnakeBoss* boss = new SnakeBoss;
+		boss->initialize(dm, tileMap, player, x, y);
+
+		_vMonster.push_back(boss);
+		boss->addMonsterList(&_vMonster);
 	}
 }

@@ -77,8 +77,8 @@
 //윈도우 위치 사이즈
 #define WIN_START_X		0		//x위치
 #define WIN_START_Y		0		//y위치
-#define WIN_SIZE_X		800		//폭
-#define WIN_SIZE_Y		600		//높이
+#define WIN_SIZE_X		1024		//폭
+#define WIN_SIZE_Y		768		//높이
 
 //윈도우 스타일
 #define WIN_STYLE		WS_CAPTION | WS_SYSMENU

@@ -149,33 +149,33 @@ namespace Terraria
 		//무기
 		addItemInfo("bow basic", "bow basic", "bow basic", ITEM_WEAPON_BOW, EQUIP_NONE, 1, 0, 0, 10, 0, 200, 1);
 		addItemInfo("sword basic", "sword basic", "sword basic", ITEM_WEAPON_SWORD, EQUIP_NONE, 1, 0, 0, 20, 0, 250);
-		addItemInfo("magic basic", "magic basic", "magic basic", ITEM_WEAPON_MAGIC, EQUIP_NONE, 1, 0, 0, 12, 0, 200);
+		addItemInfo("magic basic", "magic basic", "magic basic", ITEM_WEAPON_MAGIC, EQUIP_NONE, 1, 0, 0, 12, 0, 200, 0, 5);
 
 		//무기 - 실버
 		addItemInfo("bow silver", "bow silver", "bow silver", ITEM_WEAPON_BOW, EQUIP_NONE, 1, 0, 0, 15, 0, 190, 1);
 		addItemInfo("sword silver", "sword silver", "sword silver", ITEM_WEAPON_SWORD, EQUIP_NONE, 1, 0, 0, 30, 0, 240);
 		addItemInfo("gun I", "gun basic", "gun basic", ITEM_WEAPON_GUN, EQUIP_NONE, 1, 0, 0, 15, 0, 150, 1);
-		addItemInfo("magic silver", "magic silver", "magic silver", ITEM_WEAPON_MAGIC, EQUIP_NONE, 1, 0, 0, 12, 0, 200, 0, 3);
+		addItemInfo("magic silver", "magic silver", "magic silver", ITEM_WEAPON_MAGIC, EQUIP_NONE, 1, 0, 0, 12, 0, 200, 0, 8);
 		//무기 - 골드
 		addItemInfo("bow gold", "bow gold", "bow gold", ITEM_WEAPON_BOW, EQUIP_NONE, 1, 0, 0, 15, 0, 180, 2);
 		addItemInfo("sword gold", "sword gold", "sword gold", ITEM_WEAPON_SWORD, EQUIP_NONE, 1, 0, 0, 40, 0, 230);
 		addItemInfo("gun II", "gun basic", "gun basic", ITEM_WEAPON_GUN, EQUIP_NONE, 1, 0, 0, 25, 0, 135, 1);
-		addItemInfo("magic gold", "magic gold", "magic gold", ITEM_WEAPON_MAGIC, EQUIP_NONE, 1, 0, 0, 12, 0, 200, 0, 5);
+		addItemInfo("magic gold", "magic gold", "magic gold", ITEM_WEAPON_MAGIC, EQUIP_NONE, 1, 0, 0, 12, 0, 200, 0, 10);
 		//무기 - 코발트
 		addItemInfo("bow cobalt", "bow cobalt", "bow cobalt", ITEM_WEAPON_BOW, EQUIP_NONE, 1, 0, 0, 20, 0, 170, 2);
 		addItemInfo("sword cobalt", "sword cobalt", "sword cobalt", ITEM_WEAPON_SWORD, EQUIP_NONE, 1, 0, 0, 50, 0, 220);
 		addItemInfo("gun III", "gun basic", "gun basic", ITEM_WEAPON_GUN, EQUIP_NONE, 1, 0, 0, 35, 0, 110, 1);
-		addItemInfo("magic cobalt", "magic cobalt", "magic cobalt", ITEM_WEAPON_MAGIC, EQUIP_NONE, 1, 0, 0, 12, 0, 200, 0, 10);
+		addItemInfo("magic cobalt", "magic cobalt", "magic cobalt", ITEM_WEAPON_MAGIC, EQUIP_NONE, 1, 0, 0, 12, 0, 200, 0, 15);
 		//무기 - 미스릴
 		addItemInfo("bow mythril", "bow mythril", "bow mythril", ITEM_WEAPON_BOW, EQUIP_NONE, 1, 0, 0, 25, 0, 160, 3);
 		addItemInfo("sword mythril", "sword mythril", "sword mythril", ITEM_WEAPON_SWORD, EQUIP_NONE, 1, 0, 0, 60, 0, 210);
 		addItemInfo("gun IV", "gun basic", "gun basic", ITEM_WEAPON_GUN, EQUIP_NONE, 1, 0, 0, 45, 0, 95, 1);
-		addItemInfo("magic mythril", "magic mythril", "magic mythril", ITEM_WEAPON_MAGIC, EQUIP_NONE, 1, 0, 0, 12, 0, 200, 0, 20);
+		addItemInfo("magic mythril", "magic mythril", "magic mythril", ITEM_WEAPON_MAGIC, EQUIP_NONE, 1, 0, 0, 12, 0, 100, 0, 10);
 		//무기 - 블러드
 		addItemInfo("bow luna", "bow luna", "bow luna", ITEM_WEAPON_BOW, EQUIP_NONE, 1, 0, 0, 30, 0, 150, 4);
 		addItemInfo("sword luna", "sword luna", "sword luna", ITEM_WEAPON_SWORD, EQUIP_NONE, 1, 0, 0, 70, 0, 200);
 		addItemInfo("gun V", "gun basic", "gun basic", ITEM_WEAPON_GUN, EQUIP_NONE, 1, 0, 0, 55, 0, 80, 1);
-		addItemInfo("magic luna", "magic luna", "magic luna", ITEM_WEAPON_MAGIC, EQUIP_NONE, 1, 0, 0, 12, 0, 200, 0, 35);
+		addItemInfo("magic luna", "magic luna", "magic luna", ITEM_WEAPON_MAGIC, EQUIP_NONE, 1, 0, 0, 12, 0, 200, 0, 20);
 
 		//악세서리
 		addItemInfo("blue baloon", "blue baloon image", "blue baloon", ITEM_EQUIP, EQUIP_ACCESSORY, 0, 0, 0, 0, 0, 250, 0, 0, true);
@@ -248,12 +248,12 @@ namespace Terraria
 		addCombineInfo("bow silver", 1, "ingot silver", 2, "bow basic", 1);
 		addCombineInfo("sword silver", 1, "ingot silver", 2, "sword basic", 1);
 		addCombineInfo("gun I", 1, "ingot silver", 2);
-		addCombineInfo("magic silver", 1, "ingot silver", 1);
+		//addCombineInfo("magic silver", 1, "ingot silver", 1);
 		//무기 - 골드
 		addCombineInfo("bow gold", 1, "ingot gold", 2, "bow silver", 1);
 		addCombineInfo("sword gold", 1, "ingot gold", 2, "sword silver", 1);
 		addCombineInfo("gun II", 1, "ingot gold", 2, "gun I", 1);
-		addCombineInfo("magic gold", 1, "ingot gold", 1);
+		//addCombineInfo("magic gold", 1, "ingot gold", 1);
 		//무기 - 코발트
 		addCombineInfo("bow cobalt", 1, "ingot cobalt", 2, "bow gold", 1);
 		addCombineInfo("sword cobalt", 1, "ingot cobalt", 2, "sword gold", 1);
@@ -274,7 +274,6 @@ namespace Terraria
 		addCombineInfo("purple baloon", 1, "blue baloon", 1, "gray baloon", 1);
 		addCombineInfo("gold baloon", 1, "green baloon", 1, "gray baloon", 1);
 		addCombineInfo("master baloon", 1, "purple baloon", 1, "green baloon", 1);
-		addCombineInfo("master baloon", 1, "gold baloon", 1, "blue baloon", 1);
 
 		DATAMANAGER->saveDatabase("combine", RESOURCE("/data/combine.ini"));
 	}

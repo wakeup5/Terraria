@@ -76,6 +76,7 @@ private:
 
 	//회전 이미지 
 	ImageInfo *_angleImage;
+	float _prevAngle;
 
 	/// 해당 이미지의 스프라이트 객체를 이미지 객체에서 관리한다.
 	std::vector<SpriteImage*> _vSpriteImage;
@@ -134,6 +135,7 @@ public:
 	void sizeRender(HDC hdc, double ratio, BYTE alpha = 255);
 
 	void rotateRender(HDC hdc, float angle);
+	void rotateRender(HDC hdc, float x, float y, float angle);
 
 	void sizeRotateRender(HDC hdc, double ratio, float angle);
 

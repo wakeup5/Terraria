@@ -68,6 +68,10 @@ namespace Terraria
 		ANIMATEMANAGER->addSectionFrameAnimation("player shoot left 4", width, height, 2, 20, 0, 9, 9);
 		ANIMATEMANAGER->addSectionFrameAnimation("player shoot left 5", width, height, 2, 20, 0, 1, 1);
 
+		//¸¶¹ý Ä³½ºÆÃ
+		ANIMATEMANAGER->addSectionFrameAnimation("player magic left", width, height, 2, 20, 0, 11, 11);
+		ANIMATEMANAGER->addSectionFrameAnimation("player magic right", width, height, 2, 20, 0, 10, 10);
+
 		int accLeft[] = { 0, 2, 4, 6 };
 		ANIMATEMANAGER->addArrFrameAnimation("player acc left", 104, 224, 2, 4, 5, accLeft, 4, true);
 		int accRight[] = { 1, 3, 5, 7 };
@@ -129,6 +133,10 @@ namespace Terraria
 		{
 			shootRender(hdc);
 		}
+		else if (getAction() == ACTION_MAGIC)
+		{
+			magicRender(hdc);
+		}
 
 		//¹Ùµð¿Í °©¿Ê
 		_body->aniRender(hdc, x, y, _animate);
@@ -178,14 +186,50 @@ namespace Terraria
 		image->rotateRender(hdc, -(_shootAngle));
 	}
 
+	void Player::magicRender(HDC hdc)
+	{
+		Image* image = _selectItem->getImage();
+		Image* tempImage = new Image;
+		if (FAILED(tempImage->initialize(image->getWidth(), image->getHeight()))) return;
+		
+		float itemX = _option.getRenderX(getX());
+		float itemY = _option.getRenderY(getY()) - METER_TO_PIXEL * 0.5;
+		float angle;
+
+		if (getView() == LEFT)
+		{
+			StretchBlt(tempImage->getMemDC(), tempImage->getWidth() - 1, 0, -tempImage->getWidth(), tempImage->getHeight(), image->getMemDC(), 0, 0, tempImage->getWidth(), tempImage->getHeight(), SRCCOPY);
+			itemX -= METER_TO_PIXEL * 1.5;
+			angle = M_PI / 4;
+		}
+		else
+		{
+			StretchBlt(tempImage->getMemDC(), 0, 0, tempImage->getWidth(), tempImage->getHeight(), image->getMemDC(), 0, 0, tempImage->getWidth(), tempImage->getHeight(), SRCCOPY);
+			itemX += METER_TO_PIXEL * 1.5;
+			angle = M_PI / 4;
+		}
+		tempImage->setCenter(itemX, itemY);
+		tempImage->render(hdc);
+
+		SAFE_RELEASE(tempImage);
+		/*
+		image->setCenter(itemX, itemY);
+		image->rotateRender(hdc, angle);
+		*/		
+	}
+
 	void Player::action()
 	{
 		if (_actionTime > 0) return;
 
 		Unit::action();
-		if (_selectItem != NULL && 
-			((_selectItem->getItemType() == ITEM_WEAPON_BOW && getArrow() != NULL) ||
-			_selectItem->getItemType() == ITEM_WEAPON_GUN && getBullet() != NULL))
+
+		if (_selectItem == NULL)
+		{
+			setAction(ACTION_SWING);
+		}
+		else if ((_selectItem->getItemType() == ITEM_WEAPON_BOW && getArrow() != NULL) ||
+			(_selectItem->getItemType() == ITEM_WEAPON_GUN && getBullet() != NULL))
 		{
 			setAction(ACTION_SHOOT);
 			_shootAngle = -myUtil::getAngle(getX(), getY(), _option.inMouseX(), _option.inMouseY());
@@ -198,10 +242,15 @@ namespace Terraria
 				setView(RIGHT);
 			}
 		}
+		else if (_selectItem->getItemType() == ITEM_WEAPON_MAGIC && getMp() > _selectItem->getAbillity().mana)
+		{
+			setAction(ACTION_MAGIC);
+		}
 		else
 		{
 			setAction(ACTION_SWING);
 		}
+
 		animate();
 		_animate->start();
 
@@ -230,6 +279,9 @@ namespace Terraria
 				animate();
 				_isDoubleJump = true;
 				_fly = true;
+
+				TEffectManager::getSingleton()->createEffects(getX(), getY(),10, M_PI / 2, 25, 
+					"effect jump", 1, 5, 500, false);
 			}
 		}
 		else
@@ -266,16 +318,37 @@ namespace Terraria
 
 	void Player::flyDown()
 	{
-		if (_flyTime > 0)
+		if (_equip->getItem(EQUIP_ACCESSORY) == NULL ||
+			!_equip->getItem(EQUIP_ACCESSORY)->getAbillity().fly)
 		{
-			if (_fly &&
-				_equip->getItem(EQUIP_ACCESSORY) != NULL &&
-				_equip->getItem(EQUIP_ACCESSORY)->getAbillity().fly)
+			//flyUp();
+			return;
+		}
+
+		if (_flyTime > 0 && _fly)
+		{
+			if (getSpeedY() > (JUMP_SPEED)* 0.5)
+			{
+				setAccelY(JUMP_SPEED * 2);
+			}
+			else
 			{
 				setAccelY(0);
 				setSpeedY((JUMP_SPEED) * 0.5);
 			}
 
+			static bool isEffect = false;
+			if ((int)_flyTime % 20 < 5 && !isEffect)
+			{
+				TEffectManager::getSingleton()->createEffects(getX(), getY() + METER_TO_PIXEL, 10, getAngleR(), 25,
+					"effect jump", 1, 5, 500, false);
+				isEffect = true;
+			}
+			else
+			{
+				isEffect = false;
+			}
+			
 			_flyTime -= TIMEMANAGER->getElapsedTime() * 1000;
 		}
 		else
@@ -311,9 +384,9 @@ namespace Terraria
 
 		if (_actionTime < 0 || !_animate->isPlay())
 		{
-			if (getAction() == ACTION_SWING)
+			if (getAction() == ACTION_SWING || getAction() == ACTION_MAGIC)
 			{
-				setAction(0);
+				setAction(ACTION_STAY);
 			}
 			else if (getAction() == ACTION_SHOOT)
 			{
@@ -325,7 +398,7 @@ namespace Terraria
 				{
 					setDirect(getView());
 				}
-				setAction(0);
+				setAction(ACTION_STAY);
 			}
 			animate();
 		}
@@ -342,8 +415,12 @@ namespace Terraria
 		if (_actionTime > 0) _actionTime -= TIMEMANAGER->getElapsedTime() * 1000;
 		if (_unbeatableTime > 0) _unbeatableTime -= TIMEMANAGER->getElapsedTime() * 1000;
 
+		//recovery hp
 		if (getHp() < getMaxHp()) setHp(getHp() + 10 * TIMEMANAGER->getElapsedTime());
 		else if (getHp() > getMaxHp()) setHp(getMaxHp());
+		//recovery mp
+		if (getMp() < getMaxMp()) setMp(getMp() + (getMaxMp()) * TIMEMANAGER->getElapsedTime());
+		else if (getMp() > getMaxMp()) setMp(getMaxMp());
 
 		//fast run
 		if (_equip->getItem(EQUIP_ACCESSORY) != NULL &&
@@ -354,6 +431,21 @@ namespace Terraria
 		else
 		{
 			setMoveSpeed(PLAYER_MOVE_SPEED);
+		}
+
+		static bool isEffectRun = false;
+		if (abs(getSpeedX()) > PLAYER_MOVE_SPEED * 1.2 && getPosition() == FLOOR)
+		{
+			if (((int)TIMEMANAGER->getWorldTimeMs()) % 20 < 5 && !isEffectRun)
+			{
+				TEffectManager::getSingleton()->createEffects(getX(), getY() + METER_TO_PIXEL, 3, getAngleR(), 25,
+					"effect jump", 1, 5, 500, false);
+				isEffectRun = true;
+			}
+			else
+			{
+				isEffectRun = false;
+			}
 		}
 	}
 
@@ -455,6 +547,19 @@ namespace Terraria
 				_animate = ANIMATEMANAGER->findAnimation("player action right");
 			}
 			*/
+		}
+
+		//action casting magic
+		if (getAction() == ACTION_MAGIC)
+		{
+			if (getView() == LEFT)
+			{
+				_animate = ANIMATEMANAGER->findAnimation("player magic left");
+			}
+			else
+			{
+				_animate = ANIMATEMANAGER->findAnimation("player magic right");
+			}
 		}
 
 		//accesory

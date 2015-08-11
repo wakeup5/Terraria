@@ -30,8 +30,8 @@ namespace Terraria
 	void Physical::setAngleR(float angleR)
 	{
 		_angleR = angleR;
-		//while (_angleR < 0) _angleR += 2 * M_PI;
-		//while (_angleR >= 2 * M_PI) _angleR -= 2 * M_PI;
+		while (_angleR < 0) _angleR += 2 * M_PI;
+		while (_angleR >= 2 * M_PI) _angleR -= 2 * M_PI;
 
 		_angleD = radianToDegree(_angleR);
 
@@ -130,7 +130,7 @@ namespace Terraria
 		_angleR = atan2(-_speedY, _speedX);
 		_angleD = radianToDegree(_angleR);
 
-		//setSpeed(sqrt(pow(_speedX, 2) + pow(_speedY, 2)));
+		setSpeed(sqrt(pow(_speedX, 2) + pow(_speedY, 2)));
 
 		setX(getX() + _speedX * elapsedTime);
 		setY(getY() + _speedY * elapsedTime);

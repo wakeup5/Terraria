@@ -3,6 +3,7 @@
 
 namespace Terraria
 {
+	//========================= arrow =========================//
 	HRESULT Arrow::initialize()
 	{
 		_image = new Image(*IMAGEMANAGER->findImage("arrow image"));
@@ -23,7 +24,7 @@ namespace Terraria
 	{
 		_image->rotateRender(hdc, getAngleR() - M_PI / 2);
 	}
-
+	//======================== bullet ==========================//
 	HRESULT Bullet::initialize()
 	{
 		_image = new Image(*IMAGEMANAGER->findImage("bullet image"));
@@ -44,6 +45,7 @@ namespace Terraria
 		_image->rotateRender(hdc, getAngleR() - M_PI / 2);
 	}
 
+	//========================== Ammo ============================//
 	HRESULT Ammo::initialize(int max)
 	{
 		_lAmmo.clear();
@@ -54,19 +56,16 @@ namespace Terraria
 	void Ammo::release()
 	{
 		liAmmo iter = _lAmmo.begin();
-
 		for (; iter != _lAmmo.end();)
 		{
 			SAFE_RELEASE(*iter);
 			iter = _lAmmo.erase(iter);
 		}
-
 		_lAmmo.clear();
 	}
 	void Ammo::update()
 	{
 		liAmmo iter = _lAmmo.begin();
-
 		for (; iter != _lAmmo.end(); iter++)
 		{
 			(*iter)->update();
@@ -75,7 +74,6 @@ namespace Terraria
 	void Ammo::render(HDC hdc)
 	{
 		liAmmo iter = _lAmmo.begin();
-
 		for (; iter != _lAmmo.end(); iter++)
 		{
 			(*iter)->render(hdc);
@@ -91,6 +89,8 @@ namespace Terraria
 		arrow->setAngleR(angle);
 		arrow->setSpeed(speed);
 
+		arrow->update();
+
 		_lAmmo.push_back(arrow);
 		if (_lAmmo.size() > _max) removeFirst();
 	}
@@ -102,6 +102,8 @@ namespace Terraria
 		bullet->setSize(METER_TO_PIXEL, METER_TO_PIXEL);
 		bullet->setAngleR(angle);
 		bullet->setSpeed(speed);
+
+		bullet->update();
 
 		_lAmmo.push_back(bullet);
 		if (_lAmmo.size() > _max) removeFirst();

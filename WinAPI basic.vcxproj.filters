@@ -97,11 +97,11 @@
     <Filter Include="GameStudy\GameClass\object\unit\monster">
       <UniqueIdentifier>{d68b8047-317b-4950-8658-bd86c68e3a63}</UniqueIdentifier>
     </Filter>
-    <Filter Include="GameStudy\GameClass\object\unit\player\ammo">
-      <UniqueIdentifier>{934580d1-0b2c-4aa9-89fb-330beb9bda2c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="GameStudy\GameClass\object\effect">
       <UniqueIdentifier>{f71c7def-0ad4-4a35-a650-c19cf34d912f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameStudy\GameClass\object\unit\player\shoot">
+      <UniqueIdentifier>{934580d1-0b2c-4aa9-89fb-330beb9bda2c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -274,7 +274,7 @@
       <Filter>GameStudy\GameClass\object\unit\monster</Filter>
     </ClInclude>
     <ClInclude Include="Ammo.h">
-      <Filter>GameStudy\GameClass\object\unit\player\ammo</Filter>
+      <Filter>GameStudy\GameClass\object\unit\player\shoot</Filter>
     </ClInclude>
     <ClInclude Include="TEffect.h">
       <Filter>GameStudy\GameClass\object\effect</Filter>
@@ -284,6 +284,15 @@
     </ClInclude>
     <ClInclude Include="CombineUI.h">
       <Filter>GameStudy\GameClass\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="MagicBall.h">
+      <Filter>GameStudy\GameClass\object\unit\player\shoot</Filter>
+    </ClInclude>
+    <ClInclude Include="EyeBoss.h">
+      <Filter>GameStudy\GameClass\object\unit\monster</Filter>
+    </ClInclude>
+    <ClInclude Include="SnakeBoss.h">
+      <Filter>GameStudy\GameClass\object\unit\monster</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -441,7 +450,7 @@
       <Filter>GameStudy\GameClass\object\unit\monster</Filter>
     </ClCompile>
     <ClCompile Include="Ammo.cpp">
-      <Filter>GameStudy\GameClass\object\unit\player\ammo</Filter>
+      <Filter>GameStudy\GameClass\object\unit\player\shoot</Filter>
     </ClCompile>
     <ClCompile Include="TEffect.cpp">
       <Filter>GameStudy\GameClass\object\effect</Filter>
@@ -451,6 +460,15 @@
     </ClCompile>
     <ClCompile Include="CombineUI.cpp">
       <Filter>GameStudy\GameClass\ui</Filter>
+    </ClCompile>
+    <ClCompile Include="MagicBall.cpp">
+      <Filter>GameStudy\GameClass\object\unit\player\shoot</Filter>
+    </ClCompile>
+    <ClCompile Include="EyeBoss.cpp">
+      <Filter>GameStudy\GameClass\object\unit\monster</Filter>
+    </ClCompile>
+    <ClCompile Include="SnakeBoss.cpp">
+      <Filter>GameStudy\GameClass\object\unit\monster</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

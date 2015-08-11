@@ -18,9 +18,9 @@ MainGameScene::~MainGameScene()
 HRESULT MainGameScene::initialize()
 {
 	DATAMANAGER->loadDatabase("item", RESOURCE("data/item.ini"));
-	ITEMMANAGER->inputItemInfo();
+	//ITEMMANAGER->inputItemInfo();
 	DATAMANAGER->loadDatabase("combine", RESOURCE("data/combine.ini"));
-	ITEMMANAGER->inputCombineInfo();
+	//ITEMMANAGER->inputCombineInfo();
 
 	TEffectManager::getSingleton()->initialize(1000);
 	
@@ -35,7 +35,7 @@ HRESULT MainGameScene::initialize()
 	_dropItemManager->initialize(_map);
 
 	_pm->initialize(_map, _dropItemManager, _mm);
-	_pm->getPlayer()->setCenter(100, 100);
+	_pm->getPlayer()->setCenter(_map->getWidth() / 2, 100);
 
 	_mm->initialize(_pm->getPlayer());
 
@@ -49,8 +49,9 @@ HRESULT MainGameScene::initialize()
 	_pm->getInventory()->setItem(1, ITEMMANAGER->createItem("bow basic"));
 	_pm->getInventory()->setItem(2, ITEMMANAGER->createItem("magic basic"));
 	
-	_pm->getInventory()->setItem(_pm->getInventory()->getEmptyNum(), ITEMMANAGER->createItem("arrow", 100));
-	_pm->getInventory()->setItem(_pm->getInventory()->getEmptyNum(), ITEMMANAGER->createItem("bullet", 100));
+	_pm->getInventory()->setItem(_pm->getInventory()->getEmptyNum(), ITEMMANAGER->createItem("arrow", 999));
+	_pm->getInventory()->setItem(_pm->getInventory()->getEmptyNum(), ITEMMANAGER->createItem("bullet", 999));
+	_pm->getInventory()->setItem(_pm->getInventory()->getEmptyNum(), ITEMMANAGER->createItem("tile stone", 999));
 
 	//test
 	_pm->getInventory()->setItem(_pm->getInventory()->getEmptyNum(), ITEMMANAGER->createItem("ingot silver", 999));
@@ -71,6 +72,7 @@ void MainGameScene::release()
 	SAFE_RELEASE(_map);
 	SAFE_RELEASE(_ui);
 	SAFE_RELEASE(_dropItemManager);
+	SAFE_RELEASE(_mm);
 
 	TEffectManager::getSingleton()->release();
 	TEffectManager::getSingleton()->releaseSingleton();
@@ -121,6 +123,9 @@ void MainGameScene::update()
 		}
 	}
 
+	//마법
+	_pm->getMagicBall()->collisionMonster(_mm, _pm->getPlayer()->getAtk());
+
 	_dropItemManager->playerCollision(_pm);
 
 	//카메라 조작
@@ -131,22 +136,32 @@ void MainGameScene::update()
 	Background::getSingleton()->change("under", _option.cameraY(), METER_TO_PIXEL * 60, METER_TO_PIXEL * 100);
 
 	//테스트코드
-	if (KEYMANAGER->isOnceKeyDown(VK_F9))
+	if (KEYMANAGER->isOnceKeyDown(VK_NUMPAD1))
 	{
 		_mm->createZombie(_option.inMouseX(), _option.inMouseY());
+	}
+	if (KEYMANAGER->isOnceKeyDown(VK_NUMPAD4))
+	{
+		_mm->createEyeBoss(_dropItemManager, _option.inMouseX(), _option.inMouseY());
+	}
+	if (KEYMANAGER->isOnceKeyDown(VK_NUMPAD5))
+	{
+		_mm->createSnakeBoss(_dropItemManager, _map, _pm->getPlayer(), _option.inMouseX(), _option.inMouseY());
 	}
 }
 void MainGameScene::render()
 {
 	Background::getSingleton()->render(getMemDC());
 
+	_mm->render(getMemDC());
 	_map->render(getMemDC(), _option.cameraX(), _option.cameraY());
 	_dropItemManager->render(getMemDC());
-	_pm->render(getMemDC());
-	_mm->render(getMemDC());
-	_ui->render(getMemDC());
 
 	TEffectManager::getSingleton()->render(getMemDC());
+	
+	_pm->render(getMemDC());
+
+	_ui->render(getMemDC());
 }
 
 void MainGameScene::bloodEffect(float x, float y)

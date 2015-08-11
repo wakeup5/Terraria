@@ -32,8 +32,8 @@ HRESULT Image::initialize(int width, int height)
 
 	_fileName = NULL;
 
-	_trans = FALSE;
-	_transColor = RGB(0, 0, 0);
+	_trans = TRUE;
+	_transColor = RGB(255, 0, 255);
 
 	_blendFunc.BlendFlags = 0;
 	_blendFunc.AlphaFormat = 0;
@@ -372,6 +372,32 @@ void Image::rotateRender(HDC hdc, float angle)
 	PlgBlt(_angleImage->hMemDC, pt, getMemDC(), 0, 0, getWidth(), getHeight(), NULL, 0, 0);
 
 	GdiTransparentBlt(hdc, _centerX - width / 2, _centerY - height / 2, width, height, _angleImage->hMemDC, 0, 0, width, height, _transColor);
+}
+
+
+void Image::rotateRender(HDC hdc, float x, float y, float angle)
+{
+	int width = max(_width * 1.2, _height * 1.2);
+	int height = max(_width * 1.2, _height * 1.2);
+
+	if (false && abs(_prevAngle - angle) < M_PI / 32)
+	{
+		BitBlt(hdc, x - width / 2, y - height / 2, width, height, _angleImage->hMemDC, 0, 0, SRCCOPY);
+		_prevAngle = angle;
+		return;
+	}
+	_prevAngle = angle;
+
+	BitBlt(_angleImage->hMemDC, 0, 0, width, height, hdc, x - width / 2, y - height / 2, SRCCOPY);
+
+	POINT pt[3];
+	pt[0] = myUtil::getRotatePoint(width / 2, height / 2, -_width / 2, -_height / 2, angle);
+	pt[1] = myUtil::getRotatePoint(width / 2, height / 2, _width / 2, -_height / 2, angle);
+	pt[2] = myUtil::getRotatePoint(width / 2, height / 2, -_width / 2, _height / 2, angle);
+
+	PlgBlt(_angleImage->hMemDC, pt, getMemDC(), 0, 0, getWidth(), getHeight(), NULL, 0, 0);
+
+	GdiTransparentBlt(hdc, x - width / 2, y - height / 2, width, height, _angleImage->hMemDC, 0, 0, width, height, _transColor);
 }
 
 void Image::sizeRotateRender(HDC hdc, double ratio, float angle)

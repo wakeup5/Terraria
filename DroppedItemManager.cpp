@@ -49,6 +49,8 @@ namespace Terraria
 
 	DroppedItem* DroppedItemManager::createDroppedItem(std::string itemName, int amount, float x, float y, float speedX, float angle)
 	{
+		if (_sItem.size() > 20) return NULL;
+		
 		DroppedItem* item = new DroppedItem;
 		item->initialize(itemName, amount);
 		item->setManager(this);

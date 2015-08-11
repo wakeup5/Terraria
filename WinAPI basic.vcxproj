@@ -99,6 +99,7 @@
     <ClInclude Include="Equip.h" />
     <ClInclude Include="Equipment.h" />
     <ClInclude Include="common.h" />
+    <ClInclude Include="EyeBoss.h" />
     <ClInclude Include="GameInfo.h" />
     <ClInclude Include="GameNode.h" />
     <ClInclude Include="GameObject.h" />
@@ -112,6 +113,7 @@
     <ClInclude Include="Loading.h" />
     <ClInclude Include="LoadingScene.h" />
     <ClInclude Include="LogoScene.h" />
+    <ClInclude Include="MagicBall.h" />
     <ClInclude Include="MainGameScene.h" />
     <ClInclude Include="MainScene.h" />
     <ClInclude Include="MonsterManager.h" />
@@ -122,6 +124,7 @@
     <ClInclude Include="RandomFunction.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="SingletonBase.h" />
+    <ClInclude Include="SnakeBoss.h" />
     <ClInclude Include="SoundManager.h" />
     <ClInclude Include="SpriteImage.h" />
     <ClInclude Include="stdafx.h" />
@@ -159,6 +162,7 @@
     <ClCompile Include="EffectManager.cpp" />
     <ClCompile Include="Equip.cpp" />
     <ClCompile Include="Equipment.cpp" />
+    <ClCompile Include="EyeBoss.cpp" />
     <ClCompile Include="GameInfo.cpp" />
     <ClCompile Include="GameNode.cpp" />
     <ClCompile Include="GameObject.cpp" />
@@ -172,6 +176,7 @@
     <ClCompile Include="Loading.cpp" />
     <ClCompile Include="LoadingScene.cpp" />
     <ClCompile Include="LogoScene.cpp" />
+    <ClCompile Include="MagicBall.cpp" />
     <ClCompile Include="MainGameScene.cpp" />
     <ClCompile Include="MainScene.cpp" />
     <ClCompile Include="MonsterManager.cpp" />
@@ -180,6 +185,7 @@
     <ClCompile Include="PlayerManager.cpp" />
     <ClCompile Include="ProgressBar.cpp" />
     <ClCompile Include="SceneManager.cpp" />
+    <ClCompile Include="SnakeBoss.cpp" />
     <ClCompile Include="SoundManager.cpp" />
     <ClCompile Include="SpriteImage.cpp" />
     <ClCompile Include="stdafx.cpp">

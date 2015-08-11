@@ -40,6 +40,7 @@ namespace Terraria
 	{
 	private:
 		lAmmo _lAmmo;
+
 		int _max;
 	public:
 		HRESULT initialize(int max);

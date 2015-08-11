@@ -6,6 +6,8 @@ namespace Terraria
 {
 	void Collision::tileCollision(Unit* unit, TileMap* tileMap)
 	{
+		if (!unit->isTileCollision()) return;
+
 		if (unit->getUnitState().position == JUMP &&
 			tileCollisionFloor(unit, tileMap))
 		{
@@ -174,7 +176,7 @@ namespace Terraria
 
 		for (int i = sx; i < ex + 1; i++)
 		{
-			if (i < 0 || i > MAP_SIZE_Y - 1) continue;
+			if (i < 0 || i > MAP_SIZE_X - 1) continue;
 			for (int j = sy; j < ey + 1; j++)
 			{
 				if (j < 0 || j > MAP_SIZE_Y - 1) continue;
@@ -216,7 +218,10 @@ namespace Terraria
 		viUnit iter = mons->begin();
 		for (; iter != mons->end(); iter++)
 		{
-			tileCollision(*iter, tileMap);
+			if ((*iter)->isTileCollision())
+			{
+				tileCollision(*iter, tileMap);
+			}
 		}
 	}
 

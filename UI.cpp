@@ -220,6 +220,9 @@ namespace Terraria
 		char lifeStr[16];
 		sprintf_s(lifeStr, "Life : %.0f/%d", _player->getHp(), _player->getMaxHp());
 		writeText(hdc, lifeStr, _option.width() - 160, 10, 25, RGB(textColorValue, textColorValue, textColorValue));
+
+		sprintf_s(lifeStr, "Mana : %.0f/%d", _player->getMp(), _player->getMaxMp());
+		writeText(hdc, lifeStr, _option.width() - 160, 40, 25, RGB(textColorValue, textColorValue, textColorValue));
 	}
 
 	void UI::invenOpenRender(HDC hdc)

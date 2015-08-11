@@ -6,6 +6,7 @@
 #include "DroppedItemManager.h"
 #include "MonsterManager.h"
 #include "Ammo.h"
+#include "MagicBall.h"
 
 namespace Terraria
 {
@@ -20,6 +21,7 @@ namespace Terraria
 		MonsterManager* _mm;
 
 		Ammo* _ammo;
+		MagicBall* _mBall;
 	public:
 		HRESULT initialize(TileMap* tileMap, DroppedItemManager* dropItemManager, MonsterManager* monstarManager);
 		void release();
@@ -35,8 +37,10 @@ namespace Terraria
 		void attackSword();
 		void attackBow();
 		void attackGun();
+		void attackMagic();
 
 		Ammo* getAmmo(){ return _ammo; }
+		MagicBall* getMagicBall(){ return _mBall; }
 
 		PlayerManager();
 		virtual ~PlayerManager();

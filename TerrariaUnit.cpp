@@ -31,6 +31,8 @@ namespace Terraria
 
 		_isAttack = false;
 
+		_isCollisionTile = true;
+
 		return S_OK;
 	}
 
@@ -116,7 +118,6 @@ namespace Terraria
 				setAccelX(0);
 			}
 		}
-		printf("%d, %d, %d, %d = %d(%x)\n", _state.direct, _state.movement, _state.position, _state.action, getState(), getState());
 	}
 
 	void Unit::renew()

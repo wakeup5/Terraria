@@ -19,6 +19,7 @@ namespace Terraria
 		if (temp == NULL) return E_FAIL;
 
 		_image = temp->createSprite(frameX, frameY);
+		_image->setCenter(_option.getRenderX(getX()), _option.getRenderY(getY()));
 
 		_lifeTime = lifeTime;
 		_time = 0;

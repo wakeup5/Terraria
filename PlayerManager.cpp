@@ -23,7 +23,10 @@ namespace Terraria
 		_player->initialize(_inven);
 
 		_ammo = new Ammo;
-		_ammo->initialize(20);
+		_ammo->initialize(50);
+
+		_mBall = new MagicBall;
+		_mBall->initialize(50);
 
 		_map = tileMap;
 		_dropItemManager - dropItemManager;
@@ -35,12 +38,14 @@ namespace Terraria
 		SAFE_RELEASE(_player);
 		SAFE_RELEASE(_ammo);
 		SAFE_RELEASE(_inven);
+		SAFE_RELEASE(_mBall);
 	}
 	void PlayerManager::update()
 	{
 		_player->update();
 		_ammo->update();
 		_inven->update();
+		_mBall->update();
 
 		if (KEYMANAGER->isOnceKeyDown('A') || 
 			(KEYMANAGER->isStayKeyDown('A') && KEYMANAGER->isOnceKeyUp('D')))
@@ -84,6 +89,7 @@ namespace Terraria
 	{
 		_player->render(hdc);
 		_ammo->render(hdc);
+		_mBall->render(hdc);
 	}
 
 	void PlayerManager::action()
@@ -124,6 +130,10 @@ namespace Terraria
 				else if (select->getItemType() == ITEM_WEAPON_GUN)
 				{
 					attackGun();
+				}
+				else if (select->getItemType() == ITEM_WEAPON_MAGIC)
+				{
+					attackMagic();
 				}
 			}
 		}
@@ -186,5 +196,34 @@ namespace Terraria
 
 		_player->getBullet()->subAmount(1);
 		SOUNDMANAGER->play("bullet", _option.volume() / 4);
+	}
+
+	void PlayerManager::attackMagic()
+	{
+		Item* select = _player->getSelectItem();
+		if (_player->getMp() < select->getAbillity().mana) return;
+
+		_player->setMp(_player->getMp() - select->getAbillity().mana);
+
+		if (_player->getSelectItem()->getName() == "magic basic")
+		{
+			float angle = myUtil::getAngle(_player->getX(), _player->getY(), _option.inMouseX(), _option.inMouseY());
+			_mBall->shoot(_player->getX(), _player->getY(), angle, METER_TO_PIXEL * 100, METER_TO_PIXEL * 10);
+		}
+		else if (_player->getSelectItem()->getName() == "magic cobalt")
+		{
+			_mBall->shootGreenball(_player->getX(), _player->getY(), _option.inMouseX(), _option.inMouseY(), METER_TO_PIXEL * 33, METER_TO_PIXEL * 10);
+		}
+		else if (_player->getSelectItem()->getName() == "magic mythril")
+		{
+			float angle = myUtil::getAngle(_player->getX(), _player->getY(), _option.inMouseX(), _option.inMouseY());
+			_mBall->shootWater(_player->getX(), _player->getY(), angle, METER_TO_PIXEL * 33, METER_TO_PIXEL * 10);
+		}
+		else if (_player->getSelectItem()->getName() == "magic luna")
+		{
+			_mBall->shootFire(_player->getX(), _player->getY(), _option.inMouseX(), _option.inMouseY(), 0, METER_TO_PIXEL * 20);
+		}
+
+
 	}
 }

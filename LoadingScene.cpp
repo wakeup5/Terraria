@@ -221,8 +221,27 @@ void LoadingScene::loadingImage()
 	_loading->loadImage("monster zombie3", IMAGE("/monster/zombie3"), 68, 162, TRUE, TRANS_COLOR);
 	_loading->loadImage("monster zombie4", IMAGE("/monster/zombie4"), 68, 162, TRUE, TRANS_COLOR);
 
+	_loading->loadImage("boss eye", IMAGE("/monster/eye boss"), 160, 160, TRUE, TRANS_COLOR);
+	_loading->loadImage("boss eye dead 1", IMAGE("/monster/eye dead 1"), 20, 24, TRUE, TRANS_COLOR);
+	_loading->loadImage("boss eye dead 2", IMAGE("/monster/eye dead 2"), 52, 80, TRUE, TRANS_COLOR);
+	_loading->loadImage("boss eye dead 3", IMAGE("/monster/eye dead 3"), 48, 52, TRUE, TRANS_COLOR);
+	_loading->loadImage("boss eye dead 4", IMAGE("/monster/eye dead 4"), 46, 32, TRUE, TRANS_COLOR);
+
+	_loading->loadImage("boss snake head", IMAGE("/monster/snake head"), 50, 102, TRUE, TRANS_COLOR);
+	_loading->loadImage("boss snake body", IMAGE("/monster/snake body"), 50, 46, TRUE, TRANS_COLOR);
+	_loading->loadImage("boss snake tail", IMAGE("/monster/snake tail"), 50, 102, TRUE, TRANS_COLOR);
+
 	//이펙트
 	_loading->loadImage("blood", IMAGE("blood"), 16, 80, TRUE, TRANS_COLOR);
+	_loading->loadImage("magic effect water", IMAGE("water"), 52, 216, TRUE, TRANS_COLOR);
+	_loading->loadImage("magic effect greenball", IMAGE("green"), 30, 150, TRUE, TRANS_COLOR);
+	_loading->loadImage("magic effect bullet", IMAGE("magic bullet"), 10, 10, TRUE, TRANS_COLOR);
+	_loading->loadImage("magic effect bagic", IMAGE("basic"), 24, 216, TRUE, TRANS_COLOR);
+	_loading->loadImage("magic effect electro", IMAGE("electro"), 34, 64, TRUE, TRANS_COLOR);
+	_loading->loadImage("magic effect pink", IMAGE("pink"), 36, 144, TRUE, TRANS_COLOR);
+	_loading->loadImage("magic effect graind", IMAGE("graind"), 22, 112, TRUE, TRANS_COLOR);
+
+	_loading->loadImage("effect jump", IMAGE("player/jump"), 30, 150, TRUE, TRANS_COLOR);
 }
 
 void LoadingScene::loadingSound()
@@ -252,4 +271,13 @@ void LoadingScene::loadingSound()
 	//아이템
 	_loading->loadSound("arrow", SOUND("item/arrow.wav"), false, false);
 	_loading->loadSound("bullet", SOUND("item/bullet.wav"), false, false);
+
+	_loading->loadSound("boss", SOUND("monster/Roar_0.wav"), false, false);
+	//_loading->loadSound("bosske", SOUND("monster/Roar_2.wav"), false, false);
+	_loading->loadSound("monster hit", SOUND("monster/NPC_Hit_1.wav"), false, false);
+	_loading->loadSound("snake hit", SOUND("monster/NPC_Hit_4.wav"), false, false);
+
+	_loading->loadSound("monster dead", SOUND("monster/NPC_Killed_10.wav"), false, false);
+	_loading->loadSound("snake dead", SOUND("monster/NPC_Killed_14.wav"), false, false); 
+	_loading->loadSound("zombie dead", SOUND("monster/NPC_Killed_1.wav"), false, false);
 }

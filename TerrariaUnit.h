@@ -71,7 +71,8 @@ namespace Terraria
 		ACTION_STAY = (UCHAR)0,
 		ACTION_SWING = (UCHAR)1,
 		ACTION_SHOOT = (UCHAR)2,
-		ACTION_NONE = (UCHAR)3
+		ACTION_MAGIC = (UCHAR)3,
+		ACTION_NONE = (UCHAR)4
 	};
 
 	/*
@@ -128,6 +129,8 @@ namespace Terraria
 		float _mp;
 		int _attack;
 		int _defense;
+
+		bool _isCollisionTile;
 	public:
 		Unit();
 		virtual ~Unit();
@@ -188,6 +191,9 @@ namespace Terraria
 		inline virtual int getDef(){ return _defense; }
 		inline virtual int getMaxHp(){ return _mhp; }
 		inline virtual int getMaxMp(){ return _mmp; }
+
+		inline void setTileCollision(bool collision){ _isCollisionTile = collision; }
+		inline bool isTileCollision(){ return _isCollisionTile; }
 
 	private:
 		void unitStateupdate();
